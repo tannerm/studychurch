@@ -196,7 +196,7 @@ class SC_Setup {
 		$postfix = ( defined( 'SCRIPT_DEBUG' ) && true === SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_enqueue_style( 'sc', get_template_directory_uri() . "/assets/css/studychurch{$postfix}.css", array(), SC_VERSION );
-		wp_enqueue_style( 'google_fonts', 'http://fonts.googleapis.com/css?family=Open+Sans:300italic,600italic,300,600' );
+		wp_enqueue_style( 'google_fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300italic,600italic,300,600' );
 	}
 
 	/**
