@@ -6034,6 +6034,8 @@ a img.aligncenter {
   text-align: center; }
 .page-template-templateslanding-php .gform_wrapper form ul.gform_fields > li {
   margin: 2rem auto; }
+  .page-template-templateslanding-php .gform_wrapper form ul.gform_fields > li > label {
+    display: block; }
 .page-template-templateslanding-php .gform_wrapper form #field_3_4 > label {
   display: none; }
 .page-template-templateslanding-php .gform_wrapper form textarea, .page-template-templateslanding-php .gform_wrapper form input, .page-template-templateslanding-php .gform_wrapper form select {
@@ -6091,8 +6093,7 @@ a img.aligncenter {
     padding: 3rem 2rem;
     text-align: center; }
     .page-template-templateslanding-php .study-group .content-container .gform_wrapper {
-      max-width: 35rem;
-      margin: 4rem auto 0; }
+      max-width: 35rem; }
       .page-template-templateslanding-php .study-group .content-container .gform_wrapper label {
         color: white;
         font-weight: 300;
@@ -6123,6 +6124,9 @@ a img.aligncenter {
   .page-template-templateslanding-php .social a {
     color: white; }
 
+@media only screen and (max-width: 40em) {
+  .page-template-templateslanding-php .top-bar ul {
+    font-size: .75rem; } }
 @media only screen {
   /******************************************************************
   StudyChurch

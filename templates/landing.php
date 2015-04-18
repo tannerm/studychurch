@@ -17,7 +17,7 @@ the_post();
 	</section>
 
 	<div class="contain-to-grid sticky top-bar-container">
-		<nav id="single-page-navigation" class="top-bar" data-topbar role="navigation" data-options="sticky_on: large">
+		<nav id="single-page-navigation" class="top-bar" data-topbar role="navigation">
 			<ul>
 				<li class="icon">
 					<a href="#study-group">
@@ -36,7 +36,9 @@ the_post();
 
 	<section id="<?php echo sanitize_title( get_post_meta( get_the_id(), "_sc_title_1", true ) ); ?>" class="how-it-works">
 		<div class="row">
-			<?php echo apply_filters( 'the_content', get_post_meta( get_the_id(), "_sc_content_1", true ) ); ?>
+			<div class="small-12 column">
+				<?php echo apply_filters( 'the_content', get_post_meta( get_the_id(), "_sc_content_1", true ) ); ?>
+			</div>
 		</div>
 	</section>
 
