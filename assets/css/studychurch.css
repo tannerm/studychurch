@@ -6093,7 +6093,8 @@ a img.aligncenter {
     padding: 3rem 2rem;
     text-align: center; }
     .page-template-templateslanding-php .study-group .content-container .gform_wrapper {
-      max-width: 35rem; }
+      max-width: 35rem;
+      margin: auto; }
       .page-template-templateslanding-php .study-group .content-container .gform_wrapper label {
         color: white;
         font-weight: 300;
