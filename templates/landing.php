@@ -36,7 +36,7 @@ the_post();
 
 	<section id="<?php echo sanitize_title( get_post_meta( get_the_id(), "_sc_title_1", true ) ); ?>" class="how-it-works">
 		<div class="row">
-			<div class="small-12 column">
+			<div class="small-centered small-10 columns">
 				<?php echo apply_filters( 'the_content', get_post_meta( get_the_id(), "_sc_content_1", true ) ); ?>
 			</div>
 		</div>
