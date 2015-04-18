@@ -1,0 +1,166 @@
+.page-template-templateslanding-php {
+
+	section {
+		overflow: hidden;
+		padding-top: 54px;
+		margin-top: -54px;
+	}
+
+	section > div {
+		overflow: hidden;
+	}
+
+	.row {
+		margin: 3rem auto;
+	}
+
+	h1, h2, h3 {
+		text-align: center;
+	}
+
+	.gform_wrapper form {
+
+		ul.gform_fields > li {
+			margin: 2rem auto;
+		}
+
+		#field_3_4 > label {
+			display: none;
+		}
+
+		textarea, input, select {
+			padding: .5rem;
+			height: auto;
+			margin: auto;
+			width: 100% !important;
+		}
+	}
+
+	.top-bar-container {
+		background: $primary-color;
+
+		&.fixed {
+			border-bottom: 5px solid white;
+		}
+
+		.top-bar {
+			height: 54px;
+			background: $primary-color;
+		}
+
+		ul {
+			margin: 0;
+		}
+
+		li {
+			float: left;
+			width: 20%;
+			text-align: center;
+			line-height: 54px;
+			position: relative;
+
+			a {
+				color: #fff;
+				display: block;
+			}
+
+			img {
+				display: block;
+				width: 44px;
+				margin: 5px auto;
+			}
+		}
+
+		li.icon {
+			position: absolute;
+			left: 40%;
+			z-index: 5;
+		}
+
+		li:not(.icon) a.current:before {
+			content: '';
+			border-left: 10px solid transparent;
+			border-bottom: 10px solid white;
+			border-right: 10px solid transparent;
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			margin-left: -10px;
+		}
+	}
+
+	.study-group {
+		overflow: hidden;
+		background-size: cover;
+		background-color: $body-font-color;
+		color: white;
+		display: table;
+		width: 100%;
+
+		.content-container {
+			display: table-cell;
+			vertical-align: middle;
+			max-width: 45rem;
+			top: 0;
+			padding: 3rem 2rem;
+			text-align: center;
+
+			.gform_wrapper {
+				max-width: 35rem;
+				margin: 4rem auto 0;
+
+				label {
+					color: white;
+					font-weight: 300;
+					font-style: italic;
+				}
+
+				#field_1_2 {
+					display: none;
+					padding-left: 1rem;
+				}
+
+				input[type=submit] {
+					background-color: $secondary-color;
+					text-transform: uppercase;
+				}
+
+				.gform_footer {
+					padding: 0;
+				}
+			}
+		}
+	}
+
+	.who-its-for {
+		background: $secondary-color;
+	}
+
+	.get-involved {
+		background: $info-color;
+	}
+
+	.social {
+		background: $primary-color;
+
+		li {
+			list-style-type: none;
+		}
+
+		.menu {
+			display: block;
+			margin: 0;
+			text-align: center;
+
+			li {
+				display: inline-block;
+				margin: 2rem;
+			}
+		}
+
+		a {
+			color: white;
+		}
+
+	}
+}
