@@ -6025,7 +6025,8 @@ a img.aligncenter {
 .page-template-templateslanding-php section {
   overflow: hidden;
   padding-top: 54px;
-  margin-top: -54px; }
+  margin-top: -54px;
+  width: 100%; }
 .page-template-templateslanding-php section > div {
   overflow: hidden; }
 .page-template-templateslanding-php .row {
