@@ -1,0 +1,29 @@
+@import "compass";
+
+.site-header {
+	margin-bottom: 6rem;
+
+	.name {
+
+		a {
+			padding: 0;
+		}
+
+		img {
+			height: $topbar-height;
+			padding: 9px;
+			padding: .5rem;
+			display: block;
+		}
+
+	}
+
+	.avatar {
+		float: left;
+		height: $topbar-height;
+		width: auto;
+		padding: 18px;
+		@include border-radius( 100px );
+	}
+
+}

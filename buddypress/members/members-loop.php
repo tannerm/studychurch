@@ -39,27 +39,22 @@
 
 		<li>
 			<div class="item-avatar">
-				<a href="<?php bp_member_permalink(); ?>"><?php bp_member_avatar('type=full&width=70&height=70'); ?></a>
+				<a href="<?php bp_member_permalink(); ?>"><?php bp_member_avatar(); ?></a>
 			</div>
 
 			<div class="item">
 				<div class="item-title">
 					<a href="<?php bp_member_permalink(); ?>"><?php bp_member_name(); ?></a>
+
+					<?php if ( bp_get_member_latest_update() ) : ?>
+
+						<span class="update"> <?php bp_member_latest_update(); ?></span>
+
+					<?php endif; ?>
+
 				</div>
 
-				<div class="item-meta">
-					<span class="activity">
-						<?php bp_member_last_active(); ?>
-					</span>
-				</div>
-
-				<div class="item-desc">
-					<p>
-						<?php if ( bp_get_member_latest_update() ) : ?>
-							<?php bp_member_latest_update( array( 'view_link' => true ) ); ?>
-						<?php endif; ?>
-					</p>
-				</div>
+				<div class="item-meta"><span class="activity"><?php bp_member_last_active(); ?></span></div>
 
 				<?php do_action( 'bp_directory_members_item' ); ?>
 
@@ -110,7 +105,7 @@
 <?php else: ?>
 
 	<div id="message" class="info">
-		<p><?php _e( "Sorry, no members were found.", 'buddyboss' ); ?></p>
+		<p><?php _e( "Sorry, no members were found.", 'buddypress' ); ?></p>
 	</div>
 
 <?php endif; ?>

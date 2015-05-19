@@ -10,24 +10,18 @@
 				<div class="item-avatar">
 					<a href="<?php bp_group_permalink(); ?>"><?php bp_group_avatar( 'type=thumb&width=50&height=50' ); ?></a>
 				</div>
-				
-                <div class="item">
-                    <div class="item-title">
-                    <a href="<?php bp_group_permalink(); ?>"><?php bp_group_name(); ?></a><span class="small"> - <?php printf( __( '%s members', 'buddyboss' ), bp_group_total_members( false ) ); ?></span>
-                    </div>
-                    
-                    <div class="item-desc">
-                        <p class="desc">
-                            <?php bp_group_description_excerpt(); ?>
-                        </p>
-                    </div>
-    
-                    <?php do_action( 'bp_group_invites_item' ); ?>
-                </div>
+
+				<h4><a href="<?php bp_group_permalink(); ?>"><?php bp_group_name(); ?></a><span class="small"> - <?php printf( _nx( '1 member', '%d members', bp_get_group_total_members( false ),'Group member count', 'buddypress' ), bp_get_group_total_members( false )  ); ?></span></h4>
+
+				<p class="desc">
+					<?php bp_group_description_excerpt(); ?>
+				</p>
+
+				<?php do_action( 'bp_group_invites_item' ); ?>
 
 				<div class="action">
-					<a class="button accept" href="<?php bp_group_accept_invite_link(); ?>"><?php _e( 'Accept', 'buddyboss' ); ?></a> &nbsp;
-					<a class="button reject confirm" href="<?php bp_group_reject_invite_link(); ?>"><?php _e( 'Reject', 'buddyboss' ); ?></a>
+					<a class="button accept" href="<?php bp_group_accept_invite_link(); ?>"><?php _e( 'Accept', 'buddypress' ); ?></a> &nbsp;
+					<a class="button reject confirm" href="<?php bp_group_reject_invite_link(); ?>"><?php _e( 'Reject', 'buddypress' ); ?></a>
 
 					<?php do_action( 'bp_group_invites_item_action' ); ?>
 
@@ -40,7 +34,7 @@
 <?php else: ?>
 
 	<div id="message" class="info" role="main">
-		<p><?php _e( 'You have no outstanding group invites.', 'buddyboss' ); ?></p>
+		<p><?php _e( 'You have no outstanding group invites.', 'buddypress' ); ?></p>
 	</div>
 
 <?php endif;?>

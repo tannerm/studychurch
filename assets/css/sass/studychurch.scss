@@ -14,6 +14,7 @@
 @import "compass";
 @import "settings";
 @import "foundation";
+@import "font-awesome/font-awesome";
 
 /*
 BASE (MOBILE) SIZE
@@ -24,6 +25,9 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 
 // styles in base.scss
 @import "base";
+
+@import "components/header";
+@import "components/actions";
 
 // Screens
 @import "screens/front-page";

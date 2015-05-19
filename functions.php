@@ -14,7 +14,7 @@
 
 // Useful global constants
 define( 'SC_VERSION', '0.1.0' );
-
+define( 'BP_DEFAULT_COMPONENT', 'profile' );
 
 SC_Setup::get_instance();
 class SC_Setup {
@@ -72,6 +72,26 @@ class SC_Setup {
 		 * Create custom meta fields
 		 */
 		require get_template_directory() . '/inc/custom-meta-fields.php';
+
+		/**
+		 * Functions for template components
+		 */
+		require get_template_directory() . '/inc/template-helpers.php';
+
+		/**
+		 * Functionality for creating groups
+		 */
+		require get_template_directory() . '/inc/group-create.php';
+
+		/**
+		 * General BP Filters
+		 */
+		require get_template_directory() . '/inc/bp-filters.php';
+
+		/**
+		 * Handle login and registration requests
+		 */
+		require get_template_directory() . '/inc/ajax-login.php';
 	}
 
 		/**
@@ -80,6 +100,8 @@ class SC_Setup {
 	protected function add_filters() {
 		add_filter( 'wp_title', array( $this, 'wp_title_for_home' ) );
 		add_filter( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
+		add_filter( 'bp_get_nav_menu_items', array( $this, 'bp_nav_menu_items' ) );
+		add_filter( 'bp_template_include',   array( $this, 'pb_default_template' ) );
 	}
 
 	/**
@@ -104,6 +126,7 @@ class SC_Setup {
 		add_action( 'widgets_init',       array( $this, 'add_sidebars'       ) );
 		add_action( 'widgets_init',       array( $this, 'unregister_widgets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue'            ) );
+		add_action( 'template_redirect',  array( $this, 'maybe_force_login'  ), 5 );
 	}
 
 	/**
@@ -222,7 +245,7 @@ class SC_Setup {
 			wp_enqueue_script( 'sc-keyboard-image-navigation', get_template_directory_uri() . '/js/keyboard-image-navigation.js', array( 'jquery' ), '20120202' );
 		}
 
-		wp_enqueue_script( 'sc', get_template_directory_uri() . "/assets/js/studychurch{$postfix}.js", array( 'jquery', 'foundation' ), SC_VERSION, true );
+		wp_enqueue_script( 'sc', get_template_directory_uri() . "/assets/js/studychurch{$postfix}.js", array( 'jquery', 'foundation', 'wp-util' ), SC_VERSION, true );
 	}
 
 	/**
@@ -235,7 +258,8 @@ class SC_Setup {
 	 */
 	protected function add_menus() {
 		register_nav_menus( array(
-			'primary'   => 'Main Menu',
+			'members'   => 'Main Members Menu',
+			'public'    => 'Main Public Menu',
 		) );
 	}
 
@@ -245,6 +269,65 @@ class SC_Setup {
 		}
 
 		return false;
+	}
+
+	public function bp_nav_menu_items( $items ) {
+		// Get the top-level menu parts (Friends, Groups, etc) and sort by their position property
+		$top_level_menus = (array) buddypress()->bp_nav;
+		usort( $top_level_menus, '_bp_nav_menu_sort' );
+
+		// Iterate through the top-level menus
+		foreach ( $top_level_menus as $nav ) {
+
+			// Skip items marked as user-specific if you're not on your own profile
+			if ( empty( $nav['show_for_displayed_user'] ) && ! bp_core_can_edit_settings()  ) {
+				continue;
+			}
+
+			if ( 'activity' == $nav['slug'] ) {
+				continue;
+			}
+
+			// Get the correct menu link. See http://buddypress.trac.wordpress.org/ticket/4624
+			$link = trailingslashit( bp_displayed_user_domain() . $nav['link'] );
+
+			// Add this menu
+			$menu         = new stdClass;
+			$menu->class  = array( 'menu-parent' );
+			$menu->css_id = $nav['css_id'];
+			$menu->link   = $link;
+			$menu->name   = $nav['name'];
+			$menu->parent = 0;
+
+			$menus[] = $menu;
+		}
+
+		return $menus;
+	}
+
+	public function pb_default_template( $template ) {
+		if ( get_stylesheet_directory() . '/page.php' != $template ) {
+			return $template;
+		}
+
+		if ( $new_temp = locate_template( 'templates/full-width.php' ) ) {
+			$template = $new_temp;
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Force user login
+	 */
+	public function maybe_force_login() {
+		/** bale if the user is logged in or is on the login page */
+		if ( is_user_logged_in() || is_front_page() ) {
+			return;
+		}
+
+		include( get_template_directory() . '/page-login.php' );
+		exit();
 	}
 
 }

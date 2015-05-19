@@ -1,0 +1,413 @@
+/******************************************************************
+Site Name:
+Author:
+
+Stylesheet: Mixins & Constants Stylesheet
+
+This is where you can take advantage of Sass' great features:
+Mixins & Constants. I won't go in-depth on how they work exactly,
+there are a few articles below that will help do that. What I will
+tell you is that this will help speed up simple changes like
+changing a color or adding CSS3 techniques gradients.
+
+A WORD OF WARNING: It's very easy to overdo it here. Be careful and
+remember less is more.
+
+******************************************************************/
+
+/***** Multi line text ellipsis *****/
+@mixin multiline-ellipsis($height, $lineheight, $ellipsiswidth: 3em, $class: '') {
+
+	#{$class}.ellipsis {
+		overflow: hidden;
+		height: $height;
+		line-height: $lineheight;
+	}
+
+	#{$class}.ellipsis:before {
+		content:"";
+		float: left;
+		width: 5px; height: $height;
+	}
+
+	#{$class}.ellipsis > *:first-child {
+		float: right;
+		width: 100%;
+		margin-left: -5px;
+	}
+
+	#{$class}.ellipsis:after {
+		content: "\02026";
+
+		float: left;
+		position: relative;
+		top: -$lineheight;
+		left: 100%;
+		width: $ellipsiswidth; margin-left: -$ellipsiswidth;
+		padding-right: 5px;
+
+		text-align: right;
+		//background: white;
+		////background: -webkit-gradient(linear, left top, right top,
+		////	from(rgba(255, 255, 255, 0)), to(white), color-stop(50%, white));
+		////background: -moz-linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white);
+		////background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white);
+		////background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white);
+		////background: linear-gradient(to right, rgba(255, 255, 255, 0), white 50%, white)
+	}
+
+}
+/*********************
+TRANSITION
+*********************/
+
+/*
+I totally rewrote this to be cleaner and easier to use.
+You'll need to be using Sass 3.2+ for these to work.
+Thanks to @anthonyshort for the inspiration on these.
+USAGE: @include transition(all 0.2s ease-in-out);
+*/
+
+@mixin transition($transition...) {
+// defining prefixes so we can use them in mixins below
+	$prefixes:      ("-webkit", "-ms", "-o",  "");
+	@each $prefix in $prefixes {
+		#{$prefix}-transition: $transition;
+	}
+
+	transition: $transition;
+}
+
+/*********************
+CSS3 GRADIENTS
+Be careful with these since they can
+really slow down your CSS. Don't overdo it.
+*********************/
+
+/* @include css-gradient(#dfdfdf,#f8f8f8); */
+@mixin css-gradient($from: #dfdfdf, $to: #f8f8f8) {
+	background-color: $to;
+	background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+	background-image: -webkit-linear-gradient(top, $from, $to);
+	background-image: -moz-linear-gradient(top, $from, $to);
+	background-image: -o-linear-gradient(top, $from, $to);
+	background-image: linear-gradient(to bottom, $from, $to);
+}
+
+/*********************
+BOX SIZING
+*********************/
+
+/* @include box-sizing(border-box); */
+/* NOTE: value of "padding-box" is only supported in Gecko. So
+probably best not to use it. I mean, were you going to anyway? */
+@mixin box-sizing($type: border-box) {
+	-webkit-box-sizing: $type;
+	-moz-box-sizing:    $type;
+	-ms-box-sizing:     $type;
+	box-sizing:         $type;
+}
+
+
+/*********************
+BUTTONS
+*********************/
+
+.button, .button:visited {
+	font-family: $title;
+	border: 1px solid darken($link-color, 13%);
+	border-top-color: darken($link-color, 7%);
+	border-left-color: darken($link-color, 7%);
+	padding: 4px 12px;
+	color: $white;
+	display: inline-block;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	text-shadow: 0 1px rgba(0,0,0, .75);
+	cursor: pointer;
+	margin-bottom: 20px;
+	line-height: 21px;
+	border-radius: 4px;
+	@include css-gradient($link-color, darken($link-color, 5%));
+
+
+	&:hover, &:focus {
+		color: $white;
+		border: 1px solid darken($link-color, 13%);
+		border-top-color: darken($link-color, 20%);
+		border-left-color: darken($link-color, 20%);
+		@include css-gradient(darken($link-color, 5%), darken($link-color, 10%));
+	}
+
+	&:active {
+		@include css-gradient(darken($link-color, 5%), $link-color);
+	}
+}
+
+.blue-button, .blue-button:visited {
+	border-color: darken($bones-blue, 10%);
+	text-shadow: 0 1px 1px darken($bones-blue, 10%);
+	@include css-gradient( $bones-blue, darken($bones-blue, 5%) );
+	box-shadow: inset 0 0 3px lighten($bones-blue, 16%);
+
+	&:hover, &:focus {
+		border-color: darken($bones-blue, 15%);
+		@include css-gradient( darken($bones-blue, 4%), darken($bones-blue, 10%) );
+	}
+	&:active {
+		@include css-gradient( darken($bones-blue, 5%), $bones-blue );
+	}
+}
+
+/*********************
+TRANSITION
+*********************/
+@mixin transition($transition...) {
+// defining prefixes so we can use them in mixins below
+	$prefixes:      ("-webkit", "-ms", "-o",  "");
+	@each $prefix in $prefixes {
+		#{$prefix}-transition: $transition;
+	}
+
+	transition: $transition;
+}
+
+/*********************
+CSS3 GRADIENTS
+*********************/
+/* @include css-gradient(#dfdfdf,#f8f8f8); */
+@mixin css-gradient($from: #dfdfdf, $to: #f8f8f8) {
+	background-color: $to;
+	background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+	background-image: -webkit-linear-gradient(top, $from, $to);
+	background-image: -moz-linear-gradient(top, $from, $to);
+	background-image: -o-linear-gradient(top, $from, $to);
+	background-image: linear-gradient(to bottom, $from, $to);
+}
+
+/*********************
+BOX SIZING
+*********************/
+/* @include box-sizing(border-box); */
+@mixin box-sizing($type: border-box) {
+	-webkit-box-sizing: $type;
+	-moz-box-sizing:    $type;
+	-ms-box-sizing:     $type;
+	box-sizing:         $type;
+}
+
+/*********************
+BORDER RADIUS
+*********************/
+/* USAGE: @include border-radius(4px 4px 0 0); */
+
+@mixin border-radius($radius: .5em) {
+// defining prefixes so we can use them in mixins below
+	$prefixes:      ("-webkit", "-moz", "-ms", "-o",  "");
+	@each $prefix in $prefixes {
+		#{$prefix}-border-radius: $radius;
+	}
+
+	border-radius: $radius;
+}
+
+/*********************
+BOX SHADOWS
+*********************/
+/* USAGE: @include box-shadow(inset 0 0 4px rgba(0,0,0,0.22)); */
+@mixin box-shadow($shadow...) {
+	$prefixes:      ("-webkit", "-moz", "-ms", "-o",  "");
+	@each $prefix in $prefixes {
+		#{$prefix}-box-shadow: $shadow;
+	}
+	box-shadow: $shadow;
+}
+
+/*********************
+CSS3 GRADIENTS
+*********************/
+/* @include css-gradient(#dfdfdf,#f8f8f8); */
+@mixin css-gradient($from: #dfdfdf, $to: #f8f8f8) {
+	background-color: $to;
+	background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+	background-image: -webkit-linear-gradient(top, $from, $to);
+	background-image: -moz-linear-gradient(top, $from, $to);
+	background-image: -o-linear-gradient(top, $from, $to);
+	background-image: linear-gradient(to bottom, $from, $to);
+}
+
+/*********************
+BOX SIZING
+*********************/
+/* @include box-sizing(border-box); */
+@mixin box-sizing($type: border-box) {
+	-webkit-box-sizing: $type;
+	-moz-box-sizing:    $type;
+	-ms-box-sizing:     $type;
+	box-sizing:         $type;
+}
+
+/*********************
+Opacities & transparencies
+*********************/
+@mixin opacity( $value: 0.5 ) {
+	opacity: $value;
+	filter: alpha(opacity= $value * 100 );
+	-moz-opacity: $value;
+	-khtml-opacity: $value;
+	zoom: 1;
+}
+
+/*********************
+Universal RGBA Background
+*********************/
+@mixin rgba-background($color, $opacity) {
+	position: relative;
+	background: $color;
+	background: rgba($color, $opacity);
+	@include PIE;
+}
+/*********************
+Universal RGBA Color
+*********************/
+@mixin rgba-color($color, $opacity) {
+	position: relative;
+	color: $color;
+	color: rgba($color, $opacity);
+}
+
+/*********************
+Transparent Background
+*********************/
+@mixin transparent($color, $alpha) {
+	$rgba: rgba($color, $alpha);
+	$ie-hex-str: ie-hex-str($rgba);
+	@extend .transparent-background;
+	background-color: $rgba;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$ie-hex-str},endColorstr=#{$ie-hex-str});
+}
+
+// Loop through opacities from 90 to 10 on an alpha scale
+@mixin transparent-shades($name, $color) {
+	@each $alpha in 90, 80, 70, 60, 50, 40, 30, 20, 10 {
+		.#{$name}-#{$alpha} {
+			@include transparent($color, $alpha / 100);
+		}
+	}
+}
+
+/*********************
+Rotate
+*********************/
+@mixin rotate($degrees) {
+	-moz-transform: rotate($degrees);
+	-o-transform: rotate($degrees);
+	-webkit-transform: rotate($degrees);
+	filter:  progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=#{cos($degrees)}, M12=-#{sin($degrees)}, M21=#{sin($degrees)}, M22=#{cos($degrees)});
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=#{cos($degrees)}, M12=-#{sin($degrees)}, M21=#{sin($degrees)}, M22=#{cos($degrees)})";
+	zoom: 1;
+}
+
+/*********************
+Text Shadow
+*********************/
+@mixin text-shadow($x, $y, $blur, $color) {
+	text-shadow: $x $y $blur $color;
+	filter: dropshadow(color=#{$color}, offx=#{$x}, offy=#{$y});
+}
+
+/*********************
+Pie Mixin
+*********************/
+@mixin PIE {
+	behavior: url("pie/PIE.htc"); // Make path relative to the HTML file(s) not the CSS File
+}
+
+
+/*********************
+ARROWs Mixin
+*********************/
+/*   $direction: top, left, right, bottom, top-left, top-right, bottom-left, bottom-right    -    $color: hex, rgb or rbga   -    $size: px or em
+
+EXAMPLES:
+	&:before {@include arrow(right, #000, 12px); }
+	&:after {@include arrow(right, #000, 9px); }
+    .element { @include arrow(top, #000, 50px); }     */
+
+@mixin arrow($direction, $color, $size){
+	display: block;
+	height: 0;
+	width: 0;
+
+	@if $direction == 'top' {
+		border-left: $size solid transparent;
+		border-right: $size solid transparent;
+		border-bottom: $size solid $color;
+	} @else if $direction == 'right' {
+		border-top: $size solid transparent;
+		border-bottom: $size solid transparent;
+		border-left: $size solid $color;
+	} @else if $direction == 'bottom' {
+		border-top: $size solid $color;
+		border-right: $size solid transparent;
+		border-left: $size solid transparent;
+	} @else if $direction == 'left' {
+		border-top: $size solid transparent;
+		border-right: $size solid $color;
+		border-bottom: $size solid transparent;
+	} @else if $direction == 'top-left' {
+		border-top: $size solid $color;
+		border-right: $size solid transparent;
+	} @else if $direction == 'top-right' {
+		border-top: $size solid $color;
+		border-left: $size solid transparent;
+	} @else if $direction == 'bottom-left' {
+		border-bottom: $size solid $color;
+		border-right: $size solid transparent;
+	} @else if $direction == 'bottom-right' {
+		border-bottom: $size solid $color;
+		border-left: $size solid transparent;
+	}
+}
+
+/*********************
+Sticky Footer Mixin
+*********************/
+/* Example @include sticky-footer(40px) */
+@mixin sticky-footer($footer-height, $root-selector: unquote("#master"), $root-footer-selector: unquote(".sf-push"), $footer-selector: unquote(".footer")) {
+	html, body {
+		height: 100%; }
+	#{$root-selector} {
+		clear: both;
+		min-height: 100%;
+		height: auto !important;
+		height: 100%;
+		margin-bottom: -$footer-height;
+		#{$root-footer-selector} {
+			height: $footer-height; } }
+	#{$footer-selector} {
+		clear: both;
+		position: relative;
+		height: $footer-height; }
+}
+
+/*********************
+Placeholder text color
+*********************/
+@mixin placeholder-color( $color ) {
+
+	::-webkit-input-placeholder { // WebKit browsers
+		color: $color;
+	}
+	:-moz-placeholder { // Mozilla Firefox 4 to 18
+		color: $color;
+	}
+	::-moz-placeholder { // Mozilla Firefox 19+
+		color: $color;
+	}
+	:-ms-input-placeholder { // Internet Explorer 10+
+		color: $color;
+	}
+
+}

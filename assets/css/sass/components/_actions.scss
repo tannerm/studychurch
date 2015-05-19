@@ -1,0 +1,8 @@
+.add-button {
+	font-size: 1.25rem;
+	width: 1.25em;
+	line-height: 1.25em;
+	text-align: center;
+	border: 1px solid;
+	@include border-radius( 5px );
+}

@@ -18,7 +18,7 @@ module.exports = function( grunt ) {
 			},
 			studychurch: {
 				src: [
-					'assets/js/src/studychurch.js'
+					'assets/js/src/*.js'
 				],
 				dest: 'assets/js/studychurch.js'
 			},
@@ -53,7 +53,7 @@ module.exports = function( grunt ) {
 			all: {
 				files: {
 					'assets/js/studychurch.min.js': ['assets/js/studychurch.js'],
-					'assets/js/lib/foundation.min.js': ['assets/js/lib/foundation.js']
+					'assets/js/lib/foundation.min.js': ['assets/js/lib/foundation.js', 'assets/js/lib/foundation/foundation.topbar.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
