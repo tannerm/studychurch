@@ -28,9 +28,13 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 
 @import "components/header";
 @import "components/actions";
+@import "components/avatars";
+@import "components/bp-overwrite";
 
 // Screens
 @import "screens/front-page";
+@import "screens/profile";
+@import "screens/group";
 
 @media #{$small-up} {
 	@import "sizes/small_up";

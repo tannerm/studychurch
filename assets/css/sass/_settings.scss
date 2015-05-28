@@ -95,18 +95,18 @@ TYPOGRAPHY
 ********************/
 // $header-font-family: $body-font-family;
 // $header-font-style: normal;
-$header-font-weight: bold;
-// $header-font-color: #222;
+$header-font-weight: 600;
+$header-font-color: $body-font-color;
 // $header-line-height: 1.4;
 $header-top-margin: 0;
 $header-bottom-margin: 1em;
 // $header-text-rendering: optimizeLegibility;
 
-// $h1-font-size: rem-calc(44);
-// $h2-font-size: rem-calc(37);
-// $h3-font-size: rem-calc(27);
-// $h4-font-size: rem-calc(23);
-// $h5-font-size: rem-calc(18);
+$h1-font-size: rem-calc(24);
+$h2-font-size: rem-calc(24);
+$h3-font-size: rem-calc(18);
+$h4-font-size: rem-calc(18);
+$h5-font-size: rem-calc(24);
 // $h6-font-size: 1rem;
 
 // These control how subheaders are styled.

@@ -86,6 +86,10 @@ class SC_Group_Create {
 	 * @return mixed
 	 */
 	public function id_as_slug( $slug, $id ) {
+		if ( is_numeric( $slug ) ) {
+			return $slug;
+		}
+
 		return time();
 	}
 }

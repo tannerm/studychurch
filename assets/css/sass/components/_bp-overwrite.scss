@@ -1,0 +1,23 @@
+#buddypress {
+
+	#activity-stream {
+		p {
+			margin: 0 0 $paragraph-margin-bottom;
+		}
+	}
+
+	div.activity-comments {
+		ul li {
+			border: none;
+			border-left: 1px solid;
+			padding-left: 1rem;
+			margin: 1.5rem auto;
+		}
+	}
+
+	.activity-list {
+		.activity-content {
+			margin: 0;
+		}
+	}
+}

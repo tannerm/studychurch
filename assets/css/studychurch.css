@@ -4386,12 +4386,12 @@ dd,
 ul,
 ol,
 li,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6,
 pre,
 form,
 p,
@@ -4428,41 +4428,44 @@ p {
     font-style: italic; }
 
 /* Default header styles */
-h1, h2, h3, h4, h5, h6 {
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-family: "Open Sans", "Verdana", "Arial", sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   font-style: normal;
-  color: #222222;
+  color: #4d4d4d;
   text-rendering: optimizeLegibility;
   margin-top: 0;
   margin-bottom: 1em;
   line-height: 1.4; }
-  h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+  h1 small, .h1 small, h2 small, .h2 small, h3 small, .h3 small, h4 small, .h4 small, h5 small, .h5 small, h6 small, .h6 small {
     font-size: 60%;
-    color: #6f6f6f;
+    color: #8b8b8b;
     line-height: 0; }
 
-h1 {
-  font-size: 1.88889rem; }
+h1, .h1 {
+  font-size: 0.77778rem;
+  text-transform: uppercase; }
 
-h2 {
-  font-size: 1.5rem; }
+h2, .h2 {
+  font-size: 0.77778rem; }
 
-h3 {
-  font-size: 1.22222rem; }
+h3, .h3 {
+  font-size: 0.72222rem;
+  text-transform: uppercase; }
 
-h4 {
-  font-size: 1.0rem; }
+h4, .h4 {
+  font-size: 0.72222rem; }
 
-h5 {
-  font-size: 1rem; }
+h5, .h5 {
+  font-size: 1.33333rem;
+  font-weight: lighter; }
 
-h6 {
+h6, .h6 {
   font-size: 1rem; }
 
 .subheader {
   line-height: 1.4;
-  color: #6f6f6f;
+  color: #8b8b8b;
   font-weight: normal;
   margin-top: 0.2rem;
   margin-bottom: 0.5rem; }
@@ -4568,17 +4571,17 @@ blockquote {
   blockquote cite {
     display: block;
     font-size: 0.72222rem;
-    color: #555555; }
+    color: #767676; }
     blockquote cite:before {
       content: "\2014 \0020"; }
     blockquote cite a,
     blockquote cite a:visited {
-      color: #555555; }
+      color: #767676; }
 
 blockquote,
 blockquote p {
   line-height: 1.6;
-  color: #6f6f6f; }
+  color: #8b8b8b; }
 
 /* Microformats */
 .vcard {
@@ -4603,20 +4606,20 @@ blockquote p {
   padding: 0 0.05556rem; }
 
 @media only screen and (min-width: 40.063em) {
-  h1, h2, h3, h4, h5, h6 {
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     line-height: 1.4; }
 
-  h1 {
-    font-size: 2.44444rem; }
+  h1, .h1 {
+    font-size: 1.33333rem; }
 
-  h2 {
-    font-size: 2.05556rem; }
+  h2, .h2 {
+    font-size: 1.33333rem; }
 
-  h3 {
-    font-size: 1.5rem; }
+  h3, .h3 {
+    font-size: 1rem; }
 
-  h4 {
-    font-size: 1.27778rem; } }
+  h4, .h4 {
+    font-size: 1rem; } }
 /*
  * Print styles.
  *
@@ -5338,7 +5341,7 @@ meta.foundation-mq-topbar {
     line-height: 2.5rem;
     margin: 0; }
   .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4 {
-    font-size: 1rem; }
+    font-size: 1.33333rem; }
 
 .left-small {
   width: 2.5rem;
@@ -7856,6 +7859,32 @@ a img.aligncenter {
   -o-border-radius: 5px;
   border-radius: 5px; }
 
+.avatar-container {
+  display: inline-block;
+  position: relative; }
+  .avatar-container:before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background-color: #4d4d4d;
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    border-radius: 100px;
+    border: 2px solid white; }
+  .avatar-container.online:before {
+    background-color: #3ebeb2; }
+
+#buddypress #activity-stream p {
+  margin: 0 0 1.5rem; }
+#buddypress div.activity-comments ul li {
+  border: none;
+  border-left: 1px solid;
+  padding-left: 1rem;
+  margin: 1.5rem auto; }
+#buddypress .activity-list .activity-content {
+  margin: 0; }
+
 .page-template-templateslanding-php hr {
   margin: 4rem; }
 .page-template-templateslanding-php section {
@@ -7965,6 +7994,14 @@ a img.aligncenter {
 @media only screen and (max-width: 40em) {
   .page-template-templateslanding-php .top-bar ul {
     font-size: .75rem; } }
+.page-template-profile .sidebar .profile-edit-link {
+  float: right; }
+.page-template-profile .sidebar .avatar-container {
+  margin-bottom: 1rem; }
+
+.activity-meta {
+  float: right; }
+
 @media only screen {
   /******************************************************************
   StudyChurch

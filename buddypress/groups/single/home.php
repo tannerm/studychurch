@@ -10,7 +10,7 @@
 			<hr />
 
 			<h3>Members</h3>
-			<ul>
+			<ul class="item-list">
 				<?php if ( bp_group_has_members( array( 'per_page' => 1000, 'exclude_admins_mods' => 0 ) ) ) : while ( bp_group_members() ) : bp_group_the_member(); ?>
 					<li>
 						<?php bp_group_member_avatar_thumb(); ?>
@@ -26,7 +26,6 @@
 				<h4><?php _e( 'Current Study', 'sc' ); ?>: <?php echo esc_html( $study ); ?> </h4>
 			<?php endif; ?>
 			<?php bp_get_template_part( 'groups/single/activity' ); ?>
-
 		</div>
 
 		<?php do_action( 'bp_after_group_home_content' ); ?>

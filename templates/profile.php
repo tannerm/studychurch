@@ -11,9 +11,12 @@ $ud = wp_get_current_user();
 ?>
 
 <div class="row">
-	<div class="small-4 column">
+	<div class="small-4 column sidebar">
+
+		<a href="<?php echo esc_url( get_edit_profile_url( get_current_user_id() ) ); ?>" class="profile-edit-link"><i class="fa fa-pencil"></i></a>
 		<?php bp_loggedin_user_avatar( 'type=full' ); ?>
-		<h1><?php bp_loggedin_user_fullname(); ?></h1>
+
+		<h5><?php bp_loggedin_user_fullname(); ?></h5>
 
 		<hr />
 

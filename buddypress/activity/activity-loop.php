@@ -1,6 +1,6 @@
 <?php do_action( 'bp_before_activity_loop' ); ?>
 
-<?php if ( bp_has_activities( bp_ajax_querystring( 'activity' ) ) ) : ?>
+<?php if ( bp_has_activities( array( 'object' => 'groups', 'action' => 'activity_update' ) ) ) : ?>
 
 	<?php if ( empty( $_POST['page'] ) ) : ?>
 

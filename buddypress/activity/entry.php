@@ -10,25 +10,23 @@
  * @subpackage bp-legacy
  */
 
+global $activities_template;
 ?>
 
 <?php do_action( 'bp_before_activity_entry' ); ?>
 
 <li class="<?php bp_activity_css_class(); ?>" id="activity-<?php bp_activity_id(); ?>">
 	<div class="activity-avatar">
-		<a href="<?php bp_activity_user_link(); ?>">
-
-			<?php bp_activity_avatar(); ?>
-
-		</a>
+		<?php bp_activity_avatar(); ?>
 	</div>
 
 	<div class="activity-content">
 
 		<div class="activity-header">
-
-			<?php bp_activity_action(); ?>
-
+			<p class="small">
+				<?php echo $activities_template->activity->action; ?> <br />
+				<span class="time-since"><?php echo bp_core_time_since( $activities_template->activity->date_recorded ); ?></span>
+			</p>
 		</div>
 
 		<?php if ( bp_activity_has_content() ) : ?>
@@ -43,11 +41,11 @@
 
 		<?php do_action( 'bp_activity_entry_content' ); ?>
 
-		<div class="activity-meta">
+		<p class="activity-meta small">
 
 			<?php if ( bp_get_activity_type() == 'activity_comment' ) : ?>
 
-				<a href="<?php bp_activity_thread_permalink(); ?>" class="button view bp-secondary-action" title="<?php esc_attr_e( 'View Conversation', 'buddypress' ); ?>"><?php _e( 'View Conversation', 'buddypress' ); ?></a>
+				<a href="<?php bp_activity_thread_permalink(); ?>" class="view" title="<?php esc_attr_e( 'View Conversation', 'buddypress' ); ?>"><?php _e( 'View Conversation', 'buddypress' ); ?></a>&nbsp;|&nbsp;
 
 			<?php endif; ?>
 
@@ -55,17 +53,19 @@
 
 				<?php if ( bp_activity_can_comment() ) : ?>
 
-					<a href="<?php bp_activity_comment_link(); ?>" class="button acomment-reply bp-primary-action" id="acomment-comment-<?php bp_activity_id(); ?>"><?php _e( 'Add your comment', 'sc' ) ?></a>
+					<a href="<?php bp_activity_comment_link(); ?>" class="acomment-reply" id="acomment-comment-<?php bp_activity_id(); ?>"><?php _e( 'Add your comment', 'sc' ) ?></a>
 
 				<?php endif; ?>
 
-				<?php if ( bp_activity_user_can_delete() ) bp_activity_delete_link(); ?>
+				<?php if ( bp_activity_user_can_delete() ) : ?>
+					&nbsp;|&nbsp;<a href="<?php bp_activity_delete_url(); ?>"><?php _e( 'Delete', 'sc' ); ?></a>
+				<?php endif; ?>
 
 				<?php do_action( 'bp_activity_entry_meta' ); ?>
 
 			<?php endif; ?>
 
-		</div>
+		</p>
 
 	</div>
 
