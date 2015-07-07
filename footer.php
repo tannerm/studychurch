@@ -10,6 +10,7 @@
 
 			<div class="large-12 columns">
 				<footer id="colophon" class="site-footer" role="contentinfo">
+					<br /><br /><br /><br /><br /><br /><br />
 					<div class="site-info">
 						<?php do_action( 'sc_credits' ); ?>
 					</div>

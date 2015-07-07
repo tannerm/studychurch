@@ -42,7 +42,7 @@ $callout-panel-link-color: $primary-color !default;
 
     border-style: $panel-border-style;
     border-width: $panel-border-size;
-    border-color: scale-color($bg, $lightness: $panel-function-factor);
+    border-color: $panel-border-color;
     margin-bottom: $panel-margin-bottom;
     padding: $padding;
 
@@ -60,7 +60,7 @@ $callout-panel-link-color: $primary-color !default;
 
       // reset header line-heights for panels
       h1,h2,h3,h4,h5,h6 {
-        line-height: 1; margin-bottom: rem-calc(20) / 2;
+        line-height: 1; margin-bottom: 1.5;
         &.subheader { line-height: 1.4; }
       }
     }

@@ -450,7 +450,7 @@ dfn, em, .em {
   font-style: italic; }
 
 small, .small {
-  font-size: 75%; }
+  font-size: 60%; }
 
 ul, ol {
   padding: 0;
@@ -3626,10 +3626,10 @@ ul.pagination {
 .panel {
   border-style: solid;
   border-width: 1px;
-  border-color: #d8d8d8;
+  border-color: #4d4d4d;
   margin-bottom: 1.11111rem;
   padding: 1.11111rem;
-  background: #f2f2f2; }
+  background: white; }
   .panel > :first-child {
     margin-top: 0; }
   .panel > :last-child {
@@ -3638,13 +3638,13 @@ ul.pagination {
     color: #333333; }
   .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6 {
     line-height: 1;
-    margin-bottom: 0.55556rem; }
+    margin-bottom: 1.5; }
     .panel h1.subheader, .panel h2.subheader, .panel h3.subheader, .panel h4.subheader, .panel h5.subheader, .panel h6.subheader {
       line-height: 1.4; }
   .panel.callout {
     border-style: solid;
     border-width: 1px;
-    border-color: #caeeea;
+    border-color: #4d4d4d;
     margin-bottom: 1.11111rem;
     padding: 1.11111rem;
     background: #f3fbfa; }
@@ -3656,7 +3656,7 @@ ul.pagination {
       color: #333333; }
     .panel.callout h1, .panel.callout h2, .panel.callout h3, .panel.callout h4, .panel.callout h5, .panel.callout h6 {
       line-height: 1;
-      margin-bottom: 0.55556rem; }
+      margin-bottom: 1.5; }
       .panel.callout h1.subheader, .panel.callout h2.subheader, .panel.callout h3.subheader, .panel.callout h4.subheader, .panel.callout h5.subheader, .panel.callout h6.subheader {
         line-height: 1.4; }
     .panel.callout a:not(.button) {
@@ -7721,11 +7721,11 @@ hr.noline {
   display: none;
   text-indent: -99999px; }
 
+.ucase {
+  text-transform: uppercase; }
+
 .no-margin {
   margin: 0 !important; }
-
-h1 {
-  text-transform: uppercase; }
 
 /* =WordPress Core
 -------------------------------------------------------------- */
@@ -7885,6 +7885,24 @@ a img.aligncenter {
 #buddypress .activity-list .activity-content {
   margin: 0; }
 
+.sc_study .comment-form textarea {
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#cccccc), color-stop(4%, white)) 0 -1px;
+  background: -webkit-linear-gradient(top, #cccccc 1px, white 1px) 0px -1px;
+  background: -moz-linear-gradient(top, #cccccc 1px, white 1px) 0 -1px;
+  background: -ms-linear-gradient(top, #cccccc 1px, white 1px) 0 -1px;
+  background: -o-linear-gradient(top, #cccccc 1px, white 1px) 0 -1px;
+  background: linear-gradient(top, #cccccc 1px, #cccccc 1px) 0 -1px;
+  -webkit-background-size: 100% 1.5rem;
+  -moz-background-size: 100% 1.5rem;
+  -ms-background-size: 100% 1.5rem;
+  -o-background-size: 100% 1.5rem;
+  background-size: 100% 1.5rem;
+  line-height: 1.5rem;
+  padding: .25rem 1rem;
+  border: none;
+  box-shadow: none;
+  resize: none; }
+
 .page-template-templateslanding-php hr {
   margin: 4rem; }
 .page-template-templateslanding-php section {
@@ -8001,6 +8019,18 @@ a img.aligncenter {
 
 .activity-meta {
   float: right; }
+
+.table-of-contents {
+  margin-left: 0;
+  font-size: 0.77778rem; }
+  .table-of-contents a {
+    color: #4d4d4d; }
+    .table-of-contents a:hover {
+      color: #3ebeb2; }
+  .table-of-contents > li {
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+    margin-bottom: 1rem; }
 
 @media only screen {
   /******************************************************************

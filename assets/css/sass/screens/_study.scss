@@ -1,0 +1,18 @@
+.table-of-contents {
+	margin-left: 0;
+	font-size: rem-calc(14);
+
+	a {
+		color: $body-font-color;
+
+		&:hover {
+			color: $primary-color;
+		}
+	}
+
+	> li {
+		text-transform: uppercase;
+		border-bottom: 1px solid;
+		margin-bottom: 1rem;
+	}
+}

@@ -92,6 +92,16 @@ class SC_Setup {
 		 * Handle login and registration requests
 		 */
 		require get_template_directory() . '/inc/ajax-login.php';
+
+		/**
+		 * Study functions
+		 */
+		require get_template_directory() . '/inc/study.php';
+
+		/**
+		 * Initialize Assignments Component
+		 */
+		require get_template_directory() . '/inc/assignments/loader.php';
 	}
 
 		/**

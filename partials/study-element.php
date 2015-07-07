@@ -18,6 +18,7 @@
 
 	<div class="entry-content">
 		<?php the_content(); ?>
+
 		<?php comments_template( '/comments-study.php', true ); ?>
 	</div>
 	<!-- .entry-content -->

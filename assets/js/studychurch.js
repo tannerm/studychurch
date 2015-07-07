@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-05-19
+/*! StudyChurch - v0.1.0 - 2015-07-07
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -93,13 +93,7 @@ jQuery(document).ready(function($){
 		};
 
 		SELF.error = function(message) {
-			SELF.$form.find('.status-message').remove();
-			if ( status.success ) {
-				SELF.$form.prepend('<p class="success-message">Success! Reloading the page...</p>');
-				window.location.reload();
-			} else {
-				SELF.$form.prepend('<p class="error-message">' + status.message + '</p>');
-			}
+			SELF.$form.prepend('<p class="error-message">' + status.message + '</p>');
 		};
 
 		SELF.init('#sc-login-form');
@@ -107,6 +101,63 @@ jQuery(document).ready(function($){
 	};
 
 	new ajaxLogin();
+});
+jQuery(document).ready(function($){
+	'use strict';
+
+	var answers = function( $form ) {
+		var SELF = this;
+
+		SELF.$form = $form;
+		SELF.data  = {};
+
+		SELF.init = function() {
+			SELF.$answer = SELF.$form.find('textarea');
+
+			SELF.$answer.on('keyup', SELF.autoSave );
+			SELF.$form.on('submit', SELF.handleSubmission);
+		};
+
+		SELF.autoSave = function() {
+			console.log( 'keyup' );
+		};
+
+		SELF.handleSubmission = function(e){
+			e.preventDefault();
+
+			SELF.data['answer']     = SELF.$form.find('textarea[name=comment]').val();
+			SELF.data['post_id']    = SELF.$form.find('input[name=comment_post_ID]').val();
+			SELF.data['comment_id'] = SELF.$form.find('input[name=comment_ID]').val();
+
+			wp.ajax.send( 'sc_save_answer', {
+				success: SELF.success,
+				error: SELF.error,
+				data:    SELF.data
+			} );
+
+		};
+
+		SELF.success = function(data) {
+			console.log('save');
+			console.log(data);
+			SELF.$form.find('input[name=comment_ID]').val(data.comment_ID);
+		};
+
+		SELF.error = function(message) {
+			console.log('error');
+			console.log(message);
+		};
+
+		SELF.init();
+
+	};
+
+	$(document).ready(function(){
+		$('.sc_study .comment-form').each(function(){
+			new answers( $(this) );
+		});
+	});
+
 });
 (function ($, window, undefined) {
 	'use strict';
