@@ -15,17 +15,21 @@ $elements = new WP_Query( array(
 	'meta_key'       => '_sc_data_type',
 	'posts_per_page' => -1,
 	'orderby'        => 'menu_order',
-) ); ?>
+) );
+
+get_comments();?>
 
 	<div class="row">
 		<?php get_sidebar( 'study' ); ?>
-		<div class="large-8 small-12 columns" role="main">
+		<div id="buddypress" class="large-8 small-12 columns" role="main">
 			<div id="content" role="main">
 				<?php while ( have_posts() ) : the_post(); ?>
+					<?php sc_study_navigation(); ?>
+
 					<?php get_template_part( 'partials/study' ); ?>
 
 					<?php while ( $elements->have_posts() ) : $elements->the_post(); ?>
-						<hr />
+
 						<?php get_template_part( 'partials/study', 'element' ); ?>
 
 					<?php endwhile; ?>
@@ -34,6 +38,8 @@ $elements = new WP_Query( array(
 
 				<?php endwhile; // end of the loop. ?>
 			</div>
+
+			<?php sc_study_navigation(); ?>
 		</div>
 	</div>
 <?php get_footer(); ?>

@@ -16,8 +16,21 @@
 	}
 
 	.activity-list {
+		.acomment-meta {
+			overflow: hidden;
+		}
+
 		.activity-content {
 			margin: 0;
 		}
+
+		.activity-header {
+			overflow: hidden;
+		}
+
+		p:last-child {
+			margin: 0 !important;
+		}
 	}
+
 }

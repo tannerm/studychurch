@@ -17,7 +17,7 @@ class SC_Assignments_Query {
 	public function __construct( $args = array() ) {
 
 		$this->query_args = wp_parse_args( $args, array(
-			'group_id'    => bp_get_group_id(),
+			'group_id'    => bp_get_current_group_id(),
 			'date_start'  => time(),
 			'date_finish' => null,
 			'count'       => -1,

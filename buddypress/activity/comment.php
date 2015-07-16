@@ -12,11 +12,11 @@
 
 ?>
 <li id="acomment-<?php bp_activity_comment_id(); ?>">
-	<div class="activity-avatar">
-		<?php bp_activity_avatar( 'type=thumb&user_id=' . bp_get_activity_comment_user_id() ); ?>
-	</div>
 
 	<div class="acomment-meta">
+		<div class="activity-avatar">
+			<?php bp_activity_avatar( 'type=thumb&user_id=' . bp_get_activity_comment_user_id() ); ?>
+		</div>
 		<p class="small">
 			<?php printf( __( '%s commented on this', 'sc' ), bp_get_activity_comment_name() ); ?>  <br />
 			<span class="time-since"><?php bp_activity_comment_date_recorded(); ?></span>

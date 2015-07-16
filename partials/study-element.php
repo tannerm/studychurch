@@ -20,12 +20,11 @@
 		<?php the_content(); ?>
 
 		<?php comments_template( '/comments-study.php', true ); ?>
+
+		<?php if ( sc_study_get_answer() ) : ?>
+			<?php get_template_part( 'partials/study-element', 'answers' ); ?>
+		<?php endif; ?>
 	</div>
 	<!-- .entry-content -->
-
-	<footer class="entry-meta">
-		<?php edit_post_link( __( 'Edit', 'buddyboss' ), '<span class="edit-link">', '</span>' ); ?>
-	</footer>
-	<!-- .entry-meta -->
 
 </article><!-- #post -->

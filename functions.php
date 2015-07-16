@@ -97,6 +97,7 @@ class SC_Setup {
 		 * Study functions
 		 */
 		require get_template_directory() . '/inc/study.php';
+		require get_template_directory() . '/inc/study/groups.php';
 
 		/**
 		 * Initialize Assignments Component

@@ -36,6 +36,10 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 		}
 
 		function settings_screen( $group_id = NULL ) {
+			if ( is_admin() ) {
+				return;
+			}
+
 			$setting = groups_get_groupmeta( $group_id, 'group_extension_example_2_setting' );
 
 			cmb2_metabox_form( 'sc_assignments' );

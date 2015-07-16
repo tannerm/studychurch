@@ -12,6 +12,13 @@
 
 			<p><?php bp_group_description(); ?></p>
 
+			<?php if ( $study_id = sc_get_group_study_id() ) : ?>
+				<h3><?php _e( 'Study:', 'sc' ); ?> <a href="<?php echo get_the_permalink( $study_id ); ?>"><?php echo get_the_title( $study_id ); ?></a></h3>
+				<p><?php echo apply_filters( 'the_excerpt', get_post( $study_id )->post_excerpt ); ?></p>
+			<?php elseif( $study = groups_get_groupmeta( bp_get_group_id(), 'study_name', true ) ) : ?>
+				<h3><?php _e( 'Study:', 'sc' ); ?> <?php echo esc_html( $study ); ?></h3>
+			<?php endif; ?>
+
 			<hr />
 
 			<h3><?php _e( 'Members', 'sc' ); ?></h3>
