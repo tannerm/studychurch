@@ -2,6 +2,12 @@
 
 .site-header {
 	margin-bottom: 6rem;
+}
+
+.main-navigation {
+	a {
+		color: white;
+	}
 
 	.name {
 
@@ -18,12 +24,29 @@
 
 	}
 
+	.avatar-container {
+		float: left;
+		padding: .75rem;
+		height: $topbar-height;
+		&:before {
+			content: none;
+		}
+	}
+
 	.avatar {
 		float: left;
-		height: $topbar-height;
+		height: 100%;
 		width: auto;
-		padding: 18px;
 		@include border-radius( 100px );
 	}
 
+}
+
+.register {
+	color: white;
+	font-size: 14px;
+
+	a {
+		color: white;
+	}
 }

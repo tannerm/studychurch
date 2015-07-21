@@ -50,14 +50,7 @@
 						) );
 						?>
 
-						<ul class="right">
-							<li class="has-dropdown click">
-								<a href="#"> <?php bp_displayed_user_avatar(); ?> Hello <?php echo bp_core_get_user_displayname( get_current_user_id() ); ?>!</a>
-								<?php bp_nav_menu( array( 'container'  => false,
-								                          'items_wrap' => '<ul id="%1$s" class="%2$s dropdown">%3$s</ul>'
-								) ); ?>
-							</li>
-						</ul>
+						<?php get_template_part( 'partials/header', 'loggedin-nav' ); ?>
 					<?php endif; ?>
 				</section>
 

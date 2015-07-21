@@ -1,5 +1,23 @@
 .page-template-templateslanding-php {
 
+	.main-navigation {
+		position: absolute;
+		top: $topbar-height;
+		right: $topbar-height/2;
+	}
+
+	.main-navigation,
+	.has-dropdown,
+	.has-dropdown a,
+	.top-bar-section .dropdown li {
+		background-color: transparent !important;
+	}
+
+	.has-dropdown li a:hover {
+		background: #333 !important;
+		background: rgba(0,0,0,.5) !important;
+	}
+
 	hr {
 		margin: 4rem;
 	}

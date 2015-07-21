@@ -20,3 +20,18 @@
 
 <body <?php body_class(); ?>>
 <div id="page" class="hfeed site">
+	<nav id="site-navigation" class="main-navigation top-bar" role="navigation" data-topbar data-options="is_hover: false">
+
+		<div class="top-bar-section">
+			<div class="text-right register">
+				<?php if ( ! is_user_logged_in() ) : ?>
+					<a href="#" class="login" data-reveal-id="login"><i class="fa fa-user"></i> <?php _e( 'Login', 'sc' ); ?>
+					</a>&nbsp;|&nbsp;
+					<a id="signup" href="#" class="login" data-reveal-id="start-now"><i class="fa fa-user-plus"></i> <?php _e( 'Register', 'sc' ); ?>
+					</a>
+				<?php else : ?>
+					<?php get_template_part( 'partials/header', 'loggedin-nav' ); ?>
+				<?php endif; ?>
+			</div>
+		</div>
+	</nav>

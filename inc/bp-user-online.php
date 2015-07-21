@@ -24,8 +24,7 @@ class SC_BP_Online {
 	/**
 	 * Add Hooks and Actions
 	 */
-	protected function __construct() {
-	}
+	protected function __construct() {}
 
 	public function is_user_online( $user_id ) {
 		if ( ! $online_users = get_transient( 'sc_online_users' ) ) {

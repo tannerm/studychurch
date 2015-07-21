@@ -226,3 +226,23 @@ function sc_category_transient_flusher() {
 }
 add_action( 'edit_category', 'sc_category_transient_flusher' );
 add_action( 'save_post',     'sc_category_transient_flusher' );
+
+/**
+ * Get query var, return $default if not found
+ *
+ * @param      $var
+ * @param bool $default
+ *
+ * @return bool
+ */
+function sc_get( $var, $default = false ) {
+	if ( isset( $_GET[ $var ] ) ) {
+		return $_GET[ $var ];
+	}
+
+	if ( isset( $_POST[ $var ] ) ) {
+		return $_POST[ $var ];
+	}
+
+	return $default;
+}

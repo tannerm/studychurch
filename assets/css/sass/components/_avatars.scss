@@ -17,4 +17,8 @@
 	&.online:before {
 		background-color: $primary-color;
 	}
+
+	.avatar {
+		display: block;
+	}
 }

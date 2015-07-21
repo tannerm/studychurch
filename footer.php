@@ -21,6 +21,11 @@
 
 		</div><!-- #page -->
 
+	<?php if ( ! is_user_logged_in() ) : ?>
+		<?php get_template_part( 'partials/modal', 'register' ); ?>
+		<?php get_template_part( 'partials/modal', 'login' ); ?>
+	<?php endif; ?>
+
 	<?php wp_footer(); ?>
 
 	</body>

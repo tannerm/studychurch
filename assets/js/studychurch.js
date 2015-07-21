@@ -1,16 +1,15 @@
-/*! StudyChurch - v0.1.0 - 2015-07-11
+/*! StudyChurch - v0.1.0 - 2015-07-20
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
 	'use strict';
 
-	var scGroupCreate = function() {
+	var scAjaxForm = function($container) {
 		var SELF = this;
 
-		SELF.data    = {'security': scGroupCreateData.security};
-
 		SELF.init = function() {
-			SELF.$form = $( document.getElementById( 'group-create') );
+			SELF.$container = $container;
+			SELF.$form      = SELF.$container.find('form');
 
 			if ( ! SELF.$form.length ) {
 				return;
@@ -22,45 +21,46 @@
 		SELF.handleSubmission = function(e) {
 			e.preventDefault();
 
-			SELF.data['group-name'] = SELF.$form.find('[name=group-name]').val();
-			SELF.data['group-desc'] = SELF.$form.find('[name=group-desc]').val();
-			SELF.data['study-name'] = SELF.$form.find('[name=study-name]').val();
+			SELF.data = {
+				action: SELF.$container.data('action'),
+				formdata: SELF.$form.serialize()
+			};
 
-			SELF.$form.find('.error-message').remove();
-
-			wp.ajax.send( 'sc_group_create', {
+			wp.ajax.send( SELF.$container.data('action'), {
 				success: SELF.response,
 				data:    SELF.data
 			} );
 
 		};
 
-		SELF.response = function(url) {
+		SELF.response = function(data) {
 			SELF.$form.find('.status-message').remove();
-			SELF.$form.prepend('<p class="success-message">' + scGroupCreateData.success + '</p>');
-			window.location = url;
+			SELF.$form.prepend('<p class="success-message">' + data.message + '</p>');
+			window.location = data.url;
 		};
 
 		SELF.init();
 	};
 
 	$(document).ready( function(){
-		new scGroupCreate();
+		$('.ajax-form').each(function(){
+			new scAjaxForm($(this));
+		});
 	});
 
 })(jQuery);
-jQuery(document).ready(function($){
+( function( $, window ) {
 	'use strict';
 
-	var ajaxLogin = function() {
+	var ajaxLogin = function () {
 		var SELF = this;
 
-		SELF.data    = {'security': scAjaxLogin.security};
+		SELF.data = {};
 
-		SELF.init = function(id) {
+		SELF.init = function (id) {
 			SELF.$loginContainer = $(id);
 
-			if ( ! SELF.$loginContainer.length ) {
+			if (!SELF.$loginContainer.length) {
 				return;
 			}
 
@@ -69,39 +69,116 @@ jQuery(document).ready(function($){
 			SELF.$form.on('submit', SELF.handleSubmission);
 		};
 
-		SELF.handleSubmission = function(e){
+		SELF.handleSubmission = function (e) {
+			var action = SELF.$form.attr('data-action');
+
+			if ( ! action ) {
+				return;
+			}
+
 			e.preventDefault();
 
-			SELF.data['log'] = SELF.$form.find('#user_login').val();
-			SELF.data['pwd'] = SELF.$form.find('#user_pass').val();
+			SELF.data['log']        = SELF.$form.find('input[name="sc-login"]').val();
+			SELF.data['pwd']        = SELF.$form.find('input[name="sc-password"]').val();
+			SELF.data['security']   = SELF.$form.find('input[name="sc_login_key"]').val();
+			SELF.data['rememberme'] = true;
 
-			SELF.$form.find('.error-message').remove();
-			SELF.$form.prepend('<p class="status-message">Logging in...</p>');
+			SELF.$form.find('.alert-box').remove();
+			SELF.$form.find('.spinner').show();
 
-			wp.ajax.send( 'sc_login', {
-				success: SELF.success,
-				error: SELF.error,
-				data:    SELF.data
-			} );
-
+			wp.ajax.send( action, {
+				data : SELF.data,
+				success : SELF.response,
+				error : SELF.error
+			});
 		};
 
-		SELF.success = function() {
-			SELF.$form.find('.status-message').remove();
-			SELF.$form.prepend('<p class="success-message">Success! Reloading the page...</p>');
-			window.location.reload();
+		SELF.response = function (data) {
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.prepend('<p class="alert-box success success-message">Success! Taking you to your profile.</p>');
+			window.location = '/profile/';
 		};
 
-		SELF.error = function(message) {
-			SELF.$form.prepend('<p class="error-message">' + status.message + '</p>');
-		};
-
-		SELF.init('#sc-login-form');
+		SELF.error = function( message ) {
+			if ( ! message ) {
+				message = "Please make sure that you have filled in both your email and password."
+			}
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.prepend( '<div class="alert-box alert" data-alert>' + message + '</div>');
+		}
 
 	};
 
-	new ajaxLogin();
-});
+	var scAjaxLogin = new ajaxLogin();
+	scAjaxLogin.init('#login');
+
+} )( jQuery, this );
+( function( $, window, undefined ) {
+	'use strict';
+
+	var ajaxRegister = function () {
+		var SELF = this;
+
+		SELF.data = {};
+
+		SELF.init = function (id) {
+			SELF.$registerContainer = $(id);
+
+			if (!SELF.$registerContainer.length) {
+				return;
+			}
+
+			SELF.$form = SELF.$registerContainer.find('form');
+
+			SELF.$form.on('submit', SELF.handleSubmission);
+		};
+
+		SELF.handleSubmission = function (e) {
+			var action = SELF.$form.attr('data-action');
+
+			if ( ! action ) {
+				return;
+			}
+
+			e.preventDefault();
+
+			SELF.data['rcp_level']             = SELF.$form.find('input[name="rcp_level"]').val();
+			SELF.data['rcp_user_first']        = SELF.$form.find('input[name="rcp_user_first"]').val();
+			SELF.data['rcp_user_last']         = SELF.$form.find('input[name="rcp_user_last"]').val();
+			SELF.data['rcp_user_login']        = SELF.$form.find('input[name="rcp_user_email"]').val();
+			SELF.data['rcp_user_email']        = SELF.$form.find('input[name="rcp_user_email"]').val();
+			SELF.data['rcp_user_pass']         = SELF.$form.find('input[name="rcp_user_pass"]').val();
+			SELF.data['rcp_user_pass_confirm'] = SELF.$form.find('input[name="rcp_user_pass"]').val();
+			SELF.data['rcp_register_nonce']    = SELF.$form.find('input[name="rcp_register_nonce"]').val();
+
+			SELF.$form.find('.alert-box').remove();
+			SELF.$form.find('.spinner').show();
+
+			wp.ajax.send( action, {
+				data : SELF.data,
+				success : SELF.response,
+				error : SELF.error
+			});
+		};
+
+		SELF.response = function (status) {
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.prepend('<p class="alert-box success success-message">Success! Taking you to your profile.</p>');
+			window.location = '/profile/';
+		};
+
+		SELF.error = function ( message ) {
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.prepend( '<div class="alert-box alert" data-alert>' + message + '</div>');
+			console.log( message );
+		};
+
+	};
+
+	var lwkAjaxRegister = new ajaxRegister();
+	lwkAjaxRegister.init('#start-now');
+
+} )( jQuery, this );
 jQuery(document).ready(function($){
 	'use strict';
 
@@ -195,3 +272,259 @@ jQuery(document).ready(function($){
 
 
 })(jQuery, this);
+var StudyApp = StudyApp || {};
+
+StudyApp.$container = jQuery('#studyapp');
+StudyApp.$content   = jQuery('#studyapp-content');
+StudyApp.study_id   = StudyApp.$container.data('study');
+StudyApp.user_id    = StudyApp.$container.data('user');
+var StudyApp = StudyApp || {};
+
+(function ($) {
+	'use strict';
+
+	StudyApp.Chapter = Backbone.Model.extend({
+
+		urlRoot: function () {
+			return this.collection.url()
+		},
+
+		defaults: function () {
+			return {
+				ID            : null,
+				title         : 'New Chapter',
+				status        : 'publish',
+				type          : 'sc_study',
+				author        : new wp.api.models.User(),
+				content       : '',
+				parent        : StudyApp.study_id,
+				link          : '',
+				date          : new Date(),
+				modified      : new Date(),
+				date_gmt      : new Date(),
+				modified_gmt  : new Date(),
+				date_tz       : 'Etc/UTC',
+				modified_tz   : 'Etc/UTC',
+				format        : 'standard',
+				slug          : '',
+				guid          : '',
+				excerpt       : '&nbsp;',
+				menu_order    : StudyApp.Chapters.nextOrder(),
+				comment_status: 'closed',
+				ping_status   : 'open',
+				sticky        : false,
+				password      : '',
+				meta          : {
+					links: {}
+				},
+				featured_image: null,
+				terms         : [],
+				order         : StudyApp.Chapters.nextOrder()
+			}
+		},
+
+		sync  : function (method, model, options) {
+			options = options || {};
+
+			if (typeof WP_API_Settings.nonce !== 'undefined') {
+				var beforeSend = options.beforeSend;
+
+				options.beforeSend = function (xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+
+					if (beforeSend) {
+						return beforeSend.apply(this, arguments);
+					}
+				};
+			}
+
+			return Backbone.sync(method, model, options);
+		},
+
+		toggle: function () {
+			this.save({done: !this.get("done")});
+		}
+
+	});
+
+	var ChapterList = Backbone.Collection.extend({
+
+		order: 0,
+
+		model: StudyApp.Chapter,
+
+		url: function () {
+			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters'
+		},
+
+		parse: function (response) {
+			//this.length = response.length;
+			return response;
+		},
+
+		nextOrder: function () {
+			if (!this.length) {
+				this.order++;
+			} else {
+				this.order = this.last().get('order') + 1;
+			}
+
+			return this.order;
+		},
+
+		comparator: 'order'
+
+	});
+
+	StudyApp.Chapters = new ChapterList;
+	StudyApp.ChapterSingle = new ChapterList;
+
+
+	StudyApp.ChapterViewSidebar = Backbone.View.extend({
+
+		tagName: "li",
+
+		className: function () {
+			return "page_item page-item_" + this.model.attributes.id
+		},
+
+		template: wp.template('chapter-sidebar-template'),
+
+		events: {
+			"click a" : "setupSingle"
+		},
+
+		initialize: function () {
+			this.listenTo(this.model, 'sync', this.render);
+		},
+
+		render: function () {
+			this.$el.html(this.template(this.model.toJSON()));
+			return this;
+		},
+
+		setupSingle: function() {
+			StudyApp.CurrentChapter.remove();
+			StudyApp.CurrentChapter = new StudyApp.ChapterView({model: this.model});
+
+			StudyApp.$content.html(StudyApp.CurrentChapter.render().el);
+			StudyApp.$content.fadeIn();
+			return false;
+		}
+
+	});
+
+	StudyApp.ChapterView = Backbone.View.extend({
+
+		tagName: "div",
+
+		className: "chapter",
+
+		template: wp.template('chapter-template'),
+
+		events: {
+			"blur .chapter-title"      : 'saveTitle',
+			"click .chapter-title-edit": 'editTitle'
+		},
+
+		editTitle: function (e) {
+			this.$el.find('.chapter-title')
+				.addClass('editing')
+				.find('input').focus();
+			return false;
+		},
+
+		saveTitle: function (e) {
+			this.$el.find('.chapter-title').removeClass('editing');
+			var value = $(e.target).val();
+
+			if (!value) {
+				return;
+			}
+
+			this.model.url = WP_API_Settings.root + '/wp/v2/study/' + this.model.attributes.id;
+			this.model.save({title: value});
+		},
+
+		initialize: function () {
+			this.listenTo(this.model, 'sync', this.render);
+		},
+
+		render: function () {
+			this.$el.html(this.template(this.model.toJSON()));
+			return this;
+		}
+
+	});
+
+})
+(jQuery);
+var StudyApp = StudyApp || {};
+
+(function ($) {
+	'use strict';
+
+	var AppView = Backbone.View.extend({
+
+		el: StudyApp.$container,
+
+		events: {
+			"click #new-chapter": "createNewChapter"
+			//"click #chapter-list li a" : "editChapter"
+		},
+
+		initialize: function () {
+
+			this.input = this.$("#new-chapter");
+
+			this.listenTo(StudyApp.Chapters, 'add', this.addChapter);
+			this.listenToOnce(StudyApp.Chapters, 'add', this.initializeChapterEdit);
+			this.listenTo(StudyApp.ChapterSingle, 'add', this.setupChapter);
+
+			StudyApp.Chapters.fetch();
+
+		},
+
+		addChapter: function (chapter) {
+			var sidebarView = new StudyApp.ChapterViewSidebar({model: chapter});
+
+			this.$("#chapter-list").append(sidebarView.render().el);
+		},
+
+		initializeChapterEdit: function(chapter) {
+			StudyApp.CurrentChapter = new StudyApp.ChapterView({model: chapter});
+
+			StudyApp.$content.html(StudyApp.CurrentChapter.render().el);
+			StudyApp.$content.fadeIn();
+		},
+
+		setupChapter: function (chapter) {
+			StudyApp.CurrentChapter.model.set(chapter);
+		},
+
+		createNewChapter: function (e) {
+			this.listenTo(StudyApp.Chapters, 'add', this.setupChapter);
+
+			StudyApp.Chapters.create();
+
+			return false;
+		},
+
+		editChapter: function(e) {
+			var $link     = $(e.target);
+			var chapterID = $link.data('chapter');
+
+			this.$('#chapter-list a').removeClass('current');
+			$link.addClass('current');
+
+			StudyApp.ChapterSingle.url = StudyApp.Chapters.url() + '/' + chapterID;
+			StudyApp.ChapterSingle.fetch();
+
+			return false;
+		}
+
+	});
+
+	StudyApp.AppView = new AppView;
+
+})(jQuery);

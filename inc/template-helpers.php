@@ -151,16 +151,28 @@ function sc_study_get_navigation( $id = null ) {
 	return array_values( $elements );
 }
 
+/**
+ * Print out next/prev page links
+ * @param null $id
+ */
 function sc_study_navigation( $id = null ) {
 	$output = '';
-	$navigation = sc_study_get_navigation();
 
-	$key = 0;
-	foreach( $navigation as $key => $item ) {
-		if ( get_queried_object_id() == $item->ID ) {
-			break;
+	if ( ! $id ) {
+		$id = get_the_ID();
+	}
+
+	$navigation = sc_study_get_navigation( $id );
+
+	$key = -1;
+	if ( $id != sc_get_study_id( $id ) ) {
+		foreach( $navigation as $key => $item ) {
+			if ( get_queried_object_id() == $item->ID ) {
+				break;
+			}
 		}
 	}
+
 
 	if ( isset( $navigation[ $key - 1 ] ) ) {
 		$prev = $navigation[ $key - 1 ];

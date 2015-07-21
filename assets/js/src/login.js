@@ -1,15 +1,23 @@
-jQuery(document).ready(function($){
+/**
+ * Handle asynchronous user login
+ * http://learningworksforkids.com/
+ *
+ * Copyright (c) 2014 Tanner Moushey, iWitness Design
+ * Licensed under the GPLv2+ license.
+ */
+
+( function( $, window ) {
 	'use strict';
 
-	var ajaxLogin = function() {
+	var ajaxLogin = function () {
 		var SELF = this;
 
-		SELF.data    = {'security': scAjaxLogin.security};
+		SELF.data = {};
 
-		SELF.init = function(id) {
+		SELF.init = function (id) {
 			SELF.$loginContainer = $(id);
 
-			if ( ! SELF.$loginContainer.length ) {
+			if (!SELF.$loginContainer.length) {
 				return;
 			}
 
@@ -18,36 +26,47 @@ jQuery(document).ready(function($){
 			SELF.$form.on('submit', SELF.handleSubmission);
 		};
 
-		SELF.handleSubmission = function(e){
+		SELF.handleSubmission = function (e) {
+			var action = SELF.$form.attr('data-action');
+
+			if ( ! action ) {
+				return;
+			}
+
 			e.preventDefault();
 
-			SELF.data['log'] = SELF.$form.find('#user_login').val();
-			SELF.data['pwd'] = SELF.$form.find('#user_pass').val();
+			SELF.data['log']        = SELF.$form.find('input[name="sc-login"]').val();
+			SELF.data['pwd']        = SELF.$form.find('input[name="sc-password"]').val();
+			SELF.data['security']   = SELF.$form.find('input[name="sc_login_key"]').val();
+			SELF.data['rememberme'] = true;
 
-			SELF.$form.find('.error-message').remove();
-			SELF.$form.prepend('<p class="status-message">Logging in...</p>');
+			SELF.$form.find('.alert-box').remove();
+			SELF.$form.find('.spinner').show();
 
-			wp.ajax.send( 'sc_login', {
-				success: SELF.success,
-				error: SELF.error,
-				data:    SELF.data
-			} );
-
+			wp.ajax.send( action, {
+				data : SELF.data,
+				success : SELF.response,
+				error : SELF.error
+			});
 		};
 
-		SELF.success = function() {
-			SELF.$form.find('.status-message').remove();
-			SELF.$form.prepend('<p class="success-message">Success! Reloading the page...</p>');
-			window.location.reload();
+		SELF.response = function (data) {
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.prepend('<p class="alert-box success success-message">Success! Taking you to your profile.</p>');
+			window.location = '/profile/';
 		};
 
-		SELF.error = function(message) {
-			SELF.$form.prepend('<p class="error-message">' + status.message + '</p>');
-		};
-
-		SELF.init('#sc-login-form');
+		SELF.error = function( message ) {
+			if ( ! message ) {
+				message = "Please make sure that you have filled in both your email and password."
+			}
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.prepend( '<div class="alert-box alert" data-alert>' + message + '</div>');
+		}
 
 	};
 
-	new ajaxLogin();
-});
+	var scAjaxLogin = new ajaxLogin();
+	scAjaxLogin.init('#login');
+
+} )( jQuery, this );

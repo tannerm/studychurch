@@ -35,10 +35,10 @@ $body-font-style: normal;
 // We use these as default colors throughout
 $primary-color: #3ebeb2;
 $secondary-color: #fcb017;
-//$alert-color: #000;
-//$success-color: #000;
-//$warning-color: #000;
-$info-color: #d9f3f0;
+$alert-color: #e94141;
+$success-color: $primary-color;
+$warning-color: $secondary-color;
+$info-color: #dbefec;
 
 // We use these to make sure border radius matches unless we want it different.
 // $global-radius: 3px;
@@ -117,7 +117,7 @@ $h5-font-size: rem-calc(24);
 // $subheader-bottom-margin: .5rem;
 
 // A general <small> styling
-$small-font-size: 60%;
+$small-font-size: .8rem;
 // $small-font-color: scale-color($header-font-color, $lightness: 35%);
 
 // We use these to style paragraphs

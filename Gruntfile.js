@@ -18,7 +18,7 @@ module.exports = function( grunt ) {
 			},
 			studychurch: {
 				src: [
-					'assets/js/src/*.js'
+					'assets/js/src/*.js', 'assets/js/src/app/study-edit-globals.js', 'assets/js/src/app/*.js'
 				],
 				dest: 'assets/js/studychurch.js'
 			},

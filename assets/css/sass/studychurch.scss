@@ -37,6 +37,7 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 @import "screens/profile";
 @import "screens/group";
 @import "screens/study";
+@import "screens/study-edit";
 
 @media #{$small-up} {
 	@import "sizes/small_up";

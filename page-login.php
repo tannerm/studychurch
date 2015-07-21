@@ -20,6 +20,7 @@ get_header(); ?>
 
 		<div class="medium-6 columns">
 			<h3><?php _e( 'Register', 'sc' ); ?></h3>
+			<?php gravity_form( 4, false, false, false, false, true ); ?>
 		</div>
 		<!-- role="main" -->
 	</div>

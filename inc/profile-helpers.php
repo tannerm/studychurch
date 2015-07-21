@@ -1,7 +1,7 @@
 <?php
 
-SC_Group_Create::get_instance();
-class SC_Group_Create {
+SC_Profile::get_instance();
+class SC_Profile {
 
 	/**
 	 * @var
@@ -9,12 +9,12 @@ class SC_Group_Create {
 	protected static $_instance;
 
 	/**
-	 * Only make one instance of the SC_Group_Create
+	 * Only make one instance of the SC_Profile
 	 *
-	 * @return SC_Group_Create
+	 * @return SC_Profile
 	 */
 	public static function get_instance() {
-		if ( ! self::$_instance instanceof SC_Group_Create ) {
+		if ( ! self::$_instance instanceof SC_Profile ) {
 			self::$_instance = new self();
 		}
 
@@ -25,11 +25,47 @@ class SC_Group_Create {
 	 * Add Hooks and Actions
 	 */
 	protected function __construct() {
-		add_action( 'wp_footer',          array( $this, 'create_group_modal' ) );
+		add_action( 'wp_footer',          array( $this, 'modals' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'localize'           ), 20 );
-		add_action( 'wp_ajax_sc_group_create', array( $this, 'handle_group_create' ) );
+		add_action( 'wp_ajax_sC_Profile', array( $this, 'handle_group_create' ) );
+		add_action( 'wp_ajax_sc_study_create', array( $this, 'handle_study_create' ) );
 
 		add_filter( 'groups_group_slug_before_save', array( $this, 'id_as_slug' ), 10, 2 );
+	}
+
+	/**
+	 * Handle study create modal form
+	 */
+	public function handle_study_create() {
+
+		if ( empty( $_POST['formdata'] ) ) {
+			wp_send_json_error();
+		}
+
+		$data = array();
+		wp_parse_str( $_POST['formdata'], $data );
+
+		if ( ! wp_verify_nonce( $data['study-create-nonce'], 'study-create' ) ) {
+			wp_send_json_error();
+		}
+
+		$study = array(
+			'post_type' => 'sc_study',
+			'post_title' => sanitize_text_field( $data['study-name'] ),
+			'post_excerpt' => wp_filter_kses( $data['study-desc'] ),
+		);
+
+		$study_id = wp_insert_post( $study );
+
+		if ( ! $study_id ) {
+			wp_send_json_error();
+		}
+
+		wp_send_json_success( array(
+			'message' => __( 'Study created successfully. Redirecting you to your new study.', 'sc' ),
+			'url'     => sprintf( '/study-edit/?action=edit&study=%d', $study_id )
+		) );
+
 	}
 
 	public function handle_group_create() {
@@ -61,12 +97,14 @@ class SC_Group_Create {
 
 	}
 
-	public function create_group_modal() {
+	public function modals() {
 		if ( ! is_page_template( 'templates/profile.php' ) ) {
 			return;
 		}
 
 		get_template_part( 'partials/modal', 'group-create' );
+		get_template_part( 'partials/modal', 'study-create' );
+//		get_template_part( 'partials/modal', 'church-create' );
 	}
 
 	public function localize() {
