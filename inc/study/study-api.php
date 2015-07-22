@@ -105,15 +105,17 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 
 				if ( sc_get_data_type( $child_data['id'] ) ) {
 					$part_data['elements'][] = array(
-						'id'      => $child_data['id'],
-						'content' => $child_data['content'],
-						'type'    => esc_html( sc_get_data_type( $child['id'] ) ),
-						'private' => sc_answer_is_private( $child['id'] ),
+						'id'        => $child_data['id'],
+						'content'   => $child_data['content'],
+						'data_type' => esc_html( sc_get_data_type( $child['id'] ) ),
+						'private'   => sc_answer_is_private( $child['id'] ),
+						'parent'    => $part['id'],
 					);
 				} else {
 					$part_data['sections'][] = array(
-						'id'    => $child_data['id'],
-						'title' => $child_data['title'],
+						'id'     => $child_data['id'],
+						'title'  => $child_data['title'],
+						'parent' => $part['id'],
 					);
 				}
 
@@ -187,15 +189,17 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 
 				if ( sc_get_data_type( $child_data['id'] ) ) {
 					$chapter_data['elements'][] = array(
-						'id'      => $child_data['id'],
-						'content' => $child_data['content'],
-						'type'    => esc_html( sc_get_data_type( $child_data['id'] ) ),
-						'private' => sc_answer_is_private( $child_data['id'] ),
+						'id'        => $child_data['id'],
+						'content'   => $child_data['content'],
+						'data_type' => esc_html( sc_get_data_type( $child_data['id'] ) ),
+						'private'   => sc_answer_is_private( $child_data['id'] ),
+						'parent'    => $chapter_data['id'],
 					);
 				} else {
 					$chapter_data['sections'][] = array(
 						'id'    => $child_data['id'],
 						'title' => $child_data['title'],
+						'parent' => $chapter_data['id'],
 					);
 				}
 

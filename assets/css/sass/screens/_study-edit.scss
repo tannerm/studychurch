@@ -34,4 +34,22 @@
 		border-bottom: 1px dotted;
 	}
 
+	.panel {
+		border: none;
+		background: $primary-color-faded;
+	}
+
+	.panel-buttons {
+		float: right;
+		margin: -1rem -1rem 0 0;
+		a {
+			padding: .6rem;
+			display: inline-block;
+		}
+	}
+
+	.item-content {
+		margin-bottom: 1.5rem;
+	}
+
 }

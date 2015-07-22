@@ -8112,6 +8112,17 @@ label {
   -moz-box-shadow: none;
   box-shadow: none;
   border-bottom: 1px dotted; }
+#studyapp .panel {
+  border: none;
+  background: #daeeec; }
+#studyapp .panel-buttons {
+  float: right;
+  margin: -1rem -1rem 0 0; }
+  #studyapp .panel-buttons a {
+    padding: .6rem;
+    display: inline-block; }
+#studyapp .item-content {
+  margin-bottom: 1.5rem; }
 
 @media only screen {
   /******************************************************************

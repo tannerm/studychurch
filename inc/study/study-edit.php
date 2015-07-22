@@ -26,7 +26,7 @@ class SC_Study_Edit {
 	 */
 	protected function __construct() {
 		add_action( 'init', array( $this, 'maybe_study_save' ) );
-		add_action( 'wp_footer', array( $this, 'study_edit_templates' ) );
+		add_action( 'wp', array( $this, 'study_edit_actions' ) );
 		add_filter( 'map_meta_cap', array( $this, 'can_user_edit_study' ), 10, 4 );
 		add_filter( 'json_dispatch_args', array( $this, 'can_user_edit_study' ), 10, 4 );
 	}
@@ -96,17 +96,32 @@ class SC_Study_Edit {
 
 	}
 
-	/**
-	 * Print Backbone templates
-	 */
-	public function study_edit_templates() {
+	public function study_edit_actions() {
 		if ( 'templates/study-manage.php' != get_page_template_slug() ) {
 			return;
 		}
 
+		add_action( 'wp_enqueue_scripts', array( $this, 'study_edit_scripts' ) );
+		add_action( 'wp_footer', array( $this, 'study_edit_templates' ) );
+	}
+
+	public function study_edit_scripts() {
+		wp_enqueue_style( 'froala-content', get_template_directory_uri() . '/assets/css/froala/froala_content.css' );
+		wp_enqueue_style( 'froala-editor', get_template_directory_uri() . '/assets/css/froala/froala_editor.css' );
+		wp_enqueue_style( 'froala-style', get_template_directory_uri() . '/assets/css/froala/froala_style.css' );
+
+		wp_enqueue_script( 'froala-editor', get_template_directory_uri() . '/assets/js/lib/froala/froala_editor.min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'froala-fullscreen', get_template_directory_uri() . '/assets/js/lib/froala/plugins/fullscreen.min.js', array( 'jquery', 'froala-editor' ) );
+	}
+
+	/**
+	 * Print Backbone templates
+	 */
+	public function study_edit_templates() {
 		$slug = 'partials/backbone/study-edit';
 		get_template_part( $slug, 'chapter' );
 		get_template_part( $slug, 'chapter-sidebar' );
+		get_template_part( $slug, 'item' );
 	}
 
 	public function can_user_edit_study( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {

@@ -3,7 +3,10 @@ var StudyApp = StudyApp || {};
 (function ($) {
 	'use strict';
 
-	StudyApp.Chapter = Backbone.Model.extend({
+	StudyApp.Collections.Chapter = {};
+	StudyApp.Views.Chapter = {};
+
+	StudyApp.Models.Chapter = Backbone.Model.extend({
 
 		urlRoot: function () {
 			return this.collection.url()
@@ -12,34 +15,20 @@ var StudyApp = StudyApp || {};
 		defaults: function () {
 			return {
 				ID            : null,
-				title         : 'New Chapter',
+				id            : null,
+				title         : {
+					rendered: ''
+				},
 				status        : 'publish',
 				type          : 'sc_study',
-				author        : new wp.api.models.User(),
-				content       : '',
+				author        : StudyApp.user_id,
 				parent        : StudyApp.study_id,
-				link          : '',
-				date          : new Date(),
-				modified      : new Date(),
-				date_gmt      : new Date(),
-				modified_gmt  : new Date(),
-				date_tz       : 'Etc/UTC',
-				modified_tz   : 'Etc/UTC',
-				format        : 'standard',
-				slug          : '',
-				guid          : '',
-				excerpt       : '&nbsp;',
-				menu_order    : StudyApp.Chapters.nextOrder(),
+				menu_order    : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
 				comment_status: 'closed',
-				ping_status   : 'open',
-				sticky        : false,
-				password      : '',
-				meta          : {
-					links: {}
-				},
-				featured_image: null,
-				terms         : [],
-				order         : StudyApp.Chapters.nextOrder()
+				ping_status   : 'closed',
+				order         : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
+				elements      : {},
+				sections      : {}
 			}
 		},
 
@@ -59,19 +48,15 @@ var StudyApp = StudyApp || {};
 			}
 
 			return Backbone.sync(method, model, options);
-		},
-
-		toggle: function () {
-			this.save({done: !this.get("done")});
 		}
 
 	});
 
-	var ChapterList = Backbone.Collection.extend({
+	var Collection = Backbone.Collection.extend({
 
 		order: 0,
 
-		model: StudyApp.Chapter,
+		model: StudyApp.Models.Chapter,
 
 		url: function () {
 			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters'
@@ -96,11 +81,10 @@ var StudyApp = StudyApp || {};
 
 	});
 
-	StudyApp.Chapters = new ChapterList;
-	StudyApp.ChapterSingle = new ChapterList;
+	StudyApp.Collections.Chapter.Sidebar = new Collection;
+	StudyApp.Collections.Chapter.Single = new Collection;
 
-
-	StudyApp.ChapterViewSidebar = Backbone.View.extend({
+	StudyApp.Views.Chapter.Sidebar = Backbone.View.extend({
 
 		tagName: "li",
 
@@ -125,16 +109,16 @@ var StudyApp = StudyApp || {};
 
 		setupSingle: function() {
 			StudyApp.CurrentChapter.remove();
-			StudyApp.CurrentChapter = new StudyApp.ChapterView({model: this.model});
+			StudyApp.CurrentChapter = new StudyApp.Views.Chapter.Single({model: this.model});
 
 			StudyApp.$content.html(StudyApp.CurrentChapter.render().el);
-			StudyApp.$content.fadeIn();
+			StudyApp.Views.Chapter.Main.trigger('renderChapter', StudyApp.CurrentChapter.model);
 			return false;
 		}
 
 	});
 
-	StudyApp.ChapterView = Backbone.View.extend({
+	StudyApp.Views.Chapter.Single = Backbone.View.extend({
 
 		tagName: "div",
 
@@ -143,15 +127,11 @@ var StudyApp = StudyApp || {};
 		template: wp.template('chapter-template'),
 
 		events: {
-			"blur .chapter-title"      : 'saveTitle',
-			"click .chapter-title-edit": 'editTitle'
+			"blur .chapter-title"      : 'saveTitle'
 		},
 
-		editTitle: function (e) {
-			this.$el.find('.chapter-title')
-				.addClass('editing')
-				.find('input').focus();
-			return false;
+		initialize: function () {
+			this.listenTo(this.model, 'sync', this.render);
 		},
 
 		saveTitle: function (e) {
@@ -162,20 +142,64 @@ var StudyApp = StudyApp || {};
 				return;
 			}
 
-			this.model.url = WP_API_Settings.root + '/wp/v2/study/' + this.model.attributes.id;
-			this.model.save({title: value});
-		},
+			if ( this.model.attributes.id ) {
+				this.model.url = WP_API_Settings.root + '/wp/v2/study/' + this.model.attributes.id;
+			} else {
+				this.model.url = WP_API_Settings.root + '/wp/v2/study/';
+			}
 
-		initialize: function () {
-			this.listenTo(this.model, 'sync', this.render);
+			this.model.save({title: value});
+
 		},
 
 		render: function () {
+			StudyApp.chapter_id = this.model.get('id');
 			this.$el.html(this.template(this.model.toJSON()));
 			return this;
 		}
+	});
+
+	var MainView = Backbone.View.extend({
+
+		el: StudyApp.$container,
+
+		events: {
+			"click #new-chapter": "createNewChapter"
+		},
+
+		initialize: function () {
+
+			// listen to chapters and add
+			this.listenTo(StudyApp.Collections.Chapter.Sidebar, 'add', this.addSidebarChapter);
+
+			// The first chapter is being edited by default
+			this.listenToOnce(StudyApp.Collections.Chapter.Sidebar, 'add', this.initializeChapterEdit);
+
+			StudyApp.Collections.Chapter.Sidebar.fetch();
+
+		},
+
+		addSidebarChapter: function (chapter) {
+			var sidebarView = new StudyApp.Views.Chapter.Sidebar({model: chapter});
+			this.$("#chapter-list").append(sidebarView.render().el);
+		},
+
+		initializeChapterEdit: function(chapter) {
+			StudyApp.CurrentChapter = new StudyApp.Views.Chapter.Single({model: chapter});
+			StudyApp.$content.html(StudyApp.CurrentChapter.render().el);
+			StudyApp.Views.Chapter.Main.trigger('renderChapter', StudyApp.CurrentChapter.model);
+		},
+
+		createNewChapter: function (e) {
+			this.listenToOnce(StudyApp.Collections.Chapter.Sidebar, 'add', this.initializeChapterEdit);
+			StudyApp.Collections.Chapter.Sidebar.add(new StudyApp.Models.Chapter);
+
+			return false;
+		}
 
 	});
+
+	StudyApp.Views.Chapter.Main = new MainView;
 
 })
 (jQuery);

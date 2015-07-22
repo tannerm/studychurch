@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-07-20
+/*! StudyChurch - v0.1.0 - 2015-07-22
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -274,16 +274,24 @@ jQuery(document).ready(function($){
 })(jQuery, this);
 var StudyApp = StudyApp || {};
 
+StudyApp.Models      = {};
+StudyApp.Views       = {};
+StudyApp.Collections = {};
+
 StudyApp.$container = jQuery('#studyapp');
 StudyApp.$content   = jQuery('#studyapp-content');
 StudyApp.study_id   = StudyApp.$container.data('study');
 StudyApp.user_id    = StudyApp.$container.data('user');
+StudyApp.chapter_id = null;
 var StudyApp = StudyApp || {};
 
 (function ($) {
 	'use strict';
 
-	StudyApp.Chapter = Backbone.Model.extend({
+	StudyApp.Collections.Chapter = {};
+	StudyApp.Views.Chapter = {};
+
+	StudyApp.Models.Chapter = Backbone.Model.extend({
 
 		urlRoot: function () {
 			return this.collection.url()
@@ -292,34 +300,20 @@ var StudyApp = StudyApp || {};
 		defaults: function () {
 			return {
 				ID            : null,
-				title         : 'New Chapter',
+				id            : null,
+				title         : {
+					rendered: ''
+				},
 				status        : 'publish',
 				type          : 'sc_study',
-				author        : new wp.api.models.User(),
-				content       : '',
+				author        : StudyApp.user_id,
 				parent        : StudyApp.study_id,
-				link          : '',
-				date          : new Date(),
-				modified      : new Date(),
-				date_gmt      : new Date(),
-				modified_gmt  : new Date(),
-				date_tz       : 'Etc/UTC',
-				modified_tz   : 'Etc/UTC',
-				format        : 'standard',
-				slug          : '',
-				guid          : '',
-				excerpt       : '&nbsp;',
-				menu_order    : StudyApp.Chapters.nextOrder(),
+				menu_order    : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
 				comment_status: 'closed',
-				ping_status   : 'open',
-				sticky        : false,
-				password      : '',
-				meta          : {
-					links: {}
-				},
-				featured_image: null,
-				terms         : [],
-				order         : StudyApp.Chapters.nextOrder()
+				ping_status   : 'closed',
+				order         : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
+				elements      : {},
+				sections      : {}
 			}
 		},
 
@@ -339,19 +333,15 @@ var StudyApp = StudyApp || {};
 			}
 
 			return Backbone.sync(method, model, options);
-		},
-
-		toggle: function () {
-			this.save({done: !this.get("done")});
 		}
 
 	});
 
-	var ChapterList = Backbone.Collection.extend({
+	var Collection = Backbone.Collection.extend({
 
 		order: 0,
 
-		model: StudyApp.Chapter,
+		model: StudyApp.Models.Chapter,
 
 		url: function () {
 			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters'
@@ -376,11 +366,10 @@ var StudyApp = StudyApp || {};
 
 	});
 
-	StudyApp.Chapters = new ChapterList;
-	StudyApp.ChapterSingle = new ChapterList;
+	StudyApp.Collections.Chapter.Sidebar = new Collection;
+	StudyApp.Collections.Chapter.Single = new Collection;
 
-
-	StudyApp.ChapterViewSidebar = Backbone.View.extend({
+	StudyApp.Views.Chapter.Sidebar = Backbone.View.extend({
 
 		tagName: "li",
 
@@ -405,16 +394,16 @@ var StudyApp = StudyApp || {};
 
 		setupSingle: function() {
 			StudyApp.CurrentChapter.remove();
-			StudyApp.CurrentChapter = new StudyApp.ChapterView({model: this.model});
+			StudyApp.CurrentChapter = new StudyApp.Views.Chapter.Single({model: this.model});
 
 			StudyApp.$content.html(StudyApp.CurrentChapter.render().el);
-			StudyApp.$content.fadeIn();
+			StudyApp.Views.Chapter.Main.trigger('renderChapter', StudyApp.CurrentChapter.model);
 			return false;
 		}
 
 	});
 
-	StudyApp.ChapterView = Backbone.View.extend({
+	StudyApp.Views.Chapter.Single = Backbone.View.extend({
 
 		tagName: "div",
 
@@ -423,15 +412,11 @@ var StudyApp = StudyApp || {};
 		template: wp.template('chapter-template'),
 
 		events: {
-			"blur .chapter-title"      : 'saveTitle',
-			"click .chapter-title-edit": 'editTitle'
+			"blur .chapter-title"      : 'saveTitle'
 		},
 
-		editTitle: function (e) {
-			this.$el.find('.chapter-title')
-				.addClass('editing')
-				.find('input').focus();
-			return false;
+		initialize: function () {
+			this.listenTo(this.model, 'sync', this.render);
 		},
 
 		saveTitle: function (e) {
@@ -442,20 +427,64 @@ var StudyApp = StudyApp || {};
 				return;
 			}
 
-			this.model.url = WP_API_Settings.root + '/wp/v2/study/' + this.model.attributes.id;
-			this.model.save({title: value});
-		},
+			if ( this.model.attributes.id ) {
+				this.model.url = WP_API_Settings.root + '/wp/v2/study/' + this.model.attributes.id;
+			} else {
+				this.model.url = WP_API_Settings.root + '/wp/v2/study/';
+			}
 
-		initialize: function () {
-			this.listenTo(this.model, 'sync', this.render);
+			this.model.save({title: value});
+
 		},
 
 		render: function () {
+			StudyApp.chapter_id = this.model.get('id');
 			this.$el.html(this.template(this.model.toJSON()));
 			return this;
 		}
+	});
+
+	var MainView = Backbone.View.extend({
+
+		el: StudyApp.$container,
+
+		events: {
+			"click #new-chapter": "createNewChapter"
+		},
+
+		initialize: function () {
+
+			// listen to chapters and add
+			this.listenTo(StudyApp.Collections.Chapter.Sidebar, 'add', this.addSidebarChapter);
+
+			// The first chapter is being edited by default
+			this.listenToOnce(StudyApp.Collections.Chapter.Sidebar, 'add', this.initializeChapterEdit);
+
+			StudyApp.Collections.Chapter.Sidebar.fetch();
+
+		},
+
+		addSidebarChapter: function (chapter) {
+			var sidebarView = new StudyApp.Views.Chapter.Sidebar({model: chapter});
+			this.$("#chapter-list").append(sidebarView.render().el);
+		},
+
+		initializeChapterEdit: function(chapter) {
+			StudyApp.CurrentChapter = new StudyApp.Views.Chapter.Single({model: chapter});
+			StudyApp.$content.html(StudyApp.CurrentChapter.render().el);
+			StudyApp.Views.Chapter.Main.trigger('renderChapter', StudyApp.CurrentChapter.model);
+		},
+
+		createNewChapter: function (e) {
+			this.listenToOnce(StudyApp.Collections.Chapter.Sidebar, 'add', this.initializeChapterEdit);
+			StudyApp.Collections.Chapter.Sidebar.add(new StudyApp.Models.Chapter);
+
+			return false;
+		}
 
 	});
+
+	StudyApp.Views.Chapter.Main = new MainView;
 
 })
 (jQuery);
@@ -464,67 +493,195 @@ var StudyApp = StudyApp || {};
 (function ($) {
 	'use strict';
 
-	var AppView = Backbone.View.extend({
+	StudyApp.Collections.Item = {};
+	StudyApp.Views.Item = {};
 
-		el: StudyApp.$container,
+	StudyApp.Models.Item = Backbone.Model.extend({
+
+		urlRoot: function () {
+			return this.collection.url()
+		},
+
+		defaults: function () {
+			return {
+				ID            : null,
+				id            : null,
+				title         : {
+					rendered: ''
+				},
+				content       : {
+					rendered: ''
+				},
+				status        : 'publish',
+				type          : 'sc_study',
+				author        : StudyApp.user_id,
+				parent        : StudyApp.study_id,
+				menu_order    : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
+				comment_status: 'closed',
+				ping_status   : 'closed',
+				data_type     : 'question_short',
+				order         : StudyApp.Collections.Chapter.Sidebar.nextOrder()
+			}
+		},
+
+		sync  : function (method, model, options) {
+			options = options || {};
+
+			if (typeof WP_API_Settings.nonce !== 'undefined') {
+				var beforeSend = options.beforeSend;
+
+				options.beforeSend = function (xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+
+					if (beforeSend) {
+						return beforeSend.apply(this, arguments);
+					}
+				};
+			}
+
+			return Backbone.sync(method, model, options);
+		}
+
+	});
+
+	var Collection = Backbone.Collection.extend({
+
+		order: 0,
+
+		model: StudyApp.Models.Item,
+
+		url: function () {
+			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.chapter_id;
+		},
+
+		nextOrder: function () {
+			if (!this.length) {
+				this.order++;
+			} else {
+				this.order = this.last().get('order') + 1;
+			}
+
+			return this.order;
+		},
+
+		comparator: 'order'
+
+	});
+
+	StudyApp.Collections.Item = new Collection;
+
+	StudyApp.Views.Item.List = Backbone.View.extend({
+
+		tagName: "div",
+
+		template: wp.template('item-template'),
 
 		events: {
-			"click #new-chapter": "createNewChapter"
-			//"click #chapter-list li a" : "editChapter"
+			"click .item-content-edit" : "editContent",
 		},
 
-		initialize: function () {
-
-			this.input = this.$("#new-chapter");
-
-			this.listenTo(StudyApp.Chapters, 'add', this.addChapter);
-			this.listenToOnce(StudyApp.Chapters, 'add', this.initializeChapterEdit);
-			this.listenTo(StudyApp.ChapterSingle, 'add', this.setupChapter);
-
-			StudyApp.Chapters.fetch();
-
+		render: function () {
+			this.$el.html(this.template(this.model.toJSON()));
+			return this;
 		},
 
-		addChapter: function (chapter) {
-			var sidebarView = new StudyApp.ChapterViewSidebar({model: chapter});
+		editContent : function(e) {
+			var $content = this.$el.find('.item-content');
+			var $buttons = this.$el.find('.panel-buttons');
 
-			this.$("#chapter-list").append(sidebarView.render().el);
-		},
+			$buttons.hide();
 
-		initializeChapterEdit: function(chapter) {
-			StudyApp.CurrentChapter = new StudyApp.ChapterView({model: chapter});
+			$content.editable({
+				autosave : true,
+				inlineMode : false,
+				minHeight: 100,
+				maxHeight: 400,
+				buttons: ['bold', 'italic', 'sep', 'indent', 'outdent',
+					'insertOrderedList', 'insertUnorderedList', 'sep',
+					'createLink', 'insertImage', 'fullscreen', 'close'],
+				customButtons : {
+					// Clear HTML button with text icon.
+					close: {
+						title: 'Close Editor',
+						icon: {
+							type: 'font',
+							value: 'fa fa-compress'
+						},
+						callback: function () {
+							this.destroy();
+							$buttons.show();
+						}
+					}
+				}
+			});
 
-			StudyApp.$content.html(StudyApp.CurrentChapter.render().el);
-			StudyApp.$content.fadeIn();
-		},
-
-		setupChapter: function (chapter) {
-			StudyApp.CurrentChapter.model.set(chapter);
-		},
-
-		createNewChapter: function (e) {
-			this.listenTo(StudyApp.Chapters, 'add', this.setupChapter);
-
-			StudyApp.Chapters.create();
+			$content.on('editable.beforeSave', this.autosave);
 
 			return false;
 		},
 
-		editChapter: function(e) {
-			var $link     = $(e.target);
-			var chapterID = $link.data('chapter');
-
-			this.$('#chapter-list a').removeClass('current');
-			$link.addClass('current');
-
-			StudyApp.ChapterSingle.url = StudyApp.Chapters.url() + '/' + chapterID;
-			StudyApp.ChapterSingle.fetch();
-
+		autosave : function(e, editor) {
 			return false;
 		}
 
 	});
 
-	StudyApp.AppView = new AppView;
+	var MainView = Backbone.View.extend({
+
+		el: StudyApp.$container,
+
+		events: {
+			"click #new-item": "createNewItem"
+		},
+
+		initialize: function () {
+			// listen to chapters and add
+			this.listenTo(StudyApp.Collections.Item, 'add', this.addItem);
+
+			// listen for setup of chapter and setup items
+			this.listenTo(StudyApp.Views.Chapter.Main, 'renderChapter', this.setupItems);
+		},
+
+		setupItems: function(chapter) {
+			StudyApp.Collections.Item.reset();
+			StudyApp.Collections.Item.add(chapter.get('elements'));
+			StudyApp.Collections.Item.url = function() { return chapter.urlRoot() + '/' + chapter.id + '/items'; }
+		},
+
+		addItem: function (item) {
+			var view = new StudyApp.Views.Item.List({model: item});
+			this.$("#chapter-items").append(view.render().el);
+		},
+
+		createNewItem: function (e) {
+			StudyApp.Collections.Item.add(new StudyApp.Models.Item);
+			return false;
+		}
+
+	});
+
+	StudyApp.Views.Item.Main = new MainView;
+
+
+})(jQuery);
+var StudyApp = StudyApp || {};
+
+(function ($) {
+	'use strict';
+
+	var MainView = Backbone.View.extend({
+
+		el: StudyApp.$container,
+
+		events: {
+			"click #new-chapter": "createNewChapter"
+		},
+
+		initialize: function () {
+		}
+
+	});
+
+	StudyApp.Views.Main = new MainView;
 
 })(jQuery);

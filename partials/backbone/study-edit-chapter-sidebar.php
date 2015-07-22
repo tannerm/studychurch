@@ -1,3 +1,7 @@
 <script type="text/template" id="tmpl-chapter-sidebar-template">
-	<a href="#" data-chapter="{{{ data.id }}}">{{{ data.title.rendered }}}</a>
+	<# if (data.title.rendered) { #>
+		<a href="#">{{{ data.title.rendered }}}</a>
+	<# } else { #>
+		<a href="#"><?php _e( 'New Chapter', 'sc' ); ?></a>
+	<# } #>
 </script>
