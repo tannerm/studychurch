@@ -9,10 +9,7 @@ get_header(); ?>
 	<div id="buddypress" class="row">
 		<div class="small-4 column sidebar">
 
-			<a href="<?php echo esc_url( get_edit_profile_url( get_current_user_id() ) ); ?>" class="profile-edit-link"><i class="fa fa-pencil"></i></a>
-			<?php bp_loggedin_user_avatar( 'type=full' ); ?>
-
-			<h5><?php bp_loggedin_user_fullname(); ?></h5>
+			<?php bp_get_template_part( 'members/single/member-header' ) ?>
 
 			<hr />
 

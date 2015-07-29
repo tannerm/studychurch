@@ -87,7 +87,11 @@ class SC_Study {
 			return;
 		}
 
-		bp_has_groups( 'include=' . sc_get_study_user_group_id() );
+		if ( ! $group_id = sc_get_study_user_group_id() ) {
+			wp_die( 'no access' );
+		}
+
+		bp_has_groups( 'include=' . $group_id );
 		bp_groups();
 		bp_the_group();
 
@@ -107,6 +111,18 @@ class SC_Study {
  */
 function sc_answer_is_private( $post_id ) {
 	return ( 'private' == get_post_meta( $post_id, '_sc_privacy', true ) );
+}
+
+function sc_get_privacy( $post_id ) {
+	return get_post_meta( $post_id, '_sc_privacy', true );
+}
+
+function sc_set_privacy( $privacy, $post_id ) {
+	if ( 'private' != $privacy ) {
+		return delete_post_meta( $post_id, '_sc_privacy' );
+	}
+
+	return update_post_meta( $post_id, '_sc_privacy', 'private' );
 }
 
 function sc_answer_get_activity_id( $comment_id ) {

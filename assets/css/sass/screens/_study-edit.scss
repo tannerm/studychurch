@@ -37,19 +37,45 @@
 	.panel {
 		border: none;
 		background: $primary-color-faded;
+
+		.item-expand {
+			display: none;
+		}
+
+		&.compressed {
+			height: 5.1rem;
+			overflow: hidden;
+			border-bottom: 1rem solid $primary-color-faded;
+
+			.item-expand {
+				display: inline-block;
+			}
+
+			.item-compress, .item-content-edit {
+				display: none;
+			}
+
+		}
+
 	}
 
 	.panel-buttons {
 		float: right;
 		margin: -1rem -1rem 0 0;
+		padding: 0 .5rem;
 		a {
-			padding: .6rem;
+			padding: .5rem;
 			display: inline-block;
 		}
 	}
 
 	.item-content {
 		margin-bottom: 1.5rem;
+	}
+
+	.chapter-delete {
+		margin-top: -1rem;
+		color: $alert-color;
 	}
 
 }

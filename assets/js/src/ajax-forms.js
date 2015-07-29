@@ -1,12 +1,11 @@
 (function($) {
 	'use strict';
 
-	var scAjaxForm = function($container) {
+	var scAjaxForm = function($form) {
 		var SELF = this;
 
 		SELF.init = function() {
-			SELF.$container = $container;
-			SELF.$form      = SELF.$container.find('form');
+			SELF.$form = $form;
 
 			if ( ! SELF.$form.length ) {
 				return;
@@ -19,13 +18,14 @@
 			e.preventDefault();
 
 			SELF.data = {
-				action: SELF.$container.data('action'),
+				action: 'sc_ajax_form',
 				formdata: SELF.$form.serialize()
 			};
 
-			wp.ajax.send( SELF.$container.data('action'), {
+			wp.ajax.send( 'sc_ajax_form', {
 				success: SELF.response,
-				data:    SELF.data
+				error  : SELF.error,
+				data   : SELF.data
 			} );
 
 		};
@@ -33,7 +33,18 @@
 		SELF.response = function(data) {
 			SELF.$form.find('.status-message').remove();
 			SELF.$form.prepend('<p class="success-message">' + data.message + '</p>');
-			window.location = data.url;
+
+			if (data.url) {
+				window.location = data.url;
+			}
+
+		};
+
+		SELF.error = function ( data ) {
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.find('.alert-box').remove();
+			SELF.$form.prepend( '<div class="alert-box alert" data-alert>' + data.message + '</div>');
+			console.log( data );
 		};
 
 		SELF.init();

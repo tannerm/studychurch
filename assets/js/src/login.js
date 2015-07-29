@@ -66,7 +66,7 @@
 
 	};
 
-	var scAjaxLogin = new ajaxLogin();
-	scAjaxLogin.init('#login');
+	//var scAjaxLogin = new ajaxLogin();
+	//scAjaxLogin.init('#login');
 
 } )( jQuery, this );

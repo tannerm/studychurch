@@ -27,8 +27,8 @@ class SC_Profile {
 	protected function __construct() {
 		add_action( 'wp_footer',          array( $this, 'modals' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'localize'           ), 20 );
-		add_action( 'wp_ajax_sC_Profile', array( $this, 'handle_group_create' ) );
-		add_action( 'wp_ajax_sc_study_create', array( $this, 'handle_study_create' ) );
+		add_action( 'sc_ajax_form_sc_group_create', array( $this, 'handle_group_create' ) );
+		add_action( 'sc_ajax_form_sc_study_create', array( $this, 'handle_study_create' ) );
 
 		add_filter( 'groups_group_slug_before_save', array( $this, 'id_as_slug' ), 10, 2 );
 	}
@@ -36,16 +36,9 @@ class SC_Profile {
 	/**
 	 * Handle study create modal form
 	 */
-	public function handle_study_create() {
+	public function handle_study_create( $data ) {
 
-		if ( empty( $_POST['formdata'] ) ) {
-			wp_send_json_error();
-		}
-
-		$data = array();
-		wp_parse_str( $_POST['formdata'], $data );
-
-		if ( ! wp_verify_nonce( $data['study-create-nonce'], 'study-create' ) ) {
+		if ( empty( $data['security'] ) || ! wp_verify_nonce( $data['security'], 'study-create' ) ) {
 			wp_send_json_error();
 		}
 
@@ -68,21 +61,30 @@ class SC_Profile {
 
 	}
 
-	public function handle_group_create() {
-		check_ajax_referer( 'group-create', 'security' );
+	public function handle_group_create( $data ) {
 
-		if ( empty( $_POST['group-name'] ) ) {
-			wp_send_json_error();
+		if ( empty( $data['security'] ) || ! wp_verify_nonce( $data['security'], 'group-create' ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Something went wrong. Please refresh and try again.', 'sc' )
+			) );
+		}
+
+		if ( empty( $data['group-name'] ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Please enter a group name', 'sc' )
+			) );
 		}
 
 		$id = groups_create_group( array(
-			'name'        => sanitize_text_field( $_POST['group-name'] ),
-			'description' => esc_textarea( $_POST['group-desc'] ),
+			'name'        => sanitize_text_field( $data['group-name'] ),
+			'description' => esc_textarea( $data['group-desc'] ),
 			'status'      => 'private',
 		) );
 
 		if ( ! $id ) {
-			wp_send_json_error();
+			wp_send_json_error( array(
+				'message' => __( 'Something went wrong. Please refresh and try again.', 'sc' )
+			) );
 		}
 
 		if ( ! empty( $_POST['study-name'] ) ) {
@@ -93,12 +95,15 @@ class SC_Profile {
 
 		$url = esc_url( trailingslashit( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug . '/' ) );
 
-		wp_send_json_success( $url );
+		wp_send_json_success( array(
+			'message'  => __( 'Success! Taking you to your new group.', 'sc' ),
+			'url'      => $url
+		) );
 
 	}
 
 	public function modals() {
-		if ( ! is_page_template( 'templates/profile.php' ) ) {
+		if ( ! bp_is_user_profile() ) {
 			return;
 		}
 

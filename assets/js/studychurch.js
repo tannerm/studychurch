@@ -1,15 +1,14 @@
-/*! StudyChurch - v0.1.0 - 2015-07-22
+/*! StudyChurch - v0.1.0 - 2015-07-28
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
 	'use strict';
 
-	var scAjaxForm = function($container) {
+	var scAjaxForm = function($form) {
 		var SELF = this;
 
 		SELF.init = function() {
-			SELF.$container = $container;
-			SELF.$form      = SELF.$container.find('form');
+			SELF.$form = $form;
 
 			if ( ! SELF.$form.length ) {
 				return;
@@ -22,13 +21,14 @@
 			e.preventDefault();
 
 			SELF.data = {
-				action: SELF.$container.data('action'),
+				action: 'sc_ajax_form',
 				formdata: SELF.$form.serialize()
 			};
 
-			wp.ajax.send( SELF.$container.data('action'), {
+			wp.ajax.send( 'sc_ajax_form', {
 				success: SELF.response,
-				data:    SELF.data
+				error  : SELF.error,
+				data   : SELF.data
 			} );
 
 		};
@@ -36,7 +36,18 @@
 		SELF.response = function(data) {
 			SELF.$form.find('.status-message').remove();
 			SELF.$form.prepend('<p class="success-message">' + data.message + '</p>');
-			window.location = data.url;
+
+			if (data.url) {
+				window.location = data.url;
+			}
+
+		};
+
+		SELF.error = function ( data ) {
+			SELF.$form.find('.spinner').hide();
+			SELF.$form.find('.alert-box').remove();
+			SELF.$form.prepend( '<div class="alert-box alert" data-alert>' + data.message + '</div>');
+			console.log( data );
 		};
 
 		SELF.init();
@@ -109,8 +120,8 @@
 
 	};
 
-	var scAjaxLogin = new ajaxLogin();
-	scAjaxLogin.init('#login');
+	//var scAjaxLogin = new ajaxLogin();
+	//scAjaxLogin.init('#login');
 
 } )( jQuery, this );
 ( function( $, window, undefined ) {
@@ -175,8 +186,8 @@
 
 	};
 
-	var lwkAjaxRegister = new ajaxRegister();
-	lwkAjaxRegister.init('#start-now');
+	//var lwkAjaxRegister = new ajaxRegister();
+	//lwkAjaxRegister.init('#start-now');
 
 } )( jQuery, this );
 jQuery(document).ready(function($){
@@ -260,14 +271,33 @@ jQuery(document).ready(function($){
 		//	scrollSpeed : 750
 		//});
 
-		if ($('.study-group .content-container').outerHeight() < window.innerHeight) {
-			$('.study-group').height(window.innerHeight - $('.top-bar-container').outerHeight() + 'px');
-		}
+		//if ($('.study-group .content-container').outerHeight() < window.innerHeight) {
+		//	$('.study-group').height(window.innerHeight - $('.top-bar-container').outerHeight() + 'px');
+		//}
 
-		$('.study-group #input_1_1').on('focus', function() {
+		$('.footer-subscribe #input_1_1').on('focus', function() {
 			$(document).foundation();
 			$('#field_1_2').show();
-		})
+		});
+
+		var $restrictedContainer = $(document.getElementById('restricted-message'));
+		if ($restrictedContainer.length) {
+			var $loginContainer = $restrictedContainer.find('#login');
+			var $registerContainer = $restrictedContainer.find('#start-now');
+
+			$loginContainer.find('.switch').on('click', function(e){
+				$loginContainer.fadeOut(function(){
+					$registerContainer.fadeIn();
+				});
+			});
+
+			$registerContainer.find('.switch').on('click', function(e){
+				$registerContainer.fadeOut(function(){
+					$loginContainer.fadeIn();
+				});
+			});
+		}
+
 	})
 
 
@@ -295,6 +325,10 @@ var StudyApp = StudyApp || {};
 
 		urlRoot: function () {
 			return this.collection.url()
+		},
+
+		url : function() {
+			return (this.get('id')) ? this.urlRoot() + this.get('id') : this.urlRoot();
 		},
 
 		defaults: function () {
@@ -344,7 +378,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Chapter,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters'
+			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
 		},
 
 		parse: function (response) {
@@ -412,11 +446,12 @@ var StudyApp = StudyApp || {};
 		template: wp.template('chapter-template'),
 
 		events: {
-			"blur .chapter-title"      : 'saveTitle'
+			"blur .chapter-title"      : 'saveTitle',
+			"click .chapter-delete"    : 'deleteChapter'
 		},
 
-		initialize: function () {
-			this.listenTo(this.model, 'sync', this.render);
+		initialize : function() {
+			this.listenTo(this.model, 'destroy', this.remove);
 		},
 
 		saveTitle: function (e) {
@@ -427,14 +462,17 @@ var StudyApp = StudyApp || {};
 				return;
 			}
 
-			if ( this.model.attributes.id ) {
-				this.model.url = WP_API_Settings.root + '/wp/v2/study/' + this.model.attributes.id;
-			} else {
-				this.model.url = WP_API_Settings.root + '/wp/v2/study/';
-			}
-
 			this.model.save({title: value});
 
+		},
+
+		deleteChapter : function() {
+			if (!window.confirm('Are you sure you want to delete this chapter and all its items?')) {
+				return;
+			}
+
+			this.model.destroy();
+			return false;
 		},
 
 		render: function () {
@@ -502,6 +540,10 @@ var StudyApp = StudyApp || {};
 			return this.collection.url()
 		},
 
+		url : function() {
+			return (this.attributes.id) ? this.urlRoot() + this.get('id') : this.url = this.urlRoot();
+		},
+
 		defaults: function () {
 			return {
 				ID            : null,
@@ -515,9 +557,9 @@ var StudyApp = StudyApp || {};
 				status        : 'publish',
 				type          : 'sc_study',
 				author        : StudyApp.user_id,
-				parent        : StudyApp.study_id,
+				parent        : StudyApp.chapter_id,
 				menu_order    : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
-				comment_status: 'closed',
+				comment_status: 'open',
 				ping_status   : 'closed',
 				data_type     : 'question_short',
 				order         : StudyApp.Collections.Chapter.Sidebar.nextOrder()
@@ -551,7 +593,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Item,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.chapter_id;
+			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.chapter_id + '/items/';
 		},
 
 		nextOrder: function () {
@@ -577,12 +619,30 @@ var StudyApp = StudyApp || {};
 		template: wp.template('item-template'),
 
 		events: {
-			"click .item-content-edit" : "editContent",
+			"click .item-compress"       : "compress",
+			"click .item-expand"         : "expand",
+			"click .item-content-edit"   : "editContent",
+			"click .item-content-delete" : "deleteItem",
+			"change .item-data-type"     : "setDataType"
+		},
+
+		initialize : function() {
+			this.listenTo(this.model, 'destroy', this.handleDestroy);
 		},
 
 		render: function () {
 			this.$el.html(this.template(this.model.toJSON()));
 			return this;
+		},
+
+		compress : function(e) {
+			this.$el.find('.panel').addClass('compressed');
+			return false;
+		},
+
+		expand : function() {
+			this.$el.find('.panel').removeClass('compressed');
+			return false;
 		},
 
 		editContent : function(e) {
@@ -593,6 +653,7 @@ var StudyApp = StudyApp || {};
 
 			$content.editable({
 				autosave : true,
+				autosaveInterval : 2500,
 				inlineMode : false,
 				minHeight: 100,
 				maxHeight: 400,
@@ -605,9 +666,10 @@ var StudyApp = StudyApp || {};
 						title: 'Close Editor',
 						icon: {
 							type: 'font',
-							value: 'fa fa-compress'
+							value: 'fa fa-save'
 						},
 						callback: function () {
+							this.save();
 							this.destroy();
 							$buttons.show();
 						}
@@ -615,13 +677,47 @@ var StudyApp = StudyApp || {};
 				}
 			});
 
-			$content.on('editable.beforeSave', this.autosave);
+			$content.on('editable.beforeSave', this, this.autosave);
 
 			return false;
 		},
 
-		autosave : function(e, editor) {
+		setDataType : function(e) {
+			this.setsave({data_type : $(e.target).val()});
 			return false;
+		},
+
+		autosave : function(e, editor) {
+			var view = e.data;
+			var content = view.model.get('content');
+
+			content.raw = editor.getHTML();
+
+			view.setsave({content : content});
+			return false;
+		},
+
+		setsave : function(data, fetchChapter) {
+			this.model.save(data);
+
+			// refetch the current chapter?
+			if (false !== fetchChapter) {
+				StudyApp.CurrentChapter.model.fetch();
+			}
+		},
+
+		deleteItem : function() {
+			if (!window.confirm('Are you sure you want to delete this item?')) {
+				return;
+			}
+
+			this.model.destroy();
+			return false;
+		},
+
+		handleDestroy : function() {
+			this.remove();
+			StudyApp.CurrentChapter.model.fetch();
 		}
 
 	});
@@ -644,13 +740,24 @@ var StudyApp = StudyApp || {};
 
 		setupItems: function(chapter) {
 			StudyApp.Collections.Item.reset();
+
+			var elements = chapter.get('elements');
+
+			if ($.isEmptyObject(elements)) {
+				return;
+			}
+
 			StudyApp.Collections.Item.add(chapter.get('elements'));
-			StudyApp.Collections.Item.url = function() { return chapter.urlRoot() + '/' + chapter.id + '/items'; }
+			StudyApp.Collections.Item.url = function() { return chapter.urlRoot() + chapter.id + '/items/'; }
 		},
 
 		addItem: function (item) {
 			var view = new StudyApp.Views.Item.List({model: item});
 			this.$("#chapter-items").append(view.render().el);
+
+			if (item.get('content') && !item.get('content').rendered) {
+				view.editContent();
+			}
 		},
 
 		createNewItem: function (e) {

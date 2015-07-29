@@ -1,0 +1,56 @@
+.footer-subscribe {
+	background: $info-color;
+	padding: 1rem 0 3rem;
+
+	.gform_wrapper form {
+
+		ul.gform_fields > li {
+			margin: 2rem auto;
+			> label {
+				display: block;
+			}
+		}
+
+		#field_3_4 > label {
+			display: none;
+		}
+
+		textarea, input, select {
+			padding: .5rem;
+			height: auto;
+			margin: auto;
+			width: 100% !important;
+		}
+	}
+
+	.gform_wrapper {
+		max-width: 35rem;
+		margin: auto;
+
+		label {
+			font-weight: 300;
+			font-style: italic;
+		}
+
+		#field_1_2 {
+			display: none;
+			padding-left: 1rem;
+		}
+
+		input[type=submit] {
+			background-color: $secondary-color;
+			text-transform: uppercase;
+		}
+
+		.gform_footer {
+			padding: 0;
+		}
+	}
+
+}
+
+.site-footer {
+	color: white;
+	padding: 3rem 0;
+	background: $body-font-color;
+}

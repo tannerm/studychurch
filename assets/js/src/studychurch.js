@@ -20,14 +20,33 @@
 		//	scrollSpeed : 750
 		//});
 
-		if ($('.study-group .content-container').outerHeight() < window.innerHeight) {
-			$('.study-group').height(window.innerHeight - $('.top-bar-container').outerHeight() + 'px');
-		}
+		//if ($('.study-group .content-container').outerHeight() < window.innerHeight) {
+		//	$('.study-group').height(window.innerHeight - $('.top-bar-container').outerHeight() + 'px');
+		//}
 
-		$('.study-group #input_1_1').on('focus', function() {
+		$('.footer-subscribe #input_1_1').on('focus', function() {
 			$(document).foundation();
 			$('#field_1_2').show();
-		})
+		});
+
+		var $restrictedContainer = $(document.getElementById('restricted-message'));
+		if ($restrictedContainer.length) {
+			var $loginContainer = $restrictedContainer.find('#login');
+			var $registerContainer = $restrictedContainer.find('#start-now');
+
+			$loginContainer.find('.switch').on('click', function(e){
+				$loginContainer.fadeOut(function(){
+					$registerContainer.fadeIn();
+				});
+			});
+
+			$registerContainer.find('.switch').on('click', function(e){
+				$registerContainer.fadeOut(function(){
+					$loginContainer.fadeIn();
+				});
+			});
+		}
+
 	})
 
 

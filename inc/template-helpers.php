@@ -54,6 +54,36 @@ function sc_get_data_type( $id = null ) {
 }
 
 /**
+ * Save data type
+ *
+ * @param      $data_type
+ * @param null $id
+ *
+ * @return bool|int
+ */
+function sc_save_data_type( $data_type, $id = null ) {
+	if ( ! $id ) {
+		$id = get_the_ID();
+	}
+
+	return update_post_meta( $id, '_sc_data_type', sanitize_text_field( $data_type ) );
+}
+
+/**
+ * Get valid data types
+ *
+ * @return array
+ */
+function sc_get_data_types() {
+	return array(
+		'question_short' => __( 'Short Answer Question', 'sc' ),
+		'question_long'  => __( 'Long Answer Question', 'sc' ),
+		'content'        => __( 'Content', 'sc' ),
+		'assignment'     => __( 'Assignment', 'sc' ),
+	);
+}
+
+/**
  * Get the top level id for this study
  *
  * @param null $id
@@ -105,9 +135,9 @@ function sc_get_study_user_group_id( $study_id = null, $user_id = null ) {
 		return false;
 	}
 
-	foreach( groups_get_groups( 'user_id=' . $user_id ) as $group ) {
-		if ( sc_get_group_study_id( $group ) == $study_id ) {
-			return $group;
+	foreach( groups_get_groups( 'user_id=' . $user_id )['groups'] as $group ) {
+		if ( sc_get_group_study_id( $group->id ) == $study_id ) {
+			return $group->id;
 		}
 	}
 

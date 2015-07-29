@@ -68,7 +68,7 @@
 
 	};
 
-	var lwkAjaxRegister = new ajaxRegister();
-	lwkAjaxRegister.init('#start-now');
+	//var lwkAjaxRegister = new ajaxRegister();
+	//lwkAjaxRegister.init('#start-now');
 
 } )( jQuery, this );

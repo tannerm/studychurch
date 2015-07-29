@@ -6,6 +6,8 @@
  *
  * @package sc
  */
+
+	$header_logo = ( is_user_logged_in() ) ? 'logo_icon.png' : 'logo_full.png';
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -29,7 +31,8 @@
 					<li class="name">
 						<h1>
 							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo_icon.png" />
+
+								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $header_logo; ?>" />
 								<span class="screen-reader"><?php bloginfo( 'name' ); ?></span>
 							</a>
 						</h1>
@@ -51,6 +54,8 @@
 						?>
 
 						<?php get_template_part( 'partials/header', 'loggedin-nav' ); ?>
+					<?php else : ?>
+						<?php // get_template_part( 'partials/header', 'loggedout-nav' ); ?>
 					<?php endif; ?>
 				</section>
 

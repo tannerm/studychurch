@@ -26,7 +26,7 @@
 			<div class="text-right register">
 				<?php if ( is_user_logged_in() ) : ?>
 					<?php get_template_part( 'partials/header', 'loggedin-nav' ); ?>
-				<?php elseif( 0 ) : ?>
+				<?php elseif( 1 ) : ?>
 					<a href="#" class="login" data-reveal-id="login"><i class="fa fa-user"></i> <?php _e( 'Login', 'sc' ); ?>
 					</a>&nbsp;|&nbsp;
 					<a id="signup" href="#" class="login" data-reveal-id="start-now"><i class="fa fa-user-plus"></i> <?php _e( 'Register', 'sc' ); ?>

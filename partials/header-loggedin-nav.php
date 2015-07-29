@@ -3,7 +3,7 @@
 		<a href="#"><?php bp_loggedin_user_avatar(); ?> <?php _e( 'Hello', 'sc' ); ?> <?php echo bp_core_get_user_displayname( get_current_user_id() ); ?>!</a>
 		<ul class="dropdown">
 			<li>
-				<a href="/profile"><?php _e( 'Profile', 'sc' ); ?></a>
+				<a href="<?php echo bp_loggedin_user_domain(); ?>"><?php _e( 'Profile', 'sc' ); ?></a>
 			</li>
 			<li>
 				<a href="<?php echo wp_logout_url( get_home_url() ); ?>"><?php _e( 'Logout', 'sc' ); ?></a>

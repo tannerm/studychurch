@@ -12,6 +12,10 @@ var StudyApp = StudyApp || {};
 			return this.collection.url()
 		},
 
+		url : function() {
+			return (this.get('id')) ? this.urlRoot() + this.get('id') : this.urlRoot();
+		},
+
 		defaults: function () {
 			return {
 				ID            : null,
@@ -59,7 +63,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Chapter,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters'
+			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
 		},
 
 		parse: function (response) {
@@ -127,11 +131,12 @@ var StudyApp = StudyApp || {};
 		template: wp.template('chapter-template'),
 
 		events: {
-			"blur .chapter-title"      : 'saveTitle'
+			"blur .chapter-title"      : 'saveTitle',
+			"click .chapter-delete"    : 'deleteChapter'
 		},
 
-		initialize: function () {
-			this.listenTo(this.model, 'sync', this.render);
+		initialize : function() {
+			this.listenTo(this.model, 'destroy', this.remove);
 		},
 
 		saveTitle: function (e) {
@@ -142,14 +147,17 @@ var StudyApp = StudyApp || {};
 				return;
 			}
 
-			if ( this.model.attributes.id ) {
-				this.model.url = WP_API_Settings.root + '/wp/v2/study/' + this.model.attributes.id;
-			} else {
-				this.model.url = WP_API_Settings.root + '/wp/v2/study/';
-			}
-
 			this.model.save({title: value});
 
+		},
+
+		deleteChapter : function() {
+			if (!window.confirm('Are you sure you want to delete this chapter and all its items?')) {
+				return;
+			}
+
+			this.model.destroy();
+			return false;
 		},
 
 		render: function () {

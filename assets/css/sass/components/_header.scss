@@ -1,7 +1,18 @@
 @import "compass";
+body:not(.logged-in) {
+	.site-header {
+		.contain-to-grid,
+		.contain-to-grid .top-bar,
+		.top-bar-section li:not(.has-form) a:not(.button) {
+			background: white;
+			color: $body-font-color;
+		}
+	}
+}
 
 .site-header {
 	margin-bottom: 6rem;
+//	border-bottom: 2px solid $info-color;
 }
 
 .main-navigation {
@@ -26,7 +37,7 @@
 
 	.avatar-container {
 		float: left;
-		padding: .75rem;
+		padding: .5rem;
 		height: $topbar-height;
 		&:before {
 			content: none;
