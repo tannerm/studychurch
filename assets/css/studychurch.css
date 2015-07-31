@@ -7727,10 +7727,20 @@ hr.noline {
 .no-margin {
   margin: 0 !important; }
 
-iframe {
-  max-width: 100%;
-  height: auto;
-  width: auto; }
+/* =Global Styles
+-------------------------------------------------------------- */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 35px;
+  height: 0;
+  overflow: hidden; }
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
 
 /* =WordPress Core
 -------------------------------------------------------------- */

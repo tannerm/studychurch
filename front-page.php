@@ -60,7 +60,9 @@ the_post();
 			<div class="row">
 				<div class="small-12 text-center columns">
 					<h2>Watch StudyChurch in Action</h2>
-					<iframe width="640" height="366" src="https://www.youtube.com/embed/cbIN35qI6mM" frameborder="0" allowfullscreen></iframe>
+					<div class="video-container">
+						<iframe width="640" height="366" src="https://www.youtube.com/embed/cbIN35qI6mM" frameborder="0" allowfullscreen></iframe>
+					</div>
 				</div>
 			</div>
 		</div>
