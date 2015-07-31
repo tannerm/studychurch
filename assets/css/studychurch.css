@@ -7727,6 +7727,11 @@ hr.noline {
 .no-margin {
   margin: 0 !important; }
 
+iframe {
+  max-width: 100%;
+  height: auto;
+  width: auto; }
+
 /* =WordPress Core
 -------------------------------------------------------------- */
 .alignnone {
@@ -7956,8 +7961,6 @@ label {
   margin-bottom: 1rem;
   border: 1px solid #ccc; }
 
-.page-template-templateslanding-php.admin-bar .site-header {
-  margin-top: 32px; }
 .page-template-templateslanding-php .site-header {
   margin-bottom: 0; }
 .page-template-templateslanding-php .study-group h1 {
@@ -8014,15 +8017,11 @@ label {
     text-align: center; }
 .page-template-templateslanding-php .how-it-works {
   margin: 3rem auto; }
-  .page-template-templateslanding-php .how-it-works li {
-    margin: 3rem;
-    overflow: hidden; }
-    .page-template-templateslanding-php .how-it-works li i {
-      float: left;
-      font-size: 5rem;
-      margin: 1rem 3rem 0 2rem; }
-    .page-template-templateslanding-php .how-it-works li div {
-      margin-left: 10rem; }
+  .page-template-templateslanding-php .how-it-works i {
+    text-align: center;
+    display: block;
+    font-size: 5rem;
+    margin: 3rem 0; }
 .page-template-templateslanding-php .who-its-for {
   background: #fcb017; }
   .page-template-templateslanding-php .who-its-for .row {
@@ -8043,6 +8042,15 @@ label {
   .page-template-templateslanding-php .social a {
     color: white; }
 
+@media only screen and (min-width: 40.063em) {
+  .page-template-templateslanding-php .how-it-works li {
+    margin: 3rem;
+    overflow: hidden; }
+    .page-template-templateslanding-php .how-it-works li i {
+      float: left;
+      margin: 1rem 3rem 0 2rem; }
+    .page-template-templateslanding-php .how-it-works li div {
+      margin-left: 10rem; } }
 @media only screen and (max-width: 40em) {
   .page-template-templateslanding-php .top-bar ul {
     font-size: .75rem; } }

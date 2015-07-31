@@ -5,7 +5,7 @@
 	}
 
 	.site-header {
-//		position: fixed;
+//		position: fixed;s
 //		top: 0;
 //		width: 100%;
 //		z-index: 100;
@@ -170,20 +170,14 @@
 
 	.how-it-works {
 		margin: 3rem auto;
-		li {
-			margin: 3rem;
-			overflow: hidden;
-			i {
-				float: left;
-				font-size: 5rem;
-				margin: 1rem 3rem 0 2rem;
-			}
-
-			div {
-				margin-left: 10rem;
-			}
+		i {
+			text-align: center;
+			display: block;
+			font-size: 5rem;
+			margin: 3rem 0;
 		}
 	}
+
 	.who-its-for {
 		.row {
 			margin: 3rem auto;
@@ -221,8 +215,29 @@
 
 }
 
+@media #{$medium-up} {
+	.page-template-templateslanding-php {
+		.how-it-works {
+			li {
+				margin: 3rem;
+				overflow: hidden;
+				i {
+					float: left;
+					margin: 1rem 3rem 0 2rem;
+				}
+
+				div {
+					margin-left: 10rem;
+				}
+			}
+		}
+	}
+}
+
 @media #{$small-only} {
-	.page-template-templateslanding-php .top-bar ul {
-		font-size: .75rem;
+	.page-template-templateslanding-php {
+		.top-bar ul {
+			font-size: .75rem;
+		}
 	}
 }

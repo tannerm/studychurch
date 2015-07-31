@@ -9,9 +9,13 @@
 ?>
 
 		<footer id="colophon" class="site-footer" role="contentinfo">
-			<div class="row">
-				<a href="<?php home_url(); ?>" class="left"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logo_full_light.png" width="150" height="35" /></a>
-				<a href="#" class="manual-optin-trigger button no-margin small right" data-optin-slug="yljvdgwjzdhlugyc">Join the waiting list.</a>
+			<div class="row text-center">
+				<div class="medium-6 columns">
+					<a href="#" class="manual-optin-trigger button small" data-optin-slug="yljvdgwjzdhlugyc">Join the waiting list.</a>
+				</div>
+				<div class="medium-6 columns">
+					<a href="<?php home_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logo_full_light.png" width="150" height="35" /></a>
+				</div>
 			</div>
 			<div class="site-info">
 				<?php do_action( 'sc_credits' ); ?>

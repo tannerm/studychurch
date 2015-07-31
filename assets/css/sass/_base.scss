@@ -49,6 +49,12 @@ hr.noline {
 	margin: 0 !important;
 }
 
+iframe {
+	max-width: 100%;
+	height: auto;
+	width: auto;
+}
+
 /* =WordPress Core
 -------------------------------------------------------------- */
 .alignnone {

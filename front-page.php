@@ -21,7 +21,6 @@ the_post();
 		<div class="row" style="overflow: visible;">
 			<div class="small-12 column">
 				<h2>StudyChurch is an online platform that makes it easy to manage and collaborate with your small groups.</h2>
-				<img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ipad_2x.png" width="460" height="598" style="margin-right: 2rem;margin-left:-20%;float:left;display:none;"/>
 				<ul>
 					<li>
 						<i class="fa fa-pencil-square-o"></i>
@@ -62,7 +61,6 @@ the_post();
 				<div class="small-12 text-center columns">
 					<h2>Watch StudyChurch in Action</h2>
 					<iframe width="640" height="366" src="https://www.youtube.com/embed/cbIN35qI6mM" frameborder="0" allowfullscreen></iframe>
-					<?php // echo apply_filters( 'the_content', get_post_meta( get_the_id(), "_sc_content_2", true ) ); ?>
 				</div>
 			</div>
 		</div>
