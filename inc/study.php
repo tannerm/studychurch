@@ -59,7 +59,7 @@ class SC_Study {
 			'component'         => buddypress()->groups->id,
 			'type'              => 'answer_update',
 			'user_id'           => $user->ID,
-			'item_id'           => 3,
+			'item_id'           => absint( $_POST['group_id'] ),
 			'recorded_time'     => bp_core_current_time(),
 			'secondary_item_id' => $data['comment_post_ID'],
 			'hide_sitewide'     => false,

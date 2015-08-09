@@ -357,7 +357,7 @@ class SC_Setup {
 		<script>
 			jQuery.Editable = jQuery.Editable || {};
 			jQuery.Editable.DEFAULTS = jQuery.Editable.DEFAULTS || {};
-			
+
 			jQuery.Editable.DEFAULTS.key = '<?php echo $key; ?>';
 		</script>
 		<?php
