@@ -7,6 +7,7 @@ if ( ! in_array( $data_type, array( 'question_long', 'question_short' ) ) ) {
 
 $answer = sc_study_get_answer();
 
+$rows       = ( 'question_long' == $data_type ) ? '5' : '1';
 $comment_id = ( empty( $answer->comment_ID ) ) ? 0 : $answer->comment_ID;
 $answer     = ( empty( $answer->comment_content ) ) ? '' : $answer->comment_content;
 ?>
@@ -17,7 +18,7 @@ $answer     = ( empty( $answer->comment_content ) ) ? '' : $answer->comment_cont
 	<?php if ( comments_open( get_the_ID() ) ) : ?>
 		<div id="respond" class="comment-respond">
 			<form action="<?php echo site_url( '/wp-comments-post.php' ); ?>" method="post" class="comment-form" novalidate>
-				<textarea id="comment" name="comment" cols="45" rows="<?php echo ( 'question_long' == $data_type ) ? '5' : '1'; ?>" aria-describedby="form-allowed-tags" aria-required="true" required="required" placeholder="Your answer"><?php echo esc_textarea( $answer ); ?></textarea>
+				<textarea id="comment-<?php the_ID(); ?>" name="comment" class="<?php echo esc_attr( $data_type ); ?>" cols="45" rows="<?php echo $rows; ?>" aria-describedby="form-allowed-tags" aria-required="true" required="required" placeholder="Your answer"><?php echo esc_textarea( $answer ); ?></textarea>
 				<p class="form-submit small text-right">
 					<a href="#" class="sudo-save">Save</a>
 					<input name="submit" type="submit" id="submit-<?php the_ID(); ?>" class="submit screen-reader-text" value="Save" />

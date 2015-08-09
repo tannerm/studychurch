@@ -24,6 +24,7 @@
 			<input type="hidden" name="action" value="sc_login" />
 			<?php wp_nonce_field( 'sc-login', 'sc_login_key' ); ?>
 			<input type="submit" value="Login" class="button secondary expand" />
+			<?php do_action( 'sc_login_form_end' ); ?>
 		</div>
 	</div>
 

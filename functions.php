@@ -138,6 +138,7 @@ class SC_Setup {
 		add_action( 'widgets_init',       array( $this, 'add_sidebars'       ) );
 		add_action( 'widgets_init',       array( $this, 'unregister_widgets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue'            ) );
+		add_action( 'wp_head',            array( $this, 'js_globals'         ) );
 		add_action( 'template_redirect',  array( $this, 'maybe_force_login'  ), 5 );
 	}
 
@@ -260,6 +261,15 @@ class SC_Setup {
 	}
 
 	/**
+	 * Is this a development environment?
+	 *
+	 * @return bool
+	 */
+	public function is_dev() {
+		return ( 'studychurch.dev' == $_SERVER['SERVER_NAME'] );
+	}
+
+	/**
 	 * Add custom image sizes
 	 */
 	protected function add_image_sizes() {}
@@ -333,7 +343,7 @@ class SC_Setup {
 	 */
 	public function maybe_force_login() {
 		/** bale if the user is logged in or is on the login page */
-		if ( is_user_logged_in() || is_front_page() ) {
+		if ( is_user_logged_in() || ! is_buddypress() ) {
 			return;
 		}
 
@@ -341,4 +351,12 @@ class SC_Setup {
 		exit();
 	}
 
+	public function js_globals() {
+		$key = ( $this->is_dev() ) ? 'ntB-13C-11nroeB-22B-16syB1wqc==' : 'gsuwgH-7fnrzE5ic=='; ?>
+
+		<script>
+			jQuery.Editable.DEFAULTS.key = '<?php echo $key; ?>';
+		</script>
+		<?php
+	}
 }

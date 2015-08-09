@@ -177,6 +177,10 @@ var StudyApp = StudyApp || {};
 
 		initialize: function () {
 
+			if (! StudyApp.$container.length) {
+				return;
+			}
+
 			// listen to chapters and add
 			this.listenTo(StudyApp.Collections.Chapter.Sidebar, 'add', this.addSidebarChapter);
 

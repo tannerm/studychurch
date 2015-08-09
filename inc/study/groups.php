@@ -474,3 +474,13 @@ function sc_get_group_study_id( $group_id = null ) {
 
 	return groups_get_groupmeta( $group_id, '_sc_study', true );
 }
+
+function sc_get_group_invite_key( $group_id = null ) {
+	if ( ! $group_id ) {
+		$group_id = bp_get_current_group_id();
+	}
+
+	$group = groups_get_group( 'group_id=' . $group_id );
+
+	return md5( $group->date_created );
+}

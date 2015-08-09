@@ -31,7 +31,7 @@ get_header(); ?>
 	<div class="study-map small">
 		<div class="row">
 			<div class="column small-12">
-				<a href="#" class="right"><?php _e( 'Save & Exit', 'sc' ); ?></a>
+				<a href="#" class="right hide"><?php _e( 'Save & Exit', 'sc' ); ?></a>
 				<?php echo implode( ' > ', sc_study_get_manage_map( $study_id, sc_study_edit_get_current_step( $study_id ) ) ); ?>
 			</div>
 		</div>

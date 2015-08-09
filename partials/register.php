@@ -16,7 +16,7 @@
 
 	<div class="row">
 		<div class="small-12 columns">
-			<label for="rcp-login"><?php _e( 'Login', 'sc' ); ?></label>
+			<label for="rcp-login"><?php _e( 'Username', 'sc' ); ?></label>
 			<input type="text" name="rcp_user_login" id="rcp-login" placeholder="johndoe" required />
 		</div>
 	</div>
@@ -55,6 +55,7 @@
 			<input type="hidden" name="action" value="sc_register" />
 			<?php wp_nonce_field( 'rcp-register-nonce', 'rcp_register_nonce' ); ?>
 			<input type="submit" value="<?php _e( 'Register', 'sc' ); ?>" class="button secondary expand" />
+			<?php do_action( 'sc_register_form_end' ); ?>
 		</div>
 	</div>
 

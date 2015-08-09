@@ -25,13 +25,85 @@
 			border: none;
 			box-shadow: none;
 			resize: none;
+			overflow: hidden;
+
+			&.question_short {
+				height: 1rem;
+			}
+		}
+
+	}
+
+	.groups {
+
+		.show-comments {
+			display: none;
+		}
+
+		&.comments-hide {
+			.activity-comments, .hide-comments, .acomment-reply {
+				display: none;
+			}
+
+			.show-comments {
+				display: inline;
+			}
+		}
+
+		.activity-meta  {
+			margin: 0;
+
+			a:not(:last-child) {
+				border-right: 1px solid $grey-medium;
+				margin-right: .5rem;
+				padding-right: .5rem;
+			}
+		}
+
+	}
+
+	.activity-list-others {
+		.show-answers {
+			display: none;
+		}
+
+		.group-answer-toggle-container {
+			margin: 1rem;
+		}
+
+		&.answers-hide {
+
+			> li, .hide-answers {
+				display: none;
+			}
+
+			.show-answers {
+				display: inline;
+			}
+		}
+	}
+
+	.activity-comments {
+		textarea {
+			resize: vertical;
+		}
+
+		.ac-form {
+			margin-top: 1.5rem;
 		}
 
 	}
 
 	.study-answers {
-		padding: 0 15px;
-		background-color: $primary-color-faded;
+//		padding: 0 15px;
+//		background-color: $primary-color-faded;
+
+		.item-list > li {
+			overflow: hidden;
+			padding: 1rem !important;
+			background-color: $primary-color-faded;
+		}
+
 	}
 
 }

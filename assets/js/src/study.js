@@ -12,12 +12,13 @@ jQuery(document).ready(function($){
 			SELF.$save = SELF.$form.find('.sudo-save');
 
 			SELF.$save.on( 'click', SELF.triggerSubmission );
-			SELF.$answer.on('keyup', SELF.autoSave );
+			SELF.$answer.on('keyup keydown', SELF.autoGrow );
 			SELF.$form.on('submit', SELF.handleSubmission);
 		};
 
-		SELF.autoSave = function() {
-			console.log( 'keyup' );
+		SELF.autoGrow = function(e) {
+			var textarea = e.target;
+			textarea.style.height = textarea.scrollHeight + "px";
 		};
 
 		SELF.triggerSubmission = function(e) {
@@ -61,6 +62,18 @@ jQuery(document).ready(function($){
 	$(document).ready(function(){
 		$('.sc_study .comment-form').each(function(){
 			new answers( $(this) );
+		});
+
+		$('.study-answers.activity').on('click', '.toggle-comments', function(e) {
+			var $this = $(e.target);
+			$this.parents('.groups').toggleClass('comments-hide');
+			return false;
+		});
+
+		$('.activity-list-others').on('click', '.toggle-answers', function(e) {
+			var $this = $(e.target);
+			$this.parents('.activity-list-others').toggleClass('answers-hide');
+			return false;
 		});
 	});
 

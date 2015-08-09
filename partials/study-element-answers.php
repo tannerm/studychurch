@@ -25,16 +25,21 @@
 		</ul>
 	<?php else : ?>
 
-		<ul id="activity-stream" class="activity-list item-list">
+		<ul id="activity-stream" class="activity-list-mine item-list">
 			<?php if ( bp_has_activities( 'include=' . sc_answer_get_activity_id( $answer->comment_ID ) ) ) : ?>
 				<?php while ( bp_activities() ) : bp_the_activity(); ?>
-					<?php bp_get_template_part( 'activity/entry' ); ?>
+					<?php bp_get_template_part( 'activity/entry', 'study' ); ?>
 				<?php endwhile; ?>
 			<?php endif ;?>
-
+		</ul>
+		<ul id="activity-stream" class="activity-list-others item-list">
+			<p class="text-right small group-answer-toggle-container">
+				<a href="#" class="hide-answers toggle-answers"><?php _e( 'Hide Group Answers', 'sc' ); ?></a>
+				<a href="#" class="show-answers toggle-answers"><?php _e( 'Show Group Answers', 'sc' ); ?></a>
+			</p>
 			<?php if ( bp_has_activities( array( 'primary_id' => sc_get_study_user_group_id(), 'secondary_id' => $answer->comment_post_ID, 'action' => 'answer_update', 'exclude' => sc_answer_get_activity_id( $answer->comment_ID ) ) ) ) : ?>
 				<?php while ( bp_activities() ) : bp_the_activity(); ?>
-					<?php bp_get_template_part( 'activity/entry' ); ?>
+					<?php bp_get_template_part( 'activity/entry', 'study' ); ?>
 				<?php endwhile; ?>
 			<?php endif ;?>
 		</ul>

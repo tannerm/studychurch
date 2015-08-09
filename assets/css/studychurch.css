@@ -7727,6 +7727,9 @@ hr.noline {
 .no-margin {
   margin: 0 !important; }
 
+#buddypress {
+  min-height: 500px; }
+
 /* =Global Styles
 -------------------------------------------------------------- */
 .video-container {
@@ -7912,6 +7915,7 @@ body:not(.logged-in) .site-header .top-bar-section li:not(.has-form) a:not(.butt
       padding: 0; }
 
 .site-footer {
+  margin-top: 3rem;
   color: white;
   padding: 3rem 0;
   background: #4d4d4d; }
@@ -7946,11 +7950,9 @@ body:not(.logged-in) .site-header .top-bar-section li:not(.has-form) a:not(.butt
   .avatar-container .avatar {
     display: block; }
 
-#buddypress #activity-stream p {
-  margin: 0 0 1.5rem; }
 #buddypress div.activity-comments ul li {
   border: none;
-  border-left: 1px solid;
+  border-left: 1px solid #bbbbbb;
   padding-left: 1rem;
   margin: 1.5rem auto; }
 #buddypress .activity-list .acomment-meta {
@@ -8051,6 +8053,8 @@ label {
       margin: 1rem 2rem; }
   .page-template-templateslanding-php .social a {
     color: white; }
+.page-template-templateslanding-php .site-footer {
+  margin-top: 0; }
 
 @media only screen and (min-width: 40.063em) {
   .page-template-templateslanding-php .how-it-works li {
@@ -8092,9 +8096,37 @@ label {
   padding: .25rem 1rem;
   border: none;
   box-shadow: none;
-  resize: none; }
-.sc_study .study-answers {
-  padding: 0 15px;
+  resize: none;
+  overflow: hidden; }
+  .sc_study .comment-form textarea.question_short {
+    height: 1rem; }
+.sc_study .groups .show-comments {
+  display: none; }
+.sc_study .groups.comments-hide .activity-comments, .sc_study .groups.comments-hide .hide-comments, .sc_study .groups.comments-hide .acomment-reply {
+  display: none; }
+.sc_study .groups.comments-hide .show-comments {
+  display: inline; }
+.sc_study .groups .activity-meta {
+  margin: 0; }
+  .sc_study .groups .activity-meta a:not(:last-child) {
+    border-right: 1px solid #bbbbbb;
+    margin-right: .5rem;
+    padding-right: .5rem; }
+.sc_study .activity-list-others .show-answers {
+  display: none; }
+.sc_study .activity-list-others .group-answer-toggle-container {
+  margin: 1rem; }
+.sc_study .activity-list-others.answers-hide > li, .sc_study .activity-list-others.answers-hide .hide-answers {
+  display: none; }
+.sc_study .activity-list-others.answers-hide .show-answers {
+  display: inline; }
+.sc_study .activity-comments textarea {
+  resize: vertical; }
+.sc_study .activity-comments .ac-form {
+  margin-top: 1.5rem; }
+.sc_study .study-answers .item-list > li {
+  overflow: hidden;
+  padding: 1rem !important;
   background-color: #daeeec; }
 
 .table-of-contents {
