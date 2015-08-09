@@ -355,6 +355,9 @@ class SC_Setup {
 		$key = ( $this->is_dev() ) ? 'ntB-13C-11nroeB-22B-16syB1wqc==' : 'gsuwgH-7fnrzE5ic=='; ?>
 
 		<script>
+			jQuery.Editable = jQuery.Editable || {};
+			jQuery.Editable.DEFAULTS = jQuery.Editable.DEFAULTS || {};
+			
 			jQuery.Editable.DEFAULTS.key = '<?php echo $key; ?>';
 		</script>
 		<?php
