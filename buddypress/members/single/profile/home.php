@@ -22,6 +22,7 @@ $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&pare
 				</p>
 			<?php endif; ?>
 		<?php endforeach; ?>
+
 	</div>
 <?php endif; ?>
 
@@ -31,8 +32,9 @@ $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&pare
 	<?php if ( $groups['total'] && bp_has_activities( array(
 			'user_id'    => false,
 			'primary_id' => $groups['groups'],
-			'object'     => 'groups',
-			'per_page'   => 5
+			'object'     => false,
+			'per_page'   => 10,
+			'show_hidden' => true,
 		) )
 	) : ?>
 

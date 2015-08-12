@@ -112,6 +112,7 @@ class SC_Study_Edit {
 
 		wp_enqueue_script( 'froala-editor', get_template_directory_uri() . '/assets/js/lib/froala/froala_editor.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'froala-fullscreen', get_template_directory_uri() . '/assets/js/lib/froala/plugins/fullscreen.min.js', array( 'jquery', 'froala-editor' ) );
+		wp_enqueue_script( 'jquery-ui-sortable' );
 	}
 
 	/**

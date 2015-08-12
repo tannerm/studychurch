@@ -57,6 +57,25 @@
 
 		}
 
+		.item-privacy-button {
+			display: none;
+		}
+
+		&.question_long, &.question_short {
+			.item-privacy-button {
+				display: block;
+				max-width: 50%;
+				float: right;
+				margin: 0;
+			}
+
+			.item-data-type {
+				margin: 0;
+				width: 50%;
+			}
+
+		}
+
 	}
 
 	.panel-buttons {

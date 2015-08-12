@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-08-08
+/*! StudyChurch - v0.1.0 - 2015-08-11
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -579,6 +579,7 @@ var StudyApp = StudyApp || {};
 				comment_status: 'open',
 				ping_status   : 'closed',
 				data_type     : 'question_short',
+				is_private    : false,
 				order         : StudyApp.Collections.Chapter.Sidebar.nextOrder()
 			}
 		},
@@ -631,7 +632,11 @@ var StudyApp = StudyApp || {};
 
 	StudyApp.Views.Item.List = Backbone.View.extend({
 
-		tagName: "div",
+		tagName: "li",
+
+		className: function () {
+			return "panel item-" + this.model.get('id') + " " + this.model.get('data_type')
+		},
 
 		template: wp.template('item-template'),
 
@@ -640,6 +645,7 @@ var StudyApp = StudyApp || {};
 			"click .item-expand"         : "expand",
 			"click .item-content-edit"   : "editContent",
 			"click .item-content-delete" : "deleteItem",
+			"change .item-privacy"       : "setPrivacy",
 			"change .item-data-type"     : "setDataType"
 		},
 
@@ -653,12 +659,31 @@ var StudyApp = StudyApp || {};
 		},
 
 		compress : function(e) {
-			this.$el.find('.panel').addClass('compressed');
+			this.$el.addClass('compressed');
 			return false;
 		},
 
 		expand : function() {
-			this.$el.find('.panel').removeClass('compressed');
+			this.$el.removeClass('compressed');
+			return false;
+		},
+
+		setPrivacy : function(e) {
+
+			if ('question_short' != this.model.get('data_type') && 'question_long' != this.model.get('data_type')) {
+				return false;
+			}
+
+			var value = ('checked' == $(e.target).attr('checked'));
+			this.setsave({is_private : value});
+			return false;
+		},
+
+		setDataType : function(e) {
+			var dataType = $(e.target).val();
+			this.$el.removeClass(this.model.get('data_type'));
+			this.$el.addClass(dataType);
+			this.setsave({data_type : dataType});
 			return false;
 		},
 
@@ -674,9 +699,10 @@ var StudyApp = StudyApp || {};
 				inlineMode : false,
 				minHeight: 100,
 				maxHeight: 400,
-				buttons: ['bold', 'italic', 'sep', 'indent', 'outdent',
-					'insertOrderedList', 'insertUnorderedList', 'sep',
-					'createLink', 'insertImage', 'fullscreen', 'close'],
+				buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'fontFamily', 'color', 'sep',
+					'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
+					'createLink', 'html', 'fullscreen', 'close'
+				],
 				customButtons : {
 					// Clear HTML button with text icon.
 					close: {
@@ -696,11 +722,6 @@ var StudyApp = StudyApp || {};
 
 			$content.on('editable.beforeSave', this, this.autosave);
 
-			return false;
-		},
-
-		setDataType : function(e) {
-			this.setsave({data_type : $(e.target).val()});
 			return false;
 		},
 
@@ -774,6 +795,8 @@ var StudyApp = StudyApp || {};
 
 			if (item.get('content') && !item.get('content').rendered) {
 				view.editContent();
+			} else {
+				view.compress();
 			}
 		},
 

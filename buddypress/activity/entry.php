@@ -36,7 +36,7 @@ global $activities_template;
 			<?php else : ?>
 				<p class="small">
 					<?php echo $activities_template->activity->action; ?>
-					<?php if ( is_page_template( 'templates/profile.php' ) && $group = groups_get_group( 'group_id=' . bp_get_activity_item_id() ) ) : ?>
+					<?php if ( bp_is_user_profile() && $group = groups_get_group( 'group_id=' . bp_get_activity_item_id() ) ) : ?>
 						&nbsp;|&nbsp;<a href="<?php bp_group_permalink( $group ); ?>"><?php bp_group_name( $group ); ?></a>
 					<?php endif; ?>
 					<br />

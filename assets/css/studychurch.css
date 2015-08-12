@@ -7973,6 +7973,9 @@ label {
   margin-bottom: 1rem;
   border: 1px solid #ccc; }
 
+.fr-fullscreen button[data-name=close] {
+  display: none !important; }
+
 .page-template-templateslanding-php .site-header {
   margin-bottom: 0; }
 .page-template-templateslanding-php .study-group h1 {
@@ -8181,6 +8184,16 @@ label {
       display: inline-block; }
     #studyapp .panel.compressed .item-compress, #studyapp .panel.compressed .item-content-edit {
       display: none; }
+  #studyapp .panel .item-privacy-button {
+    display: none; }
+  #studyapp .panel.question_long .item-privacy-button, #studyapp .panel.question_short .item-privacy-button {
+    display: block;
+    max-width: 50%;
+    float: right;
+    margin: 0; }
+  #studyapp .panel.question_long .item-data-type, #studyapp .panel.question_short .item-data-type {
+    margin: 0;
+    width: 50%; }
 #studyapp .panel-buttons {
   float: right;
   margin: -1rem -1rem 0 0;

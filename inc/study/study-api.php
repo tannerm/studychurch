@@ -20,6 +20,11 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 			'get_callback' => array( $this, 'get_data_type' )
 		) );
 
+		register_api_field( 'sc_study', 'is_private', array(
+			'update_callback' => array( $this, 'save_is_private' ),
+			'get_callback' => array( $this, 'get_is_private' )
+		) );
+
 		$posts_args = array(
 			'context'          => array(
 				'default'      => 'edit',
@@ -171,11 +176,11 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 
 				if ( sc_get_data_type( $child_data['id'] ) ) {
 					$part_data['elements'][] = array(
-						'id'        => $child_data['id'],
-						'content'   => $child_data['content'],
-						'data_type' => esc_html( sc_get_data_type( $child['id'] ) ),
-						'private'   => sc_answer_is_private( $child['id'] ),
-						'parent'    => $part['id'],
+						'id'         => $child_data['id'],
+						'content'    => $child_data['content'],
+						'data_type'  => esc_html( sc_get_data_type( $child['id'] ) ),
+						'is_private' => sc_answer_is_private( $child['id'] ),
+						'parent'     => $part['id'],
 					);
 				} else {
 					$part_data['sections'][] = array(
@@ -257,11 +262,11 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 
 				if ( sc_get_data_type( $child_data['id'] ) ) {
 					$chapter_data['elements'][] = array(
-						'id'        => $child_data['id'],
-						'content'   => $child_data['content'],
-						'data_type' => esc_html( sc_get_data_type( $child_data['id'] ) ),
-						'private'   => sc_answer_is_private( $child_data['id'] ),
-						'parent'    => $chapter_data['id'],
+						'id'         => $child_data['id'],
+						'content'    => $child_data['content'],
+						'data_type'  => esc_html( sc_get_data_type( $child_data['id'] ) ),
+						'is_private' => sc_answer_is_private( $child_data['id'] ),
+						'parent'     => $chapter_data['id'],
 					);
 				} else {
 					$chapter_data['sections'][] = array(
@@ -320,8 +325,8 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 			$item_data = $this->prepare_item_for_response( $item, $request );
 			$item_data = $this->prepare_response_for_collection( $item_data );
 
-			$item_data['data_type'] = esc_html( sc_get_data_type( $item_data['id'] ) );
-			$item_data['private']   = sc_answer_is_private( $item_data['id'] );
+			$item_data['data_type']  = esc_html( sc_get_data_type( $item_data['id'] ) );
+			$item_data['is_private'] = sc_answer_is_private( $item_data['id'] );
 
 			$struct[] = $item_data;
 		}
@@ -340,8 +345,8 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 		}
 
 		$data = $this->prepare_item_for_response( $post, $request );
-		$data->data['data_type'] = esc_html( sc_get_data_type( $data->data['id'] ) );
-		$data->data['private']   = sc_answer_is_private( $data->data['id'] );
+		$data->data['data_type']  = esc_html( sc_get_data_type( $data->data['id'] ) );
+		$data->data['is_private'] = sc_answer_is_private( $data->data['id'] );
 
 		$response = rest_ensure_response( $data );
 
@@ -370,6 +375,16 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 
 	public function get_data_type( $object, $field_name, $request ) {
 		return sc_get_data_type( $object['id'] );
+	}
+
+	public function save_is_private( $value, $object, $field_name, $request ) {
+		// if is_private is set, then the answer is private
+		$value = ( $value ) ? 'private' : 'public';
+		return sc_set_privacy( $value, $object->ID );
+	}
+
+	public function get_is_private( $object, $field_name, $request ) {
+		return sc_answer_is_private( $object['id'] );
 	}
 
 }
