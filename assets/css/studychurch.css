@@ -8201,6 +8201,8 @@ label {
   #studyapp .panel-buttons a {
     padding: .5rem;
     display: inline-block; }
+#studyapp #chapter-items {
+  margin: 0; }
 #studyapp .item-content {
   margin-bottom: 1.5rem; }
 #studyapp .chapter-delete {
