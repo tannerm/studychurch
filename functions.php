@@ -257,7 +257,7 @@ class SC_Setup {
 			wp_enqueue_script( 'sc-keyboard-image-navigation', get_template_directory_uri() . '/js/keyboard-image-navigation.js', array( 'jquery' ), '20120202' );
 		}
 
-		wp_enqueue_script( 'sc', get_template_directory_uri() . "/assets/js/studychurch{$postfix}.js", array( 'jquery', 'foundation', 'wp-util', 'wp-backbone', 'wp-api' ), SC_VERSION, true );
+		wp_enqueue_script( 'sc', get_template_directory_uri() . "/assets/js/studychurch{$postfix}.js", array( 'jquery', 'foundation', 'wp-util', 'wp-backbone', 'wp-api', 'jquery-ui-sortable' ), SC_VERSION, true );
 	}
 
 	/**

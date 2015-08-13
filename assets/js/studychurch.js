@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-08-11
+/*! StudyChurch - v0.1.0 - 2015-08-12
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -521,7 +521,19 @@ var StudyApp = StudyApp || {};
 
 		addSidebarChapter: function (chapter) {
 			var sidebarView = new StudyApp.Views.Chapter.Sidebar({model: chapter});
+			chapter.$el = sidebarView.$el;
 			this.$("#chapter-list").append(sidebarView.render().el);
+			this.$('#chapter-list').sortable({
+					update : this.sortChapters
+			});
+		},
+
+		sortChapters: function() {
+			StudyApp.Collections.Chapter.Sidebar.each(function(item){
+				if (item.get('menu_order') != item.$el.index()) {
+					item.save({menu_order: item.$el.index()});
+				}
+			});
 		},
 
 		initializeChapterEdit: function(chapter) {
@@ -579,8 +591,7 @@ var StudyApp = StudyApp || {};
 				comment_status: 'open',
 				ping_status   : 'closed',
 				data_type     : 'question_short',
-				is_private    : false,
-				order         : StudyApp.Collections.Chapter.Sidebar.nextOrder()
+				is_private    : false
 			}
 		},
 
@@ -606,7 +617,7 @@ var StudyApp = StudyApp || {};
 
 	var Collection = Backbone.Collection.extend({
 
-		order: 0,
+		menu_order: 0,
 
 		model: StudyApp.Models.Item,
 
@@ -616,15 +627,15 @@ var StudyApp = StudyApp || {};
 
 		nextOrder: function () {
 			if (!this.length) {
-				this.order++;
+				this.menu_order++;
 			} else {
-				this.order = this.last().get('order') + 1;
+				this.menu_order = this.last().get('menu_order') + 1;
 			}
 
 			return this.order;
 		},
 
-		comparator: 'order'
+		comparator: 'menu_order'
 
 	});
 
@@ -787,10 +798,28 @@ var StudyApp = StudyApp || {};
 
 			StudyApp.Collections.Item.add(chapter.get('elements'));
 			StudyApp.Collections.Item.url = function() { return chapter.urlRoot() + chapter.id + '/items/'; }
+
+			this.$el.find('#chapter-items').sortable({
+				handle : '.item-reorder',
+				update : this.sortItems
+			});
+
+		},
+
+		sortItems: function() {
+			StudyApp.Collections.Item.each(function(item){
+				if (item.get('menu_order') != item.$el.index()) {
+					item.save({menu_order: item.$el.index()});
+				}
+			});
+
+			StudyApp.CurrentChapter.model.fetch();
 		},
 
 		addItem: function (item) {
 			var view = new StudyApp.Views.Item.List({model: item});
+			item.$el = view.$el;
+
 			this.$("#chapter-items").append(view.render().el);
 
 			if (item.get('content') && !item.get('content').rendered) {

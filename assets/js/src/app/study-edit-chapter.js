@@ -193,7 +193,19 @@ var StudyApp = StudyApp || {};
 
 		addSidebarChapter: function (chapter) {
 			var sidebarView = new StudyApp.Views.Chapter.Sidebar({model: chapter});
+			chapter.$el = sidebarView.$el;
 			this.$("#chapter-list").append(sidebarView.render().el);
+			this.$('#chapter-list').sortable({
+					update : this.sortChapters
+			});
+		},
+
+		sortChapters: function() {
+			StudyApp.Collections.Chapter.Sidebar.each(function(item){
+				if (item.get('menu_order') != item.$el.index()) {
+					item.save({menu_order: item.$el.index()});
+				}
+			});
 		},
 
 		initializeChapterEdit: function(chapter) {
