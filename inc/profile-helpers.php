@@ -43,9 +43,10 @@ class SC_Profile {
 		}
 
 		$study = array(
-			'post_type' => 'sc_study',
-			'post_title' => sanitize_text_field( $data['study-name'] ),
+			'post_type'    => 'sc_study',
+			'post_title'   => sanitize_text_field( $data['study-name'] ),
 			'post_excerpt' => wp_filter_kses( $data['study-desc'] ),
+			'post_status'  => 'private',
 		);
 
 		$study_id = wp_insert_post( $study );
@@ -78,7 +79,7 @@ class SC_Profile {
 		$id = groups_create_group( array(
 			'name'        => sanitize_text_field( $data['group-name'] ),
 			'description' => esc_textarea( $data['group-desc'] ),
-			'status'      => 'private',
+			'status'      => 'hidden',
 		) );
 
 		if ( ! $id ) {

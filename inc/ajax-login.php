@@ -128,7 +128,9 @@ function sc_group_join_redirect() {
 		return;
 	}
 
-	printf( '<input type="hidden" name="url" value="%s" />', esc_attr( $_SERVER['REQUEST_URI'] ) );
-	printf( '<input type="hidden" name="group_id" value="%s" />', absint( groups_get_id( sc_get( 'group' ) ) ) );
+	if ( sc_get( 'group' ) && $group_id = groups_get_id( sc_get( 'group' ) ) ) {
+		printf( '<input type="hidden" name="url" value="%s" />', esc_attr( $_SERVER['REQUEST_URI'] ) );
+		printf( '<input type="hidden" name="group_id" value="%s" />', absint( $group_id ) );
+	}
 
 }

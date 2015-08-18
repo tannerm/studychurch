@@ -190,6 +190,11 @@ var StudyApp = StudyApp || {};
 		},
 
 		setsave : function(data, fetchChapter) {
+
+			if (! this.model.get('parent')){
+				this.model.set('parent', StudyApp.CurrentChapter.model.get('id'));
+			}
+
 			this.model.save(data);
 
 			// refetch the current chapter?

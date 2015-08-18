@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-08-12
+/*! StudyChurch - v0.1.0 - 2015-08-17
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -7,6 +7,8 @@
 	var scAjaxForm = function($form) {
 		var SELF = this;
 
+		SELF.processing = false;
+
 		SELF.init = function() {
 			SELF.$form = $form;
 
@@ -14,16 +16,23 @@
 				return;
 			}
 
+			SELF.$button = SELF.$form.find('input[type=submit]');
 			SELF.$form.on('submit', SELF.handleSubmission);
 		};
 
 		SELF.handleSubmission = function(e) {
 			e.preventDefault();
 
+			if (SELF.processing) {
+				return false;
+			}
+
 			SELF.data = {
 				action: 'sc_ajax_form',
 				formdata: SELF.$form.serialize()
 			};
+
+			SELF.startProcessing();
 
 			wp.ajax.send( 'sc_ajax_form', {
 				success: SELF.response,
@@ -34,8 +43,7 @@
 		};
 
 		SELF.response = function(data) {
-			SELF.$form.find('.status-message').remove();
-			SELF.$form.prepend('<p class="success-message">' + data.message + '</p>');
+			SELF.finishProcessing(data.message, true);
 
 			if (data.url) {
 				window.location = data.url;
@@ -44,10 +52,27 @@
 		};
 
 		SELF.error = function ( data ) {
-			SELF.$form.find('.spinner').hide();
-			SELF.$form.find('.alert-box').remove();
+			SELF.finishProcessing('Ooops! Something went wrong, please try again.', false);
 			SELF.$form.prepend( '<div class="alert-box alert" data-alert>' + data.message + '</div>');
 			console.log( data );
+		};
+
+		SELF.startProcessing = function() {
+			SELF.processing = true;
+			SELF.$form.find('.alert-box').remove();
+			SELF.$button.val('Processing...').removeClass('secondary primary alert').addClass('processing secondary');
+		};
+
+		SELF.finishProcessing = function(value, success) {
+			SELF.processing = false;
+			SELF.$button.removeClass('processing secondary primary alert').val(value);
+
+			if (success) {
+				SELF.$button.addClass('primary');
+			} else {
+				SELF.$button.addClass('alert');
+			}
+
 		};
 
 		SELF.init();
@@ -288,6 +313,36 @@ jQuery(document).ready(function($){
 		//	$('.study-group').height(window.innerHeight - $('.top-bar-container').outerHeight() + 'px');
 		//}
 
+		$('.fdatepicker').fdatepicker({
+			format: 'mm/dd/yyyy',
+			disableDblClickSelection: true
+		});
+
+		$('.froala-min').editable({
+			inlineMode : false,
+			minHeight: 100,
+			maxHeight: 400,
+			buttons: ['bold', 'italic', 'underline', 'createLink' ]
+		});
+
+		$('.froala-default').editable({
+			inlineMode : false,
+			minHeight: 100,
+			maxHeight: 400,
+			buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'sep',
+				'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
+				'createLink', 'html', 'fullscreen'
+			]
+		});
+
+		$('.froala-inline').editable({
+			buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'sep',
+				'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
+				'createLink'
+			]
+		});
+
+
 		$('.footer-subscribe #input_1_1').on('focus', function() {
 			$(document).foundation();
 			$('#field_1_2').show();
@@ -295,19 +350,21 @@ jQuery(document).ready(function($){
 
 		var $restrictedContainer = $(document.getElementById('restricted-message'));
 		if ($restrictedContainer.length) {
-			var $loginContainer = $restrictedContainer.find('#login');
-			var $registerContainer = $restrictedContainer.find('#start-now');
+			var $loginContainer = $restrictedContainer.find('#login-body');
+			var $registerContainer = $restrictedContainer.find('#start-now-body');
 
 			$loginContainer.find('.switch').on('click', function(e){
 				$loginContainer.fadeOut(function(){
 					$registerContainer.fadeIn();
 				});
+				return false;
 			});
 
 			$registerContainer.find('.switch').on('click', function(e){
 				$registerContainer.fadeOut(function(){
 					$loginContainer.fadeIn();
 				});
+				return false;
 			});
 		}
 
@@ -484,6 +541,7 @@ var StudyApp = StudyApp || {};
 				return;
 			}
 
+			this.model.$el.remove();
 			this.model.destroy();
 			return false;
 		},
@@ -747,6 +805,11 @@ var StudyApp = StudyApp || {};
 		},
 
 		setsave : function(data, fetchChapter) {
+
+			if (! this.model.get('parent')){
+				this.model.set('parent', StudyApp.CurrentChapter.model.get('id'));
+			}
+
 			this.model.save(data);
 
 			// refetch the current chapter?

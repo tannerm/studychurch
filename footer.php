@@ -8,6 +8,9 @@
  */
 ?>
 
+		</div>
+		<!-- #page container -->
+
 		<footer id="colophon" class="site-footer" role="contentinfo">
 			<div class="row text-center">
 				<div class="medium-6 columns">
@@ -24,9 +27,13 @@
 		</footer>
 		<!-- #colophon -->
 
-		<?php if ( is_front_page() && ! is_user_logged_in() ) : ?>
+		<?php if ( ! is_user_logged_in() ) : ?>
 			<?php get_template_part( 'partials/modal', 'register' ); ?>
 			<?php get_template_part( 'partials/modal', 'login' ); ?>
+		<?php endif; ?>
+
+		<?php if ( bp_is_group() && sc_user_can_manage_group() ) : ?>
+			<?php get_template_part( 'partials/modal', 'create-assignment' ); ?>
 		<?php endif; ?>
 
 		<?php wp_footer(); ?>

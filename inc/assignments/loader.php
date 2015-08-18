@@ -19,56 +19,15 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 				'name' => 'Assignments',
 				'nav_item_position' => 105,
 				'screens' => array(
-					'edit' => array(
-						'name' => 'Assignments',
-					),
-					'create' => array(
-						'position' => 100,
-					),
+					'edit' => false,
+					'create' => false,
 				),
 			) );
 
 		}
 
 		function display( $group_id = NULL ) {
-			$group_id = bp_get_group_id();
-			echo 'This plugin is 2x cooler!';
-		}
-
-		function settings_screen( $group_id = NULL ) {
-			if ( is_admin() ) {
-				return;
-			}
-
-			$setting = groups_get_groupmeta( $group_id, 'group_extension_example_2_setting' );
-
-			cmb2_metabox_form( 'sc_assignments' );
-		}
-
-		function settings_screen_save( $group_id = NULL ) {
-			$setting = isset( $_POST['group_extension_example_2_setting'] ) ? $_POST['group_extension_example_2_setting'] : '';
-			groups_update_groupmeta( $group_id, 'group_extension_example_2_setting', $setting );
-		}
-
-		/**
-		 * create_screen() is an optional method that, when present, will
-		 * be used instead of settings_screen() in the context of group
-		 * creation.
-		 *
-		 * Similar overrides exist via the following methods:
-		 *   * create_screen_save()
-		 *   * edit_screen()
-		 *   * edit_screen_save()
-		 *   * admin_screen()
-		 *   * admin_screen_save()
-		 */
-		function create_screen( $group_id = NULL ) {
-			$setting = groups_get_groupmeta( $group_id, 'group_extension_example_2_setting' );
-
-			?>
-			Welcome to your new group! You are neat.
-			Save your plugin setting here: <input type="text" name="group_extension_example_2_setting" value="<?php echo esc_attr( $setting ) ?>" />
-		<?php
+			include( get_stylesheet_directory() . '/inc/assignments/edit-template.php' );
 		}
 
 	}

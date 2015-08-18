@@ -55,7 +55,7 @@
 
 						<?php get_template_part( 'partials/header', 'loggedin-nav' ); ?>
 					<?php else : ?>
-						<?php // get_template_part( 'partials/header', 'loggedout-nav' ); ?>
+						<?php get_template_part( 'partials/header', 'loggedout-nav' ); ?>
 					<?php endif; ?>
 				</section>
 

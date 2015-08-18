@@ -12,12 +12,14 @@ get_header(); ?>
 		</div>
 
 		<div class="medium-6 columns" role="main">
-			<div id="login">
+			<div id="login-body">
 				<?php get_template_part( 'partials/login' ); ?>
-				<p><a href="#" class="switch"><?php _e( "Need an account? You can register for free", 'sc' ); ?> &rarr;</a></p>
+				<?php if ( 0 ) : ?>
+					<p><a href="#" class="switch"><?php _e( "Need an account? You can register for free", 'sc' ); ?> &rarr;</a></p>
+				<?php endif; ?>
 			</div>
 
-			<div id="start-now" class="hide">
+			<div id="start-now-body" class="hide">
 				<?php get_template_part( 'partials/register' ); ?>
 				<p><a href="#" class="switch"><?php _e( 'Already have an account? Login' ); ?> &rarr;</a></p>
 			</div>

@@ -31,6 +31,8 @@ class SC_BP_Filter {
 		add_filter( 'bp_core_fetch_avatar',              array( $this, 'user_avatar_container' ), 10, 2 );
 		add_filter( 'bp_avatar_is_front_edit',           array( $this, 'avatar_is_front_edit'  ) );
 		add_filter( 'bp_displayed_user_id',              array( $this, 'displayed_user_id'     ) );
+		add_filter( 'bp_activity_get',                   array( $this, 'sort_activities'       ) );
+
 		add_action( 'bp_activity_before_save',           array( $this, 'activity_mentions'     ), 9 );
 	}
 
@@ -121,5 +123,36 @@ class SC_BP_Filter {
 			// temporary variable to avoid having to run bp_activity_find_mentions() again
 			buddypress()->activity->mentioned_users = $usernames;
 		}
+
+	}
+
+	/**
+	 * Sort activities by the most recent discussion
+	 *
+	 * @param $activities
+	 *
+	 * @return mixed
+	 */
+	public function sort_activities( $activities ) {
+
+		if ( empty( $activities['activities'] ) ) {
+			return $activities;
+		}
+
+		foreach ( $activities['activities'] as $key => $activity ) {
+			$time = strtotime( $activity->date_recorded );
+			foreach( (array) $activity->children as $child ) {
+				$child_time = strtotime( $child->date_recorded );
+				if ( $child_time > $time ) {
+					$time = $child_time;
+				}
+			}
+			unset( $activities['activities'][ $key ] );
+			$activities['activities'][ $time ] = $activity;
+		}
+
+		krsort( $activities['activities'] );
+		$activities['activities'] = array_values( $activities['activities'] );
+		return $activities;
 	}
 }

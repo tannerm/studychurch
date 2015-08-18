@@ -7727,7 +7727,7 @@ hr.noline {
 .no-margin {
   margin: 0 !important; }
 
-#buddypress {
+#page {
   min-height: 500px; }
 
 /* =Global Styles
@@ -7844,6 +7844,171 @@ a img.aligncenter {
   -ms-border-radius: 100px;
   -o-border-radius: 100px;
   border-radius: 100px; }
+
+.datepicker td, .datepicker th {
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  font-size: 12px;
+  padding: 4px 8px;
+  background: white;
+  cursor: pointer; }
+
+.datepicker {
+  display: none;
+  position: absolute;
+  padding: 4px;
+  margin-top: 1px;
+  direction: ltr; }
+  .datepicker.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    display: none;
+    min-width: 160px;
+    list-style: none;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    color: #333333;
+    font-family: "Open Sans", "sans-serif";
+    font-size: 13px;
+    line-height: 18px; }
+    .datepicker.dropdown-menu th {
+      padding: 4px 5px; }
+    .datepicker.dropdown-menu td {
+      padding: 4px 5px; }
+  .datepicker table {
+    border: 0;
+    margin: 0; }
+    .datepicker table tr td span {
+      display: block;
+      width: 23%;
+      height: 54px;
+      line-height: 54px;
+      float: left;
+      margin: 1%;
+      cursor: pointer; }
+  .datepicker td.active.day {
+    background: #3ebeb2; }
+  .datepicker td.active.year {
+    background: #3ebeb2; }
+  .datepicker td.old {
+    color: #999999; }
+  .datepicker td.new {
+    color: #999999; }
+  .datepicker td span.active {
+    background: #3ebeb2; }
+  .datepicker td.day.disabled {
+    color: #eeeeee; }
+  .datepicker th.active.day {
+    background: #3ebeb2; }
+  .datepicker th.active.year {
+    background: #3ebeb2; }
+  .datepicker th.date-switch {
+    width: 145px; }
+  .datepicker th span.active {
+    background: #3ebeb2; }
+  .datepicker .cw {
+    font-size: 10px;
+    width: 12px;
+    padding: 0 2px 0 5px;
+    vertical-align: middle; }
+  .datepicker.days div.datepicker-days {
+    display: block; }
+  .datepicker.months div.datepicker-months {
+    display: block; }
+  .datepicker.years div.datepicker-years {
+    display: block; }
+  .datepicker thead tr:first-child th {
+    cursor: pointer; }
+    .datepicker thead tr:first-child th.cw {
+      cursor: default;
+      background-color: transparent; }
+  .datepicker tfoot tr:first-child th {
+    cursor: pointer; }
+
+.datepicker-inline {
+  width: 220px; }
+
+.datepicker-rtl {
+  direction: rtl; }
+  .datepicker-rtl table tr td span {
+    float: right; }
+
+.datepicker-dropdown {
+  top: 0;
+  left: 0; }
+  .datepicker-dropdown:before {
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #cccccc;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: -7px;
+    left: 6px; }
+  .datepicker-dropdown:after {
+    content: '';
+    display: inline-block;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+    position: absolute;
+    top: -6px;
+    left: 7px; }
+
+.datepicker > div {
+  display: none; }
+
+.datepicker-dropdown::before {
+  display: none; }
+
+.datepicker-dropdown::after {
+  display: none; }
+
+.datepicker-close {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  width: 15px;
+  height: 30px;
+  padding: 0;
+  display: none; }
+
+.table-striped .datepicker table tr td {
+  background-color: transparent; }
+.table-striped .datepicker table tr th {
+  background-color: transparent; }
+
+.date {
+  position: relative; }
+  .date .calendar-button {
+    cursor: pointer;
+    border: none;
+    display: inline;
+    position: absolute;
+    right: 0;
+    width: auto;
+    padding: 0 1rem;
+    font-size: 1rem;
+    color: white;
+    background-color: #3ebeb2;
+    top: 0; }
 
 body:not(.logged-in) .site-header .contain-to-grid,
 body:not(.logged-in) .site-header .contain-to-grid .top-bar,
@@ -7963,11 +8128,40 @@ body:not(.logged-in) .site-header .top-bar-section li:not(.has-form) a:not(.butt
   overflow: hidden; }
 #buddypress .activity-list p:last-child {
   margin: 0 !important; }
+#buddypress div.item-list-tabs#subnav {
+  background: #3ebeb2;
+  color: white; }
+  #buddypress div.item-list-tabs#subnav ul li a {
+    padding: .5rem 1rem;
+    color: white;
+    position: relative; }
+  #buddypress div.item-list-tabs#subnav ul li.current a:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -10px;
+    border-bottom: 8px solid white;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent; }
+#buddypress div#message p,
+#buddypress #sitewide-notice p {
+  border-left: 3px solid #fcb017;
+  box-shadow: 1px 1px 3px #ccc; }
+#buddypress div#message.error p {
+  border-color: #e94141; }
+#buddypress div#message.success p, #buddypress div#message.updated p {
+  border-color: #3ebeb2; }
+
+#buddypress .standard-form input[type=text] {
+  width: 100%; }
 
 label {
   margin: .5rem auto;
   font-weight: bold;
   font-size: 1rem; }
+  label input[type=checkbox] {
+    margin: 0 .5rem 0 0; }
 
 .wp-editor-wrap {
   margin-bottom: 1rem;
@@ -7975,6 +8169,15 @@ label {
 
 .fr-fullscreen button[data-name=close] {
   display: none !important; }
+
+.assignment-lessons {
+  margin-left: 0;
+  margin-bottom: 1rem; }
+  .assignment-lessons li:before {
+    font-family: FontAwesome;
+    content: '\f044';
+    padding-right: .5rem;
+    color: #777; }
 
 .page-template-templateslanding-php .site-header {
   margin-bottom: 0; }
@@ -8071,6 +8274,9 @@ label {
 @media only screen and (max-width: 40em) {
   .page-template-templateslanding-php .top-bar ul {
     font-size: .75rem; } }
+.my-account #profile-personal-li {
+  display: none; }
+
 .sidebar .profile-edit-link {
   float: right; }
 .sidebar .avatar-container {
@@ -8078,6 +8284,11 @@ label {
 
 .activity-meta {
   float: right; }
+
+.group-admin #subnav #group-settings-groups-li,
+.group-admin #subnav #group-avatar-groups-li,
+.group-admin #subnav #membership-requests-groups-li {
+  display: none; }
 
 .single-sc_study #content {
   margin-bottom: 1.5rem; }

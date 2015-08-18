@@ -105,14 +105,7 @@ class SC_Study_Edit {
 		add_action( 'wp_footer', array( $this, 'study_edit_templates' ) );
 	}
 
-	public function study_edit_scripts() {
-		wp_enqueue_style( 'froala-content', get_template_directory_uri() . '/assets/css/froala/froala_content.css' );
-		wp_enqueue_style( 'froala-editor', get_template_directory_uri() . '/assets/css/froala/froala_editor.css' );
-		wp_enqueue_style( 'froala-style', get_template_directory_uri() . '/assets/css/froala/froala_style.css' );
-
-		wp_enqueue_script( 'froala-editor', get_template_directory_uri() . '/assets/js/lib/froala/froala_editor.min.js', array( 'jquery' ) );
-		wp_enqueue_script( 'froala-fullscreen', get_template_directory_uri() . '/assets/js/lib/froala/plugins/fullscreen.min.js', array( 'jquery', 'froala-editor' ) );
-	}
+	public function study_edit_scripts() {}
 
 	/**
 	 * Print Backbone templates
@@ -163,12 +156,13 @@ function sc_study_edit_get_current_step( $study_id ) {
 	}
 
 	if ( ! get_post_meta( $study_id, '_sc_study_format') ) {
-		return 'format';
+		update_post_meta( $study_id, '_sc_study_format', 'lesson' );
+//		return 'format';
 	}
 
-	if ( ( ! get_post( $study_id )->post_content ) && ( ! get_post_meta( $study_id, '_sc_study_no_intro', true ) ) ) {
-		return 'intro';
-	}
+//	if ( ( ! get_post( $study_id )->post_content ) && ( ! get_post_meta( $study_id, '_sc_study_no_intro', true ) ) ) {
+//		return 'intro';
+//	}
 
 	return 'content';
 }

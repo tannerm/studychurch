@@ -49,11 +49,11 @@
 	<h4><?php _e( 'Studies', 'sc' ); ?></h4>
 	<ul class="side-nav">
 		<?php
-		if ( $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&parent=0&authors=' . bp_displayed_user_id() ) ) {
+		if ( $studies = get_pages( 'post_status=publish,pending,draft,private&post_type=sc_study&parent=0&authors=' . bp_displayed_user_id() ) ) {
 			foreach ( $studies as $study ) {
 				$title = get_the_title( $study->ID );
 
-				if ( 'publish' != get_post_status( $study->ID ) ) {
+				if ( ! in_array( get_post_status( $study->ID ), array( 'publish', 'private' ) ) ) {
 					$title .= sprintf( ' (pending review)' );
 				}
 

@@ -1,0 +1,11 @@
+.assignment-lessons {
+	margin-left: 0;
+	margin-bottom: 1rem;
+
+	li:before {
+		font-family: FontAwesome;
+		content: '\f044';
+		padding-right: .5rem;
+		color: #777;
+	}
+}

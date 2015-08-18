@@ -26,6 +26,7 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 // styles in base.scss
 @import "base";
 
+@import "components/datepicker";
 @import "components/header";
 @import "components/footer";
 @import "components/actions";
@@ -33,6 +34,7 @@ the other stylesheets. Remember, keep it light: Speed is Important.
 @import "components/bp-overwrite";
 @import "components/forms";
 @import "components/froala";
+@import "components/assignments";
 
 // Screens
 @import "screens/front-page";

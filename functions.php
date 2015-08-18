@@ -244,10 +244,18 @@ class SC_Setup {
 		/**
 		 * Libraries and performance scripts
 		 */
+		wp_enqueue_script( 'datepicker',          get_template_directory_uri() . '/assets/js/lib/foundation-datepicker.min.js',   array(), false, true );
 		wp_enqueue_script( 'navigation',          get_template_directory_uri() . '/assets/js/lib/navigation.js',                  array(),           '20120206', true );
 		wp_enqueue_script( 'skip-link-focus-fix', get_template_directory_uri() . '/assets/js/lib/skip-link-focus-fix.js',         array(),           '20130115', true );
 		wp_enqueue_script( 'foundation',          get_template_directory_uri() . '/assets/js/lib/foundation' . $postfix . '.js', array( 'jquery' ), '01',       true );
 		wp_enqueue_script( 'simplePageNav',       get_template_directory_uri() . '/assets/js/lib/jquery.singlePageNav.min.js',    array( 'jquery' ), '01',       true );
+
+		wp_enqueue_style( 'froala-content', get_template_directory_uri() . '/assets/css/froala/froala_content.css' );
+		wp_enqueue_style( 'froala-editor', get_template_directory_uri() . '/assets/css/froala/froala_editor.css' );
+		wp_enqueue_style( 'froala-style', get_template_directory_uri() . '/assets/css/froala/froala_style.css' );
+
+		wp_enqueue_script( 'froala-editor', get_template_directory_uri() . '/assets/js/lib/froala/froala_editor.min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'froala-fullscreen', get_template_directory_uri() . '/assets/js/lib/froala/plugins/fullscreen.min.js', array( 'jquery', 'froala-editor' ) );
 
 		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 			wp_enqueue_script( 'comment-reply' );
@@ -257,7 +265,7 @@ class SC_Setup {
 			wp_enqueue_script( 'sc-keyboard-image-navigation', get_template_directory_uri() . '/js/keyboard-image-navigation.js', array( 'jquery' ), '20120202' );
 		}
 
-		wp_enqueue_script( 'sc', get_template_directory_uri() . "/assets/js/studychurch{$postfix}.js", array( 'jquery', 'foundation', 'wp-util', 'wp-backbone', 'wp-api', 'jquery-ui-sortable' ), SC_VERSION, true );
+		wp_enqueue_script( 'sc', get_template_directory_uri() . "/assets/js/studychurch{$postfix}.js", array( 'jquery', 'foundation', 'wp-util', 'wp-backbone', 'wp-api', 'jquery-ui-sortable', 'froala-editor', 'datepicker' ), SC_VERSION, true );
 	}
 
 	/**

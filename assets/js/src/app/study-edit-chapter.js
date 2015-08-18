@@ -156,6 +156,7 @@ var StudyApp = StudyApp || {};
 				return;
 			}
 
+			this.model.$el.remove();
 			this.model.destroy();
 			return false;
 		},

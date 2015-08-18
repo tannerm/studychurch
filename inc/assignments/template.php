@@ -38,11 +38,19 @@ class SC_Assignments_Query {
 	protected function parse_query() {
 
 		/** Get the assignment meta */
-		$this->assignments = groups_get_groupmeta( (int) $this->query_args['group_id'], self::$_key, true );
+		if ( ! is_array( $this->query_args['group_id'] ) ) {
+			$this->assignments = groups_get_groupmeta( (int) $this->query_args['group_id'], self::$_key, true );
+		} else {
+			foreach( $this->query_args['group_id'] as $group_id ) {
+				$this->assignments = groups_get_groupmeta( (int) $this->query_args['group_id'], self::$_key, true );
+			}
+		}
 
 		if ( empty( $this->assignments ) ) {
 			$this->assignments = array();
 		}
+
+		ksort( $this->assignments );
 
 		$count = 0;
 		foreach( $this->assignments as $key => $assignment ) {
@@ -83,7 +91,24 @@ class SC_Assignments_Query {
 	public function the_assignment() {
 		$this->assignment = current( $this->assignments );
 		next( $this->assignments );
+
+		return $this->assignment;
 	}
+
+	/**
+	 * echo the current assignments key
+	 */
+	public function the_key() {
+		echo $this->get_the_key();
+	}
+
+		/**
+		 * Get the current assignments key
+		 * @return mixed
+		 */
+		public function get_the_key() {
+			return $this->assignment['key'];
+		}
 
 	/**
 	 * Print the assignment content
@@ -126,6 +151,34 @@ class SC_Assignments_Query {
 		printf( '%s <span class="day">%s</span>', date( 'l, F', $date ), date( 'j', $date ) );
 	}
 
+	/**
+	 * Print the lessons for this assignment
+	 */
+	public function the_lessons() {
+		if ( ! $this->get_the_lessons() ) {
+			return;
+		} ?>
+
+		<ul class="assignment-lessons">
+			<?php foreach( $this->get_the_lessons() as $lesson ) : ?>
+				<li><a href="<?php echo get_the_permalink( $lesson ); ?>"><?php echo get_the_title( $lesson ); ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+		<?php
+	}
+
+		/**
+		 * Get the lessons for this assignment
+		 *
+		 * @return array|bool
+		 */
+		public function get_the_lessons() {
+			if ( empty( $this->assignment['lessons'] ) ) {
+				return false;
+			}
+
+			return array_map( 'absint', $this->assignment['lessons'] );
+		}
 }
 
 /**

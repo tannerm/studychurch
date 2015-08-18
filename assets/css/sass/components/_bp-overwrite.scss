@@ -27,4 +27,43 @@
 		}
 	}
 
+	div.item-list-tabs#subnav {
+		background: $primary-color;
+		color: white;
+
+		ul li {
+			a {
+				padding: .5rem 1rem;
+				color: white;
+				position: relative;
+			}
+
+			&.current a:before {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				margin-left: -10px;
+				border-bottom: 8px solid white;
+				border-right: 10px solid transparent;
+				border-left: 10px solid transparent;
+			}
+		}
+	}
+
+	div#message p,
+	#sitewide-notice p {
+		border-left: 3px solid $secondary-color;
+		box-shadow: 1px 1px 3px #ccc;
+	}
+
+	div#message {
+		&.error p {
+			border-color: $alert-color;
+		}
+		&.success p, &.updated p {
+			border-color: $primary-color;
+		}
+	}
+
 }

@@ -27,6 +27,8 @@ class SC_Study {
 	protected function __construct() {
 		add_action( 'wp_ajax_sc_save_answer', array( $this, 'save_answer' ) );
 		add_action( 'template_redirect', array( $this, 'setup_study_group' ) );
+		add_filter( 'private_title_format', array( $this, 'private_title_format' ), 10, 2 );
+		add_filter( 'user_has_cap',         array( $this, 'private_study_cap'    ), 10, 4 );
 	}
 
 	/**
@@ -100,6 +102,51 @@ class SC_Study {
 		}
 	}
 
+	/**
+	 * Remove "Private:" label from private sc_study posts
+	 *
+	 * @param $format
+	 * @param $post
+	 *
+	 * @return string
+	 */
+	public function private_title_format( $format, $post ) {
+		if ( 'sc_study' != $post->post_type ) {
+			return $format;
+		}
+
+		return '%s';
+	}
+
+	public function private_study_cap( $allcaps, $caps, $args, $user ) {
+		if ( empty( $user->ID ) ) {
+			return $allcaps;
+		}
+
+		// we are only interested in private posts capability
+		if ( ! in_array( 'read_private_posts', $caps ) ) {
+			return $allcaps;
+		}
+
+		// this user can already ready private posts
+		if ( isset( $allcaps['read_private_posts'] ) && $allcaps['read_private_posts'] ) {
+			return $allcaps;
+		}
+
+		// make sure this is a study
+		if ( empty( $args[2] ) || 'sc_study' != get_post_type( absint( $args[2] ) ) ) {
+			return $allcaps;
+		}
+
+		// make sure this user has access to this study
+		if ( ! sc_user_can_access_study( absint( $args[2] ), $user->ID ) ) {
+			return $allcaps;
+		}
+
+		$allcaps['read_private_posts'] = true;
+
+		return $allcaps;
+	}
 }
 
 /**

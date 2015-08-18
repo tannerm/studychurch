@@ -145,6 +145,18 @@ function sc_get_study_user_group_id( $study_id = null, $user_id = null ) {
 
 }
 
+/**
+ * Can the user access this study?
+ *
+ * @param null $study_id
+ * @param null $user_id
+ *
+ * @return bool
+ */
+function sc_user_can_access_study( $study_id = null, $user_id = null ) {
+	return (bool) sc_get_study_user_group_id( $study_id, $user_id );
+}
+
 function sc_study_index( $id = null ) {
 	echo walk_page_tree( sc_study_get_navigation( $id ), 0, get_queried_object_id(), array() );
 }

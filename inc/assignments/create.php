@@ -32,7 +32,8 @@ class SC_Assignments_Create {
 	 */
 	protected function __construct() {
 		add_action( 'cmb2_init', array( $this, 'register_form'   ) );
-		add_action( 'wp',      array( $this, 'save_assignment' ) );
+		add_action( 'init',      array( $this, 'save_assignment' ) );
+		add_action( 'init',      array( $this, 'delete_assignment' ) );
 	}
 
 	public function register_form() {
@@ -56,44 +57,48 @@ class SC_Assignments_Create {
 
 	}
 
+	public function delete_assignment() {
+		if ( ! isset( $_POST['delete_assignment_nonce'] ) ) {
+			return;
+		}
+
+		if ( empty( $_POST['assignment'] ) || ! wp_verify_nonce( $_POST['delete_assignment_nonce'], 'delete_assignment' ) ) {
+			return;
+		}
+
+		if ( sc_delete_group_assignment( absint( $_POST['assignment'] ) ) ) {
+			bp_core_add_message( __( 'Success! Assignment was deleted.', 'sc' ), 'success' );
+			wp_safe_redirect( $_SERVER['REQUEST_URI'] );
+			exit();
+		} else {
+			bp_core_add_message( __( 'Ooops. Something went wrong, please try again.', 'sc' ), 'error' );
+		}
+	}
+
 	public function save_assignment() {
 
-		$cmb = cmb2_get_metabox( 'sc_assignments' );
-
 		// If no form submission, bail
-		if ( empty( $_POST ) ) {
+		if ( ! isset( $_POST['new_assignment_nonce'] ) ) {
 			return;
 		}
 
-		// check required $_POST variables and security nonce
-		if (
-			! isset( $_POST['submit-cmb'], $_POST['object_id'], $_POST[ $cmb->nonce() ] )
-			|| ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() )
-		) {
-			self::$_errors = new WP_Error( 'security_fail', __( 'Security check failed.' ) );
+		// make sure this user can manage assignments
+		if ( ! sc_user_can_manage_group() ) {
 			return;
 		}
 
-		if ( empty( $_POST['content'] ) ) {
-			self::$_errors = new WP_Error( 'post_data_missing', __( 'New assignment requires content.', 'sc' ) );
+		if ( ! wp_verify_nonce( $_POST['new_assignment_nonce'], 'create_new_assignment' ) ) {
+			bp_core_add_message( __( 'Ooops. Something went wrong, please try again.', 'sc' ), 'error' );
 			return;
 		}
 
-		if ( empty( $_POST['date'] ) ) {
-			self::$_errors = new WP_Error( 'post_data_missing', __( 'New assignment requires date.', 'sc' ) );
-			return;
+		if ( sc_add_group_assignment( $_POST, bp_get_current_group_id() ) ) {
+			bp_core_add_message( __( 'Success! Created a new assignment', 'sc' ), 'success' );
+			wp_safe_redirect( $_SERVER['REQUEST_URI'] );
+			exit();
+		} else {
+			bp_core_add_message( __( 'Ooops. Something went wrong, please make sure you have specified content or lessons and a due date.', 'sc' ), 'error' );
 		}
-
-		/** get the sanitized values */
-		$sanitized_values = $cmb->get_sanitized_values( $_POST );
-
-		foreach ( $sanitized_values as $key => $value ) {
-			if ( ! in_array( $key, array( 'content', 'date' ) ) ) {
-				unset( $sanitized_values[ $key ] );
-			}
-		}
-
-		sc_add_group_assignment( $sanitized_values, bp_get_current_group_id() );
 
 	}
 
@@ -129,7 +134,7 @@ function sc_add_group_assignment( $assignment, $group_id ) {
 		$assignments = array();
 	}
 
-	if ( empty( $assignment['content'] ) || empty( $assignment['date'] ) ) {
+	if ( ( empty( $assignment['content'] ) && empty( $assignment['lessons'] ) ) || empty( $assignment['date'] ) ) {
 		return false;
 	}
 
@@ -140,7 +145,43 @@ function sc_add_group_assignment( $assignment, $group_id ) {
 		$key = absint( strtotime( $assignment['date'] ) . rand( 1000, 9999 ) );
 	}
 
-	$assignments[ $key ] = $assignment;
+	$assignments[ $key ]['key'] = $key;
+	$assignments[ $key ]['date'] = $assignment['date'];
+
+	if ( ! empty( $assignment['lessons'] ) ) {
+		$assignments[ $key ]['lessons'] = array_map( 'absint', (array) $assignment['lessons'] );
+	}
+	
+	if ( ! empty( $assignment['content'] ) ) {
+		$assignments[ $key ]['content'] = wp_filter_post_kses( $assignment['content'] );
+	}
+
+	return groups_update_groupmeta( $group_id, SC_Assignments_Query::$_key, $assignments );
+}
+
+/**
+ * Delete a group assignment
+ *
+ * @param $assignment
+ * @param $group_id
+ *
+ * @return bool|int
+ */
+function sc_delete_group_assignment( $assignment, $group_id = null ) {
+
+	if ( ! $group_id ) {
+		$group_id = bp_get_current_group_id();
+	}
+
+	if ( ! $assignments = sc_get_group_assignments( $group_id ) ) {
+		return false;
+	}
+
+	if ( ! isset( $assignments[ $assignment ] ) ) {
+		return false;
+	}
+
+	unset( $assignments[ $assignment ] );
 
 	return groups_update_groupmeta( $group_id, SC_Assignments_Query::$_key, $assignments );
 }

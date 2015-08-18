@@ -14,11 +14,12 @@ $assignments = new SC_Assignments_Query( array( 'count' => 1 ) );
 		<a href="<?php sc_the_assignment_permalink(); ?>" class="alignright ucase small"><?php _e( 'See all assignments', 'sc' ); ?></a>
 	<?php endif; ?>
 
-	<h3><?php _e( 'Assignments', 'sc' ); ?></h3>
-
-	<?php if ( $assignments->have_assignments() ) : $assignments->the_assignment(); ?>
-		<h4><?php _e( 'Assignment Due: ', 'sc' ); ?><?php $assignments->the_date_formatted(); ?></h4>
-		<?php $assignments->the_content(); ?>
+	<?php if ( $assignments->have_assignments() ) : ?>
+		<?php while( $assignments->the_assignment() ) : ?>
+			<h4><?php _e( 'Assignment Due: ', 'sc' ); ?><?php $assignments->the_date_formatted(); ?></h4>
+			<?php $assignments->the_lessons(); ?>
+			<?php $assignments->the_content(); ?>
+		<?php endwhile; ?>
 	<?php else : ?>
 		<p>
 			<?php esc_html_e( 'There are no assignment for this group.', 'sc' ); ?>

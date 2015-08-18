@@ -4,6 +4,8 @@
 	var scAjaxForm = function($form) {
 		var SELF = this;
 
+		SELF.processing = false;
+
 		SELF.init = function() {
 			SELF.$form = $form;
 
@@ -11,16 +13,23 @@
 				return;
 			}
 
+			SELF.$button = SELF.$form.find('input[type=submit]');
 			SELF.$form.on('submit', SELF.handleSubmission);
 		};
 
 		SELF.handleSubmission = function(e) {
 			e.preventDefault();
 
+			if (SELF.processing) {
+				return false;
+			}
+
 			SELF.data = {
 				action: 'sc_ajax_form',
 				formdata: SELF.$form.serialize()
 			};
+
+			SELF.startProcessing();
 
 			wp.ajax.send( 'sc_ajax_form', {
 				success: SELF.response,
@@ -31,8 +40,7 @@
 		};
 
 		SELF.response = function(data) {
-			SELF.$form.find('.status-message').remove();
-			SELF.$form.prepend('<p class="success-message">' + data.message + '</p>');
+			SELF.finishProcessing(data.message, true);
 
 			if (data.url) {
 				window.location = data.url;
@@ -41,10 +49,27 @@
 		};
 
 		SELF.error = function ( data ) {
-			SELF.$form.find('.spinner').hide();
-			SELF.$form.find('.alert-box').remove();
+			SELF.finishProcessing('Ooops! Something went wrong, please try again.', false);
 			SELF.$form.prepend( '<div class="alert-box alert" data-alert>' + data.message + '</div>');
 			console.log( data );
+		};
+
+		SELF.startProcessing = function() {
+			SELF.processing = true;
+			SELF.$form.find('.alert-box').remove();
+			SELF.$button.val('Processing...').removeClass('secondary primary alert').addClass('processing secondary');
+		};
+
+		SELF.finishProcessing = function(value, success) {
+			SELF.processing = false;
+			SELF.$button.removeClass('processing secondary primary alert').val(value);
+
+			if (success) {
+				SELF.$button.addClass('primary');
+			} else {
+				SELF.$button.addClass('alert');
+			}
+
 		};
 
 		SELF.init();

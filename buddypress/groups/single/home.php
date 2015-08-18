@@ -47,6 +47,9 @@
 		</div>
 
 		<div class="columns medium-8">
+
+			<?php bp_core_render_message(); ?>
+
 			<?php /*
 
 			if ( bp_is_group_admin_page() ) {
