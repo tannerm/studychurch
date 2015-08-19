@@ -20,7 +20,7 @@
 			<?php elseif( sc_user_can_manage_group() ) : ?>
 				<h3><?php _e( 'Study: Uh oh! No study.', 'sc' ); ?></h3>
 				<p><?php _e( 'Looks like you haven\'t added a study to this group yet. No worries though, you can do that here:', 'sc' ); ?></p>
-				<a href="<?php bp_group_admin_permalink(); ?>study/" class="button small alert expand"><?php _e( 'Add a study', 'sc' ); ?></a>
+				<a href="<?php bp_group_admin_permalink(); ?>study/" class="button small expand"><?php _e( 'Add a study', 'sc' ); ?></a>
 			<?php endif; ?>
 
 			<hr />
