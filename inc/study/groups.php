@@ -124,7 +124,7 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 				</div>
 
 				<?php if ( bp_is_group_admin_page() ) : ?>
-					<input type="submit" name="save" value="<?php _e( 'Save Settings', 'sc' );?>" class="button secondary expand" />
+					<input type="submit" name="save" value="<?php _e( 'Save Group Study', 'sc' );?>" class="button secondary expand" />
 				<?php endif; ?>
 
 			<?php
