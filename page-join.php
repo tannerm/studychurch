@@ -69,7 +69,7 @@ get_header(); ?>
 				<div class="container text-center">
 					<h1><?php _e( 'You have been invited to join StudyChurch!', 'sc' ); ?></h1>
 
-					<p><?php _e( 'Thank you for joining the StudyChurch family! Fill out the information below to create your free account.', 'sc' ); ?></p>
+					<p><?php _e( 'Fill out the information below to create your free account.', 'sc' ); ?></p>
 				</div>
 			</div>
 
