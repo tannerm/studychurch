@@ -34,7 +34,8 @@
 					<!-- Title Area -->
 					<li class="name">
 						<h1>
-							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+							<?php $link = ( is_user_logged_in() ) ? bp_loggedin_user_domain() : home_url( '/' ); ?>
+							<a href="<?php echo esc_url( $link ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
 
 								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $header_logo; ?>" />
 								<span class="screen-reader"><?php bloginfo( 'name' ); ?></span>

@@ -8714,7 +8714,8 @@ be set to display none.
   .single-sc_study .lesson-nav,
   .single-sc_study .sudo-save,
   .single-sc_study .study-answers,
-  .single-sc_study .read-only {
+  .single-sc_study .read-only,
+  .single-sc_study .bug-report-cont {
     display: none !important; }
   .single-sc_study .comment-form {
     display: block !important; }
