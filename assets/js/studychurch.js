@@ -365,6 +365,7 @@ jQuery(document).ready(function($){
 
 		$('.bug-report-button').on('click', function() {
 			$(this).parents('.bug-report-cont').find('.form').slideToggle();
+			return false;
 		});
 
 		var $restrictedContainer = $(document.getElementById('restricted-message'));
