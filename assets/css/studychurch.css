@@ -8016,7 +8016,24 @@ body:not(.logged-in) .site-header .top-bar-section li:not(.has-form) a:not(.butt
   color: #4d4d4d; }
 
 .site-header {
-  margin-bottom: 6rem; }
+  margin-bottom: 6rem;
+  /* The ribbons */ }
+  .site-header .corner-ribbon {
+    width: 200px;
+    background: #fcb017;
+    top: 15px;
+    left: -70px;
+    text-align: center;
+    line-height: 40px;
+    letter-spacing: 1px;
+    color: #f0f0f0;
+    transform: rotate(-45deg);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    -webkit-transform: rotate(-45deg);
+    z-index: 5;
+    float: left;
+    position: relative;
+    margin-right: -140px; }
 
 .main-navigation a {
   color: white; }
@@ -8105,21 +8122,6 @@ body:not(.logged-in) .site-header .top-bar-section li:not(.has-form) a:not(.butt
       .bug-report-cont .form .gform_footer .gform_button {
         margin: 0;
         width: 100%; }
-
-/* The ribbons */
-.corner-ribbon {
-  width: 200px;
-  background: #fcb017;
-  top: 15px;
-  left: -70px;
-  text-align: center;
-  line-height: 40px;
-  letter-spacing: 1px;
-  color: #f0f0f0;
-  transform: rotate(-45deg);
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-  position: absolute;
-  -webkit-transform: rotate(-45deg); }
 
 .add-button {
   font-size: 1.25rem;

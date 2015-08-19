@@ -13,6 +13,26 @@ body:not(.logged-in) {
 .site-header {
 	margin-bottom: 6rem;
 //	border-bottom: 2px solid $info-color;
+
+	/* The ribbons */
+
+	.corner-ribbon{
+		width: 200px;
+		background: #fcb017;
+		top: 15px;
+		left: -70px;
+		text-align: center;
+		line-height: 40px;
+		letter-spacing: 1px;
+		color: #f0f0f0;
+		transform: rotate(-45deg);
+		box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+		-webkit-transform: rotate(-45deg);
+		z-index: 5;
+		float: left;
+		position: relative;
+		margin-right: -140px;
+	}
 }
 
 .main-navigation {

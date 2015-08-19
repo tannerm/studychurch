@@ -45,8 +45,6 @@
 					<?php gravity_form( 4, false, false, false, false, true ); ?>
 				</div>
 			</div>
-
-			<div class="corner-ribbon top-left sticky red shadow">Beta</div>
 		<?php endif; ?>
 
 		<?php wp_footer(); ?>

@@ -24,6 +24,8 @@
 <div id="page" class="hfeed site">
 	<?php do_action( 'before' ); ?>
 	<header id="masthead" class="site-header" role="banner">
+		<div class="corner-ribbon top-left sticky red shadow">Beta</div>
+
 		<div class="contain-to-grid">
 			<nav id="site-navigation" class="main-navigation top-bar" role="navigation" data-topbar data-options="is_hover: false">
 				<ul class="title-area">
