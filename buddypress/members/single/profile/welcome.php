@@ -7,13 +7,19 @@
 
 <h4>Writing Studies</h4>
 <p>Tired of the hassle of putting together group material? Us too. Use <strong>Studies</strong> to manage your group study material whether it's a custom study or a companion study you've written for a book study your going through. Here, let me show you.</p>
-<?php echo apply_filters( 'the_content', 'https://youtu.be/eX4nSYV-4Bk' ); ?>
+<div class="video-container">
+	<?php echo apply_filters( 'the_content', 'https://youtu.be/eX4nSYV-4Bk' ); ?>
+</div>
 
 <h4>Creating Groups</h4>
 <p>In the sidebar you'll notice a <strong>Groups</strong> section. Click the plus in the <strong>Groups</strong> section to create a new group. Here is a video we've put together showing you how to setup a new small group.</p>
-<?php echo apply_filters( 'the_content', 'https://youtu.be/e5bEFkmMLZI' ); ?>
+<div class="video-container">
+	<?php echo apply_filters( 'the_content', 'https://youtu.be/e5bEFkmMLZI' ); ?>
+</div>
 
 <h4>Putting it all Together</h4>
 <p>Alright, well done! Now let's put the pieces together and see what happens.</p>
-<?php echo apply_filters( 'the_content', 'https://youtu.be/Bv59cTf3e3Q' ); ?>
+<div class="video-container">
+	<?php echo apply_filters( 'the_content', 'https://youtu.be/Bv59cTf3e3Q' ); ?>
+</div>
 
