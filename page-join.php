@@ -59,8 +59,8 @@ get_header(); ?>
 				</div>
 
 				<div id="start-now-body">
-					<?php get_template_part( 'partials/register' ); ?>
 					<p><a href="#" class="switch"><?php _e( 'Already have an account? Login' ); ?> &rarr;</a></p>
+					<?php get_template_part( 'partials/register' ); ?>
 				</div>
 			</div>
 		<?php elseif( 'beta' == $valid ) : ?>

@@ -5,7 +5,7 @@
 
 	<div class="row">
 		<div class="small-12 columns">
-			<label for="sc-login"><?php _e( 'Login or Email', 'sc' ); ?></label>
+			<label for="sc-login"><?php _e( 'Username or Email', 'sc' ); ?></label>
 			<input type="text" name="user_login" id="sc-login" placeholder="john.doe@gmail.com" required />
 		</div>
 	</div>
