@@ -19,11 +19,19 @@
 	<div class="entry-content">
 		<?php the_content(); ?>
 
-		<?php comments_template( '/comments-study.php', true ); ?>
+		<?php if ( in_array( sc_get_data_type(), array( 'question_long', 'question_short' ) ) ) : ?>
+			<div class="study-answers-container">
 
-		<?php if ( sc_study_get_answer() ) : ?>
-			<?php get_template_part( 'partials/study-element', 'answers' ); ?>
+				<?php comments_template( '/comments-study.php', true ); ?>
+
+				<?php if ( sc_study_get_answer() ) : ?>
+					<?php global $sc_answer; $sc_answer = sc_study_get_answer(); ?>
+					<?php get_template_part( 'partials/study-element', 'answers' ); ?>
+				<?php endif; ?>
+
+			</div>
 		<?php endif; ?>
+
 	</div>
 	<!-- .entry-content -->
 

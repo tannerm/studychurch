@@ -124,8 +124,10 @@ function sc_get_study_id( $id = null ) {
 function sc_get_study_user_group_id( $study_id = null, $user_id = null ) {
 
 	if ( ! $study_id ) {
-		$study_id = sc_get_study_id();
+		$study_id = get_the_ID();
 	}
+
+	$study_id = sc_get_study_id( $study_id );
 
 	if ( ! $user_id ) {
 		$user_id = get_current_user_id();
@@ -135,7 +137,7 @@ function sc_get_study_user_group_id( $study_id = null, $user_id = null ) {
 		return false;
 	}
 
-	foreach( groups_get_groups( 'user_id=' . $user_id )['groups'] as $group ) {
+	foreach( groups_get_groups( 'show_hidden=true&user_id=' . $user_id )['groups'] as $group ) {
 		if ( sc_get_group_study_id( $group->id ) == $study_id ) {
 			return $group->id;
 		}
@@ -227,7 +229,7 @@ function sc_study_navigation( $id = null ) {
 		$output .= sprintf( '<span class="right next"><a href="%s" title="%s">%s <i class="fa fa-caret-right"></i></a></span>', get_the_permalink( $next->ID ), the_title_attribute( 'echo=0&post=' . $next->ID ), get_the_title( $next->ID ) );
 	}
 
-	printf( '<p class="clearfix">%s</p>', $output );
+	printf( '<p class="clearfix lesson-nav">%s</p>', $output );
 
 }
 
@@ -237,6 +239,10 @@ function sc_study_navigation( $id = null ) {
  * @return array|int
  */
 function sc_study_get_answer() {
+	if ( ! bp_get_group_id() ) {
+		return false;
+	}
+
 	$answer = get_comments( array(
 		'post_id'    => get_the_ID(),
 		'meta_key'   => 'group_id',

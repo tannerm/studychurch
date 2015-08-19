@@ -26,9 +26,11 @@ class SC_Study {
 	 */
 	protected function __construct() {
 		add_action( 'wp_ajax_sc_save_answer', array( $this, 'save_answer' ) );
-		add_action( 'template_redirect', array( $this, 'setup_study_group' ) );
-		add_filter( 'private_title_format', array( $this, 'private_title_format' ), 10, 2 );
-		add_filter( 'user_has_cap',         array( $this, 'private_study_cap'    ), 10, 4 );
+		add_action( 'template_redirect',      array( $this, 'setup_study_group' ) );
+		add_action( 'wp_head',              array( $this, 'print_styles'      ) );
+
+		add_filter( 'private_title_format',   array( $this, 'private_title_format' ), 10, 2 );
+		add_filter( 'user_has_cap',           array( $this, 'private_study_cap'    ), 10, 4 );
 	}
 
 	/**
@@ -52,6 +54,9 @@ class SC_Study {
 			'comment_parent'       => 0,
 			'user_id'              => $user->ID,
 		);
+
+		global $post;
+		$post = get_post( $data['comment_post_ID'] );
 
 		$lesson_id = wp_get_post_parent_id( $data['comment_post_ID'] );
 
@@ -79,18 +84,37 @@ class SC_Study {
 		if ( ! sc_answer_is_private( $data['comment_post_ID'] ) ) {
 			$activity_id = bp_activity_add( $activity_meta );
 			update_comment_meta( $data['comment_ID'], 'activity_id', $activity_id );
+
 		}
+
+		$this->setup_study_group( $data['comment_post_ID'] );
+
+		ob_start();
+		global $sc_answer;
+		$sc_answer = get_comment( $data['comment_ID'] );
+		get_template_part( 'partials/study-element', 'answers' );
+		$data['answers'] = ob_get_clean();
 
 		wp_send_json_success( $data );
 	}
 
-	public function setup_study_group() {
-		if ( ! is_singular( 'sc_study' ) ) {
+	/**
+	 * Setup global for current group
+	 */
+	public function setup_study_group( $study_id = false ) {
+		if ( empty( $study_id ) && ! is_singular( 'sc_study' ) ) {
 			return;
 		}
 
-		if ( ! $group_id = sc_get_study_user_group_id() ) {
-			wp_die( 'no access' );
+		if ( ! $group_id = sc_get_study_user_group_id( $study_id ) ) {
+
+			// allow editors and up to proceed
+			if ( current_user_can( 'edit_post', sc_get_study_id( $study_id ) ) ) {
+				return;
+			}
+
+			wp_safe_redirect( bp_loggedin_user_domain() );
+			die();
 		}
 
 		bp_has_groups( 'include=' . $group_id );
@@ -98,8 +122,10 @@ class SC_Study {
 		bp_the_group();
 
 		if ( ! bp_get_group_id() ) {
-			wp_die( 'no access' );
+			wp_safe_redirect( bp_loggedin_user_domain() );
+			die();
 		}
+
 	}
 
 	/**
@@ -146,6 +172,19 @@ class SC_Study {
 		$allcaps['read_private_posts'] = true;
 
 		return $allcaps;
+	}
+
+	public function print_styles() {
+		if ( ! is_singular( 'sc_study' ) ) {
+			return;
+		} ?>
+		<style>
+			@page {
+				size: 8.5in 11in;
+				margin: 10%;
+			}
+		</style>
+		<?php
 	}
 }
 

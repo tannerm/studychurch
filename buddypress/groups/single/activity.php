@@ -23,10 +23,10 @@ $assignments = new SC_Assignments_Query( array( 'count' => 1 ) );
 	<?php else : ?>
 		<p>
 			<?php esc_html_e( 'There are no assignment for this group.', 'sc' ); ?>
-			<?php if ( sc_user_can_manage_group() ) : ?>
-				<br /><a href="<?php sc_the_assignment_permalink(); ?>"><?php esc_html_e( 'Add an assignment.', 'sc' ); ?></a>
-			<?php endif; ?>
 		</p>
+		<?php if ( sc_user_can_manage_group() ) : ?>
+			<a href="#" data-reveal-id="create-assignment" class="small ucase"><i class="fa fa-plus-circle"></i> <?php _e( 'Add an assignment', 'sc' ); ?></a>
+		<?php endif; ?>
 	<?php endif; ?>
 </div>
 
@@ -76,7 +76,7 @@ $assignments = new SC_Assignments_Query( array( 'count' => 1 ) );
 	<?php else : ?>
 
 		<div id="message" class="info">
-			<p><?php _e( 'Sorry, there was no activity found. Please try a different filter.', 'buddypress' ); ?></p>
+			<p><?php _e( 'No discussions yet. If you hurry, you\'ll start the first one!', 'buddypress' ); ?></p>
 		</div>
 
 	<?php endif; ?>

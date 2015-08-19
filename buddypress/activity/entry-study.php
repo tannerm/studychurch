@@ -20,7 +20,7 @@ global $activities_template;
 	<div class="activity-content">
 
 		<div class="activity-header">
-			<div class="activity-avatar">
+			<div class="activity-avatar left">
 				<?php bp_activity_avatar(); ?>
 			</div>
 
@@ -70,7 +70,7 @@ global $activities_template;
 					<?php endif; ?>
 
 					<?php if ( get_current_user_id() == bp_get_activity_user_id() ) : ?>
-						<a href="#"><?php _e( 'Edit your answer', 'sc' ); ?></a>
+						<a href="#" class="edit-answer"><?php _e( 'Edit your answer', 'sc' ); ?></a>
 					<?php endif; ?>
 
 					<?php do_action( 'bp_activity_entry_meta' ); ?>
@@ -98,7 +98,7 @@ global $activities_template;
 						<div class="ac-textarea">
 							<textarea id="ac-input-<?php bp_activity_id(); ?>" class="ac-input bp-suggestions" name="ac_input_<?php bp_activity_id(); ?>"></textarea>
 						</div>
-						<input type="submit" name="ac_form_submit" value="<?php esc_attr_e( 'Post', 'buddypress' ); ?>" /> &nbsp;
+						<input type="submit" name="ac_form_submit" class="button small secondary" value="<?php esc_attr_e( 'Post', 'buddypress' ); ?>" /> &nbsp;
 						<a href="#" class="ac-reply-cancel"><?php _e( 'Cancel', 'buddypress' ); ?></a>
 						<input type="hidden" name="comment_form_id" value="<?php bp_activity_id(); ?>" />
 					</div>

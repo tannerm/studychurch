@@ -12,21 +12,25 @@ $comment_id = ( empty( $answer->comment_ID ) ) ? 0 : $answer->comment_ID;
 $answer     = ( empty( $answer->comment_content ) ) ? '' : $answer->comment_content;
 ?>
 
-<div id="comments" class="comments-area" <?php echo ( $answer ) ? 'style="display:none"' : ''; ?> >
-
+<div id="comments" class="comments-area" >
 
 	<?php if ( comments_open( get_the_ID() ) ) : ?>
 		<div id="respond" class="comment-respond">
-			<form action="<?php echo site_url( '/wp-comments-post.php' ); ?>" method="post" class="comment-form" novalidate>
-				<textarea id="comment-<?php the_ID(); ?>" name="comment" class="<?php echo esc_attr( $data_type ); ?>" cols="45" rows="<?php echo $rows; ?>" aria-describedby="form-allowed-tags" aria-required="true" required="required" placeholder="Your answer"><?php echo esc_textarea( $answer ); ?></textarea>
-				<p class="form-submit small text-right">
-					<a href="#" class="sudo-save">Save</a>
-					<input name="submit" type="submit" id="submit-<?php the_ID(); ?>" class="submit screen-reader-text" value="Save" />
-					<input type='hidden' name='comment_post_ID' value='<?php the_ID(); ?>' id='comment_post_ID' />
-					<input type='hidden' name='comment_ID' value='<?php echo esc_attr( $comment_id ); ?>' id='comment_ID' />
-					<input type='hidden' name='group_ID' value='<?php echo esc_attr( bp_get_group_id() ); ?>' id='group_ID' />
-					<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
-				</p>
+			<form action="<?php echo site_url( '/wp-comments-post.php' ); ?>" method="post" class="comment-form" <?php echo ( $answer ) ? 'style="display:none"' : ''; ?> novalidate>
+				<?php if ( bp_get_group_id() ) : ?>
+					<textarea id="comment-<?php the_ID(); ?>" name="comment" class="<?php echo esc_attr( $data_type ); ?>" cols="45" rows="<?php echo $rows; ?>" aria-describedby="form-allowed-tags" aria-required="true" required="required" placeholder="<?php _e( 'Your answer', 'sc' ); ?>"><?php echo esc_textarea( $answer ); ?></textarea>
+					<p class="form-submit small text-right">
+						<a href="#" class="sudo-save">Save</a>
+						<input name="submit" type="submit" id="submit-<?php the_ID(); ?>" class="submit screen-reader-text" value="Save" />
+						<input type='hidden' name='comment_post_ID' value='<?php the_ID(); ?>' id='comment_post_ID' />
+						<input type='hidden' name='comment_ID' value='<?php echo esc_attr( $comment_id ); ?>' id='comment_ID' />
+						<input type='hidden' name='group_ID' value='<?php echo esc_attr( bp_get_group_id() ); ?>' id='group_ID' />
+						<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+					</p>
+				<?php else : ?>
+					<textarea id="comment-<?php the_ID(); ?>" name="comment" class="<?php echo esc_attr( $data_type ); ?>" cols="45" rows="<?php echo $rows; ?>" aria-describedby="form-allowed-tags" aria-required="true" required="required" placeholder="<?php _e( 'Your answer', 'sc' ); ?>" disabled="disabled"><?php echo esc_textarea( $answer ); ?></textarea>
+					<p class="small description read-only"><?php _e( 'This is a "read only" view. To go through this study, assign it to a group.', 'sc' ); ?></p>
+				<?php endif; ?>
 			</form>
 		</div><!-- #respond -->
 	<?php endif; ?>

@@ -51,14 +51,14 @@ get_header(); ?>
 			</div>
 
 			<div class="medium-6 small-centered columns" role="main">
-				<div id="login">
+				<div id="login-body" class="hide">
 					<?php get_template_part( 'partials/login' ); ?>
 					<p>
 						<a href="#" class="switch"><?php _e( "Need an account? You can register for free", 'sc' ); ?> &rarr;</a>
 					</p>
 				</div>
 
-				<div id="start-now" class="hide">
+				<div id="start-now-body">
 					<?php get_template_part( 'partials/register' ); ?>
 					<p><a href="#" class="switch"><?php _e( 'Already have an account? Login' ); ?> &rarr;</a></p>
 				</div>

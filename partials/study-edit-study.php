@@ -13,9 +13,10 @@
 	<label for="study-thesis"><?php _e( 'Study Description', 'sc' ); ?></label>
 	<textarea id="study-thesis" name="study-thesis" rows="10"><?php echo esc_textarea( $item->post_excerpt ); ?></textarea>
 
-	<label for="study-description"><?php _e( 'Study Introduction', 'sc' ); ?></label>
-	<?php wp_editor( $item->post_content, 'study-description', array( 'teeny' => true, 'quicktags' => false ) ); ?>
-
+	<?php if ( 0 ) : ?>
+		<label for="study-description"><?php _e( 'Study Introduction', 'sc' ); ?></label>
+		<?php wp_editor( $item->post_content, 'study-description', array( 'teeny' => true, 'quicktags' => false ) ); ?>
+	<?php endif; ?>
 
 	<input type="hidden" name="study_id" value="<?php echo $study_id; ?>" />
 	<input type="hidden" name="step" value="<?php echo sc_study_edit_get_current_step( $study_id ); ?>" />

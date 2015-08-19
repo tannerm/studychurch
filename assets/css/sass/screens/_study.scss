@@ -46,7 +46,7 @@
 			}
 
 			.show-comments {
-				display: inline;
+				display: block;
 			}
 		}
 
@@ -68,7 +68,7 @@
 		}
 
 		.group-answer-toggle-container {
-			margin: 1rem;
+			margin: 0;
 		}
 
 		&.answers-hide {
@@ -78,7 +78,7 @@
 			}
 
 			.show-answers {
-				display: inline;
+				display: block;
 			}
 		}
 	}

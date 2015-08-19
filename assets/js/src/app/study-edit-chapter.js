@@ -9,7 +9,11 @@ var StudyApp = StudyApp || {};
 	StudyApp.Models.Chapter = Backbone.Model.extend({
 
 		urlRoot: function () {
-			return this.collection.url()
+			if ( this.collection ) {
+				return this.collection.url()
+			} else {
+				return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
+			}
 		},
 
 		url : function() {

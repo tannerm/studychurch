@@ -32,8 +32,22 @@ class SC_BP_Filter {
 		add_filter( 'bp_avatar_is_front_edit',           array( $this, 'avatar_is_front_edit'  ) );
 		add_filter( 'bp_displayed_user_id',              array( $this, 'displayed_user_id'     ) );
 		add_filter( 'bp_activity_get',                   array( $this, 'sort_activities'       ) );
+		add_filter( 'bp_before_has_groups_parse_args',   array( $this, 'has_group_args' ) );
 
+		add_action( 'template_redirect',                 array( $this, 'redirect_single_activity' ) );
 		add_action( 'bp_activity_before_save',           array( $this, 'activity_mentions'     ), 9 );
+	}
+
+	/**
+	 * Default to show hidden
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
+	public function has_group_args( $args ) {
+		$args['show_hidden'] = true;
+		return $args;
 	}
 
 	public function group_activity_action( $action ) {
@@ -107,14 +121,20 @@ class SC_BP_Filter {
 		if ( ! empty( $activity->is_spam ) )
 			return;
 
-		// Try to find mentions
-		$usernames = bp_activity_find_mentions( $activity->content );
+		if ( preg_match( '/(@group\b)/', $activity->content ) ) {
+			$usernames = groups_get_group_members( array( 'exclude_admins_mods' => false ) )['members'];
+			$usernames = wp_list_pluck( $usernames, 'user_login', 'ID' );
+			$activity->content = preg_replace( '/(@group\b)/', "<span class='mention'>@group</span>", $activity->content );
+		} else {
+			// Try to find mentions
+			$usernames = bp_activity_find_mentions( $activity->content );
+		}
 
 		// We have mentions!
 		if ( ! empty( $usernames ) ) {
 			// Replace @mention text with userlinks
 			foreach( (array) $usernames as $user_id => $username ) {
-				$activity->content = preg_replace( '/(@' . $username . '\b)/', "<span class='username'>@$username</span>", $activity->content );
+				$activity->content = preg_replace( '/(@' . $username . '\b)/', "<span class='mention username'>@$username</span>", $activity->content );
 			}
 
 			// Add our hook to send @mention emails after the activity item is saved
@@ -155,4 +175,29 @@ class SC_BP_Filter {
 		$activities['activities'] = array_values( $activities['activities'] );
 		return $activities;
 	}
+
+	public function redirect_single_activity() {
+		if ( ! bp_is_activity_component() ) {
+			return;
+		}
+
+		$activity = bp_activity_get( array( 'in' => absint( bp_current_action() ), 'show_hidden' => true ) );
+
+		if ( empty( $activity['activities'][0] ) ) {
+			wp_safe_redirect( bp_loggedin_user_domain() );
+			die();
+		}
+
+		$activity = $activity['activities'][0];
+
+		if ( groups_is_user_member( get_current_user_id(), $activity->item_id ) ) {
+			$group = groups_get_group( array( 'group_id' => $activity->item_id ) );
+			wp_safe_redirect( bp_get_group_permalink( $group ) );
+			die();
+		}
+
+		wp_safe_redirect( bp_loggedin_user_domain() );
+		die();
+	}
+
 }

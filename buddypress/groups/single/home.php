@@ -17,6 +17,10 @@
 				<p><?php echo apply_filters( 'the_excerpt', get_post( $study_id )->post_excerpt ); ?></p>
 			<?php elseif( $study = groups_get_groupmeta( bp_get_group_id(), 'study_name', true ) ) : ?>
 				<h3><?php _e( 'Study:', 'sc' ); ?> <?php echo esc_html( $study ); ?></h3>
+			<?php elseif( sc_user_can_manage_group() ) : ?>
+				<h3><?php _e( 'Study: Uh oh! No study.', 'sc' ); ?></h3>
+				<p><?php _e( 'Looks like you haven\'t added a study to this group yet. No worries though, you can do that here:', 'sc' ); ?></p>
+				<a href="<?php bp_group_admin_permalink(); ?>study/" class="button small alert expand"><?php _e( 'Add a study', 'sc' ); ?></a>
 			<?php endif; ?>
 
 			<hr />
@@ -27,7 +31,8 @@
 					<span class="description small"><?php _e( 'Use this link to invite members to join this group.', 'sc' ); ?></span>
 				</h4>
 				<p class="small">
-					<textarea rows="3" disabled="disabled"><?php printf( "%s?group=%s&key=%s", trailingslashit( home_url( 'join' ) ), bp_get_group_slug(), sc_get_group_invite_key() ); ?></textarea>
+					<textarea rows="3" class="group-invite-link no-margin"><?php printf( "%s?group=%s&key=%s", trailingslashit( home_url( 'join' ) ), bp_get_group_slug(), sc_get_group_invite_key() ); ?></textarea>
+					<span class="description"><?php _e( 'Use ctr + c or cmd + c to copy.', 'sc' ); ?></span>
 				</p>
 			<?php endif; ?>
 

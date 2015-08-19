@@ -47,6 +47,7 @@
 		});
 
 		$('.froala-inline').editable({
+			minHeight: 100,
 			buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'sep',
 				'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
 				'createLink'
@@ -57,6 +58,14 @@
 		$('.footer-subscribe #input_1_1').on('focus', function() {
 			$(document).foundation();
 			$('#field_1_2').show();
+		});
+
+		$('.group-invite-link').on('click', function() {
+			$(this).select();
+		});
+
+		$('.bug-report-button').on('click', function() {
+			$(this).parents('.bug-report-cont').find('.form').slideToggle();
 		});
 
 		var $restrictedContainer = $(document.getElementById('restricted-message'));

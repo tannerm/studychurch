@@ -9,9 +9,10 @@ $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&pare
 		<h2><?php _e( 'Assignments', 'sc' ); ?></h2>
 
 		<?php foreach ( $groups['groups'] as $group_id ) : $group = groups_get_group( 'group_id=' . $group_id ); ?>
-			<?php $assignments = new SC_Assignments_Query( array( 'count' => 1, 'group_id' => $groups['groups'] ) ); ?>
+			<?php $assignments = new SC_Assignments_Query( array( 'count' => 1, 'group_id' => $group_id ) ); ?>
 			<?php if ( $assignments->have_assignments() ) : $assignments->the_assignment(); ?>
 				<h4><?php _e( 'Assignment Due:', 'sc' ); ?> <?php $assignments->the_date_formatted(); ?></h4>
+				<?php $assignments->the_lessons(); ?>
 				<?php $assignments->the_content(); ?>
 				<p class="text-right small">
 					<a href="<?php echo get_the_permalink( sc_get_group_study_id( $group_id ) ); ?>"><?php echo get_the_title( sc_get_group_study_id( $group_id ) ); ?></a> |

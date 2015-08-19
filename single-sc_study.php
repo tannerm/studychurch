@@ -13,15 +13,16 @@ $elements = new WP_Query( array(
 	'post_type'      => 'sc_study',
 	'post_parent'    => get_the_ID(),
 	'meta_key'       => '_sc_data_type',
-	'posts_per_page' => -1,
+	'posts_per_page' => 9999,
 	'orderby'        => 'menu_order',
+	'order'          => 'ASC',
 ) );
 
 get_comments();?>
 
 	<div class="row">
 		<?php get_sidebar( 'study' ); ?>
-		<div id="buddypress" class="large-8 small-12 columns" role="main">
+		<div id="buddypress" class="medium-8 small-12 columns" role="main">
 			<div id="content" role="main">
 				<?php while ( have_posts() ) : the_post(); ?>
 					<?php sc_study_navigation(); ?>

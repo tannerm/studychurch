@@ -13,73 +13,95 @@ though, go for it.
 
 ******************************************************************/
 
+html {
+	font-size: 100%;
+}
 
+* {
+	background:  transparent !important;
+	color:       black !important;
+	text-shadow: none !important;
+	filter:      none !important;
+	-ms-filter:  none !important;
+}
 
-  * {
-    background: transparent !important;
-    color: black !important;
-    text-shadow: none !important;
-    filter:none !important;
-    -ms-filter: none !important;
-  }
+::-webkit-input-placeholder {
+	/* WebKit browsers */
+	color: transparent;
+}
 
-  a, a:visited {
-    color: #444 !important;
-    text-decoration: underline;
+:-moz-placeholder {
+	/* Mozilla Firefox 4 to 18 */
+	color: transparent;
+}
 
-    // show links on printed pages
-    &:after {
-      content: " (" attr(href) ")";
-    }
+::-moz-placeholder {
+	/* Mozilla Firefox 19+ */
+	color: transparent;
+}
 
-    // show title too
-    abbr[title]:after {
-      content: " (" attr(title) ")";
-    }
-  }
+:-ms-input-placeholder {
+	/* Internet Explorer 10+ */
+	color: transparent;
+}
 
-  .ir a:after,
-  a[href^="javascript:"]:after,
-  a[href^="#"]:after {
-    content: "";
-  }
+a, a:visited {
+	color:           #444 !important;
+	text-decoration: underline;
 
-  pre, blockquote {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
+	// show links on printed pages
+	&:after {
+		content: " (" attr(href) ")";
+	}
 
-  thead {
-    display: table-header-group;
-  }
+	// show title too
+	abbr[title]:after {
+		content: " (" attr(title) ")";
+	}
+}
 
-  tr, img {
-    page-break-inside: avoid;
-  }
+.ir a:after,
+a[href^="javascript:"]:after,
+a[href^="#"]:after {
+	content: "";
+}
 
-  img {
-    max-width: 100% !important;
-  }
+pre, blockquote {
+	border:            1px solid #999;
+	page-break-inside: avoid;
+}
 
-    @page {
-      margin: 0.5cm;
-    }
+thead {
+	display: table-header-group;
+}
 
-    p, h2, h3 {
-      orphans: 3;
-      widows: 3;
-    }
+tr, img {
+	page-break-inside: avoid;
+}
 
-    h2,
-    h3 {
-      page-break-after: avoid;
-    }
+img {
+	max-width: 100% !important;
+}
 
-    // hide content people who print don't need to see
-    .sidebar,
-    .page-navigation,
-    .wp-prev-next,
-    .respond-form,
-    nav {
-      display: none;
-    }
+@page {
+	margin: 0.5cm;
+}
+
+p, h2, h3 {
+	orphans: 3;
+	widows:  3;
+}
+
+h2,
+h3 {
+	page-break-after: avoid;
+}
+
+// hide content people who print don't need to see
+.sidebar,
+.page-navigation,
+.wp-prev-next,
+.respond-form,
+nav {
+	display: none;
+}

@@ -100,5 +100,7 @@ sense to print at the bottom. Things like nav, ads, and forms should
 be set to display none.
 */
 @media print {
+
 	@import "print";
+	@import "print/study";
 }

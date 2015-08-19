@@ -55,3 +55,55 @@
 	padding: 3rem 0;
 	background: $body-font-color;
 }
+
+.bug-report-cont {
+	position: fixed;
+	bottom: 0;
+	right: 2rem;
+	color: white;
+
+	label {
+		color: white;
+	}
+
+	.handle a {
+		margin: 0;
+		float: right;
+	}
+
+	.form {
+		padding: 1rem 2rem 0;
+		max-width: 25rem;
+		background-color: $primary-color;
+
+		.gform_wrapper {
+			margin: 0;
+		}
+
+		.gform_footer {
+			margin: 0;
+			.gform_button {
+				margin: 0;
+				width: 100%;
+			}
+		}
+
+	}
+}
+
+/* The ribbons */
+
+.corner-ribbon{
+	width: 200px;
+	background: #fcb017;
+	top: 15px;
+	left: -70px;
+	text-align: center;
+	line-height: 40px;
+	letter-spacing: 1px;
+	color: #f0f0f0;
+	transform: rotate(-45deg);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+	position: absolute;
+	-webkit-transform: rotate(-45deg);
+}

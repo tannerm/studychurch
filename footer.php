@@ -36,6 +36,19 @@
 			<?php get_template_part( 'partials/modal', 'create-assignment' ); ?>
 		<?php endif; ?>
 
+		<?php if ( is_user_logged_in() ) : ?>
+			<div class="bug-report-cont">
+				<div class="handle clearfix">
+					<a href="#" class="no-margin button small bug-report-button"><?php _e( 'Need Help?', 'sc' ); ?></a>
+				</div>
+				<div class="form hide">
+					<?php gravity_form( 4, false, false, false, false, true ); ?>
+				</div>
+			</div>
+
+			<div class="corner-ribbon top-left sticky red shadow">Beta</div>
+		<?php endif; ?>
+
 		<?php wp_footer(); ?>
 
 	</body>

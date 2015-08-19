@@ -6,6 +6,7 @@
 
 	<div id="item-body" class="small-8 column" role="main">
 
+		<?php bp_core_render_message(); ?>
 		<?php do_action( 'bp_before_member_body' );
 
 		if ( bp_is_user_activity() || !bp_current_component() ) :

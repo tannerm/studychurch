@@ -126,6 +126,7 @@ class SC_Study_Edit {
 				$caps = array( 'exist' );
 				break;
 			case 'edit_post' :
+			case 'delete_post' :
 			case 'read_post' :
 				if ( isset( $args[0] ) && get_post( $args[0] )->post_author == $user_id ) {
 					$caps = array( 'exist' );

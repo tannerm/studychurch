@@ -90,26 +90,41 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 
 			if ( ! $is_admin ) : ?>
 
-				<h4><?php printf( esc_html__( 'Group %s Settings', 'sc' ), $this->name ); ?></h4>
+				<h4><?php printf( esc_html__( 'Group %s', 'sc' ), $this->name ); ?></h4>
 
 			<?php endif; ?>
 
-				<?php if ( $is_admin ) : ?>
+			<?php if ( $is_admin ) : ?>
 
-					<legend class="screen-reader-text"><?php printf( esc_html__( 'Group %s Settings', 'sc' ), $this->name ); ?></legend>
+				<legend class="screen-reader-text"><?php printf( esc_html__( 'Group %s', 'sc' ), $this->name ); ?></legend>
 
-				<?php endif; ?>
+			<?php endif; ?>
 
-				<p><?php _e( 'Studies allow the group go through a StudyChurch study together.' , 'sc'); ?></p>
+			<p><?php _e( 'Select a study for this group or head over to your profile and write a new one!', 'sc'); ?></p>
 
-				<div class="studies radio">
-					<?php foreach( get_posts( 'post_type=sc_study&numberposts=-1&post_parent=0' ) as $study ) : ?>
-						<label><input type="radio" name="_sc_study" value="<?php echo absint( $study->ID ); ?>" <?php checked( self::group_get_option( $group_id, '_sc_study' ), $study->ID ); ?>/> <?php echo get_the_title( $study->ID ); ?></label>
+			<div class="studies radio">
+				<table style="width: 100%;">
+					<tbody>
+					<?php foreach ( get_posts( 'post_status=publish,private&post_type=sc_study&numberposts=-1&post_parent=0&author=' . get_current_user_id() ) as $study ) : ?>
+						<tr>
+							<td>
+								<input type="radio" id="study-<?php echo absint( $study->ID ); ?>" name="_sc_study" value="<?php echo absint( $study->ID ); ?>" <?php checked( self::group_get_option( $group_id, '_sc_study' ), $study->ID ); ?>/>
+							</td>
+							<td>
+								<label for="study-<?php echo absint( $study->ID ); ?>">
+									<h4><?php echo get_the_title( $study->ID ); ?></h4>
+
+									<p class="small"><?php echo apply_filters( 'get_the_excerpt', $study->post_excerpt ); ?></p>
+								</label>
+							</td>
+						</tr>
 					<?php endforeach; ?>
+					</tbody>
+				</table>
 				</div>
 
 				<?php if ( bp_is_group_admin_page() ) : ?>
-					<input type="submit" name="save" value="<?php _e( 'Save Settings', 'sc' );?>" />
+					<input type="submit" name="save" value="<?php _e( 'Save Settings', 'sc' );?>" class="button secondary expand" />
 				<?php endif; ?>
 
 			<?php

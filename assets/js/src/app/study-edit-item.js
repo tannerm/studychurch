@@ -29,7 +29,7 @@ var StudyApp = StudyApp || {};
 				status        : 'publish',
 				type          : 'sc_study',
 				author        : StudyApp.user_id,
-				parent        : StudyApp.chapter_id,
+				parent        : StudyApp.CurrentChapter.model.get('id'),
 				menu_order    : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
 				comment_status: 'open',
 				ping_status   : 'closed',
@@ -65,7 +65,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Item,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.chapter_id + '/items/';
+			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
 		},
 
 		nextOrder: function () {
@@ -129,15 +129,27 @@ var StudyApp = StudyApp || {};
 			}
 
 			var value = ('checked' == $(e.target).attr('checked'));
-			this.setsave({is_private : value});
+			this.model.set({is_private : value});
+
+			// only save if we have an id
+			if (this.model.get('id')) {
+				this.setsave();
+			}
+
 			return false;
 		},
 
 		setDataType : function(e) {
 			var dataType = $(e.target).val();
-			this.$el.removeClass(this.model.get('data_type'));
-			this.$el.addClass(dataType);
-			this.setsave({data_type : dataType});
+			this.$el.removeClass(this.model.get('data_type')).addClass(dataType);
+
+			this.model.set({data_type : dataType});
+
+			// only save if we have an id
+			if (this.model.get('id')){
+				this.setsave();
+			}
+
 			return false;
 		},
 

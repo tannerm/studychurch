@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-08-17
+/*! StudyChurch - v0.1.0 - 2015-08-18
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -218,19 +218,27 @@
 jQuery(document).ready(function($){
 	'use strict';
 
-	var answers = function( $form ) {
+	var answers = function( $container ) {
 		var SELF = this;
 
-		SELF.$form = $form;
+		SELF.$container = $container;
 		SELF.data  = {};
 
 		SELF.init = function() {
-			SELF.$answer = SELF.$form.find('textarea');
-			SELF.$save = SELF.$form.find('.sudo-save');
+			SELF.$form      = $container.find('.comment-form');
+			SELF.$answer    = SELF.$form.find('textarea');
+			SELF.$save      = SELF.$form.find('.sudo-save');
 
+			SELF.$container.on('click', '.edit-answer', SELF.setupCommentForm);
 			SELF.$save.on( 'click', SELF.triggerSubmission );
 			SELF.$answer.on('keyup keydown', SELF.autoGrow );
 			SELF.$form.on('submit', SELF.handleSubmission);
+		};
+
+		SELF.setupCommentForm = function(e) {
+			SELF.$container.find('.study-answers').remove();
+			SELF.$form.show().find('textarea').focus().select();
+			return false;
 		};
 
 		SELF.autoGrow = function(e) {
@@ -252,7 +260,7 @@ jQuery(document).ready(function($){
 			SELF.data['answer']     = SELF.$form.find('textarea[name=comment]').val();
 			SELF.data['post_id']    = SELF.$form.find('input[name=comment_post_ID]').val();
 			SELF.data['comment_id'] = SELF.$form.find('input[name=comment_ID]').val();
-			SELF.data['group_id'] = SELF.$form.find('input[name=group_ID]').val();
+			SELF.data['group_id']   = SELF.$form.find('input[name=group_ID]').val();
 
 			wp.ajax.send( 'sc_save_answer', {
 				success: SELF.success,
@@ -265,6 +273,8 @@ jQuery(document).ready(function($){
 		SELF.success = function(data) {
 			SELF.$save.text('Save');
 			SELF.$form.find('input[name=comment_ID]').val(data.comment_ID);
+			SELF.$form.hide();
+			SELF.$container.append(data.answers);
 		};
 
 		SELF.error = function(message) {
@@ -277,7 +287,7 @@ jQuery(document).ready(function($){
 	};
 
 	$(document).ready(function(){
-		$('.sc_study .comment-form').each(function(){
+		$('.sc_study .study-answers-container').each(function(){
 			new answers( $(this) );
 		});
 
@@ -336,6 +346,7 @@ jQuery(document).ready(function($){
 		});
 
 		$('.froala-inline').editable({
+			minHeight: 100,
 			buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'sep',
 				'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
 				'createLink'
@@ -346,6 +357,14 @@ jQuery(document).ready(function($){
 		$('.footer-subscribe #input_1_1').on('focus', function() {
 			$(document).foundation();
 			$('#field_1_2').show();
+		});
+
+		$('.group-invite-link').on('click', function() {
+			$(this).select();
+		});
+
+		$('.bug-report-button').on('click', function() {
+			$(this).parents('.bug-report-cont').find('.form').slideToggle();
 		});
 
 		var $restrictedContainer = $(document.getElementById('restricted-message'));
@@ -394,7 +413,11 @@ var StudyApp = StudyApp || {};
 	StudyApp.Models.Chapter = Backbone.Model.extend({
 
 		urlRoot: function () {
-			return this.collection.url()
+			if ( this.collection ) {
+				return this.collection.url()
+			} else {
+				return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
+			}
 		},
 
 		url : function() {
@@ -644,7 +667,7 @@ var StudyApp = StudyApp || {};
 				status        : 'publish',
 				type          : 'sc_study',
 				author        : StudyApp.user_id,
-				parent        : StudyApp.chapter_id,
+				parent        : StudyApp.CurrentChapter.model.get('id'),
 				menu_order    : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
 				comment_status: 'open',
 				ping_status   : 'closed',
@@ -680,7 +703,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Item,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.chapter_id + '/items/';
+			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
 		},
 
 		nextOrder: function () {
@@ -744,15 +767,27 @@ var StudyApp = StudyApp || {};
 			}
 
 			var value = ('checked' == $(e.target).attr('checked'));
-			this.setsave({is_private : value});
+			this.model.set({is_private : value});
+
+			// only save if we have an id
+			if (this.model.get('id')) {
+				this.setsave();
+			}
+
 			return false;
 		},
 
 		setDataType : function(e) {
 			var dataType = $(e.target).val();
-			this.$el.removeClass(this.model.get('data_type'));
-			this.$el.addClass(dataType);
-			this.setsave({data_type : dataType});
+			this.$el.removeClass(this.model.get('data_type')).addClass(dataType);
+
+			this.model.set({data_type : dataType});
+
+			// only save if we have an id
+			if (this.model.get('id')){
+				this.setsave();
+			}
+
 			return false;
 		},
 

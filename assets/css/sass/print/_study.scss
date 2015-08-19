@@ -1,0 +1,53 @@
+.single-sc_study {
+
+	h1, .h1 { font-size: $h1-font-size; }
+	h2, .h2 { font-size: $h2-font-size; }
+	h3, .h3 { font-size: $h3-font-size; }
+	h4, .h4 { font-size: $h4-font-size; }
+	h5, .h5 { font-size: $h5-font-size; }
+	h6, .h6 { font-size: $h6-font-size; }
+
+	.site-header,
+	.site-footer,
+	#secondary,
+	.lesson-nav,
+	.sudo-save,
+	.study-answers,
+	.read-only {
+		display: none !important;
+	}
+
+	.comment-form {
+		display: block !important;
+	}
+
+	.comment-form {
+		textarea {
+			-webkit-print-color-adjust: exact;
+			page-break-inside: avoid;
+			margin-bottom:           0;
+			background:              -webkit-gradient(linear, 0 0, 0 100%, from(#ccc), color-stop(4%, #fff)) 0 -1px !important;
+			background:              -webkit-linear-gradient(top, #ccc 1px, #fff 1px) 0px -1px !important;
+			background:              -moz-linear-gradient(top, #ccc 1px, #fff 1px) 0 -1px !important;
+			background:              -ms-linear-gradient(top, #ccc 1px, #fff 1px) 0 -1px !important;
+			background:              -o-linear-gradient(top, #ccc 1px, #fff 1px) 0 -1px !important;
+			background:              linear-gradient(top, #ccc 1px, #ccc 1px) 0 -1px !important;
+			-webkit-background-size: 100% 1.5rem !important;
+			-moz-background-size:    100% 1.5rem !important;
+			-ms-background-size:     100% 1.5rem !important;
+			-o-background-size:      100% 1.5rem !important;
+			background-size:         100% 1.5rem !important;
+			line-height:             1.5rem !important;
+			padding:                 .25rem 1rem !important;
+			border:                  none !important;
+			box-shadow:              none !important;
+			resize:                  none !important;
+			overflow:                hidden !important;
+
+			&.question_short {
+				height: 1rem;
+			}
+		}
+	}
+
+}

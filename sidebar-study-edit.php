@@ -1,5 +1,5 @@
 <?php $study_id = sc_get( 'study', 0 ); ?>
-<div id="secondary" class="widget-area large-4 small-12 columns" role="complementary">
+<div id="secondary" class="widget-area medium-4 small-12 columns" role="complementary">
 	<?php if ( 'pending' == get_post_status( $study_id ) ) : ?>
 		<p class="description"><?php _e( 'This study is pending approval.', 'sc' ); ?></p>
 	<?php elseif ( 'draft' == get_post_status( $study_id ) ) : ?>
@@ -18,8 +18,10 @@
 	</ul>
 
 	<p>
-		<a href="#" id="new-chapter" class="ucase small"><i class="fa fa-plus-circle"></i> <?php _e( 'Create New Chapter', 'sc' ); ?>
-		</a></p>
+		<a href="#" id="new-chapter" class="ucase small"><i class="fa fa-plus-circle"></i> <?php _e( 'Create New Chapter', 'sc' ); ?></a>
+	</p>
+
+	<a href="<?php echo get_the_permalink( $study_id ); ?>" class="button expand small"><?php _e( 'View this study', 'sc' ); ?></a>
 
 </div>
 <!-- #secondary large-3-->
