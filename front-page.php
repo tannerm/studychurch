@@ -9,7 +9,7 @@ the_post(); ?>
 			<h1>Create Your Bible Study Online</h1>
 			<p>StudyChurch makes it easy to manage and collaborate with your small groups.</p>
 			<p><a href="#write-lessons" onclick="jQuery('html, body').animate({scrollTop: jQuery('#write-lessons').offset().top}, 500); return false;">See How <i class="fa fa-angle-right"></i></a> <a href="#" data-reveal-id="watch-video">Watch the Video <i class="fa fa-youtube-play"></i></a></p><br /><br />
-			<p><a href="#" data-reveal-id="start-now" class="manual-optin-trigger button secondary no-margin small round ucase wide" data-optin-slug="yljvdgwjzdhlugyc">Sign up for free</a></p>
+			<p><a href="#" data-reveal-id="start-now" class="gbutton secondary no-margin small round ucase wide">Sign up for free</a></p>
 		</div>
 	</section>
 
