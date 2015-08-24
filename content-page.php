@@ -6,12 +6,9 @@
  */
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('small-10 small-centered column'); ?> >
 	<header class="entry-header">
 		<h1 class="entry-title"><?php the_title(); ?></h1>
-		<div class="entry-meta">
-			<?php sc_posted_on(); ?>
-		</div><!-- .entry-meta -->
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
