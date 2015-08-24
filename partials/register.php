@@ -56,6 +56,7 @@
 			<input type="hidden" name="action" value="sc_register" />
 			<?php wp_nonce_field( 'rcp-register-nonce', 'rcp_register_nonce' ); ?>
 			<input type="submit" value="<?php _e( 'Register', 'sc' ); ?>" class="button secondary expand" />
+			<p class="description">By registering you are agreeing to the <a href="/privacy-policy">Privacy Policy</a> and <a href="/terms">Terms and Conditions</a>.</p>
 			<?php do_action( 'sc_register_form_end' ); ?>
 		</div>
 	</div>
