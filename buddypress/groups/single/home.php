@@ -2,7 +2,7 @@
 
 	<?php if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); ?>
 
-		<div class="columns medium-4">
+		<div class="columns medium-4 sidebar">
 
 			<?php if ( bp_is_item_mod() || bp_is_item_admin() ) : ?>
 				<a href="<?php bp_group_admin_permalink(); ?>" class="group-edit-link right"><i class="fa fa-pencil"></i></a>
@@ -13,14 +13,18 @@
 			<p><?php bp_group_description(); ?></p>
 
 			<?php if ( $study_id = sc_get_group_study_id() ) : ?>
-				<h3><?php _e( 'Study:', 'sc' ); ?> <a href="<?php echo get_the_permalink( $study_id ); ?>"><?php echo get_the_title( $study_id ); ?></a></h3>
-				<p><?php echo apply_filters( 'the_excerpt', get_post( $study_id )->post_excerpt ); ?></p>
+				<hr />
+				<h4><?php _e( 'Study', 'sc' ); ?></h4>
+				<h5 class="no-margin"><a href="<?php echo get_the_permalink( $study_id ); ?>"><?php echo get_the_title( $study_id ); ?></a></h5>
+				<div class="description"><?php echo apply_filters( 'the_excerpt', get_post( $study_id )->post_excerpt ); ?></div>
 			<?php elseif( $study = groups_get_groupmeta( bp_get_group_id(), 'study_name', true ) ) : ?>
-				<h3><?php _e( 'Study:', 'sc' ); ?> <?php echo esc_html( $study ); ?></h3>
+				<hr />
+				<h4><?php _e( 'Study', 'sc' ); ?></h4>
+				<h5><?php echo esc_html( $study ); ?></h5>
 			<?php elseif( sc_user_can_manage_group() ) : ?>
-				<h3><?php _e( 'Study: Uh oh! No study.', 'sc' ); ?></h3>
-				<p><?php _e( 'Looks like you haven\'t added a study to this group yet. No worries though, you can do that here:', 'sc' ); ?></p>
-				<a href="<?php bp_group_admin_permalink(); ?>study/" class="button small expand"><?php _e( 'Add a study', 'sc' ); ?></a>
+				<hr />
+				<h4><?php _e( 'Study', 'sc' ); ?></h4>
+				<h5><a href="<?php bp_group_admin_permalink(); ?>study/"><?php _e( 'Add a study', 'sc' ); ?></a></h5>
 			<?php endif; ?>
 
 			<hr />
@@ -36,18 +40,22 @@
 				</p>
 			<?php endif; ?>
 
-			<h3><?php _e( 'Members', 'sc' ); ?></h3>
-			<ul class="item-list">
+			<hr />
+
+			<h4><?php _e( 'Members', 'sc' ); ?></h4>
+			<table class="item-list members-list" style="width: 100%;">
+				<tbody>
 				<?php if ( bp_group_has_members( array(
 					'per_page'            => 1000,
 					'exclude_admins_mods' => 0
 				) ) ) : while ( bp_group_members() ) : bp_group_the_member(); ?>
-					<li>
-						<?php bp_group_member_avatar_thumb(); ?>
-						<?php bp_group_member_name(); ?>
-					</li>
+					<tr>
+						<td width="70"><?php bp_group_member_avatar_thumb(); ?></td>
+						<td><?php bp_group_member_name(); ?></td>
+					</tr>
 				<?php endwhile; endif; ?>
-			</ul>
+				</tbody>
+			</table>
 
 		</div>
 

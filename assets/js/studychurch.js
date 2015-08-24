@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-08-18
+/*! StudyChurch - v0.1.0 - 2015-08-23
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -308,20 +308,14 @@ jQuery(document).ready(function($){
 (function ($, window, undefined) {
 	'use strict';
 
+	window.sr = new scrollReveal();
 	$(document).foundation();
 
 	$(document).ready(function () {
 		 $(document.getElementById('single-page-navigation')).singlePageNav();
 
-		//$(document.getElementById('single-page-navigation')).onePageNav({
-		//	currentClass: 'current',
-		//	changeHash  : true,
-		//	scrollSpeed : 750
-		//});
-
-		//if ($('.study-group .content-container').outerHeight() < window.innerHeight) {
-		//	$('.study-group').height(window.innerHeight - $('.top-bar-container').outerHeight() + 'px');
-		//}
+		$('.login a').attr('data-reveal-id', 'login');
+		$('.sign-up a').attr('data-reveal-id', 'start-now').addClass('button tiny round secondary');
 
 		$('.fdatepicker').fdatepicker({
 			format: 'mm/dd/yyyy',

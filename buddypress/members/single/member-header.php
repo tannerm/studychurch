@@ -17,7 +17,7 @@
 		<a href="<?php echo esc_url( trailingslashit( bp_displayed_user_domain() ) . bp_get_settings_slug() ); ?>" class="profile-edit-link"><i class="fa fa-pencil"></i></a>
 		<?php bp_displayed_user_avatar( 'type=full' ); ?>
 
-		<h5 class="no-margin"><?php bp_displayed_user_fullname(); ?></h5>
+		<h2 class="no-margin"><?php bp_displayed_user_fullname(); ?></h2>
 
 		<p><em class="user-nicename">@<?php echo bp_activity_get_user_mentionname( bp_displayed_user_id() ); ?></em></p>
 

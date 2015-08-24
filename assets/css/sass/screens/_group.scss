@@ -9,3 +9,18 @@
 		display: none;
 	}
 }
+
+.bp_group {
+	.sidebar {
+		.members-list {
+			border: none;
+			.avatar-container {
+				margin-bottom: 0;
+			}
+			.avatar {
+				width: 40px;
+				margin-right: 10px;
+			}
+		}
+	}
+}

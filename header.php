@@ -7,7 +7,7 @@
  * @package sc
  */
 
-	$header_logo = ( is_user_logged_in() ) ? 'logo_icon.png' : 'logo_full.png';
+	$header_logo = ( is_user_logged_in() ) ? 'logo_icon.png' : 'logo-small.png';
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -47,20 +47,19 @@
 				</ul>
 
 				<section class="top-bar-section">
-					<?php if ( is_user_logged_in() ) : ?>
-						<?php
-						$location = ( is_user_logged_in() ) ? 'members' : 'public';
-						wp_nav_menu( array(
-							'theme_location' => $location,
-							'container'      => false,
-							'items_wrap'     => '<ul id="%1$s" class="%2$s main-menu left">%3$s</ul>',
-							'walker'         => new sc_walker()
-						) );
-						?>
+					<?php
+					$location = ( is_user_logged_in() ) ? 'members' : 'public';
+					$position = ( is_user_logged_in() ) ? 'left' : 'right';
+					wp_nav_menu( array(
+						'theme_location' => $location,
+						'container'      => false,
+						'items_wrap'     => '<ul id="%1$s" class="%2$s main-menu ' . $position . '">%3$s</ul>',
+						'walker'         => new sc_walker()
+					) );
+					?>
 
+					<?php if ( is_user_logged_in() ) : ?>
 						<?php get_template_part( 'partials/header', 'loggedin-nav' ); ?>
-					<?php else : ?>
-						<?php get_template_part( 'partials/header', 'loggedout-nav' ); ?>
 					<?php endif; ?>
 				</section>
 

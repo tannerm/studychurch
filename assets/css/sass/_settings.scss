@@ -19,9 +19,9 @@ GLOBAL
 ************************************************************/
 
 // This is the default html and body font-size for the base rem value.
-$rem-base: 18px;
+$rem-base: 14px;
 
-$base-font-size: 112.5%;
+$base-font-size: 87.5%;
 $base-line-height: 150%;
 
 /*********************
@@ -106,11 +106,11 @@ $header-top-margin: 0;
 $header-bottom-margin: 1em;
 // $header-text-rendering: optimizeLegibility;
 
-$h1-font-size: rem-calc(24);
-$h2-font-size: rem-calc(24);
-$h3-font-size: rem-calc(18);
+$h1-font-size: rem-calc(48);
+$h2-font-size: rem-calc(32);
+$h3-font-size: rem-calc(24);
 $h4-font-size: rem-calc(18);
-$h5-font-size: rem-calc(24);
+$h5-font-size: rem-calc(16);
 // $h6-font-size: 1rem;
 
 // These control how subheaders are styled.

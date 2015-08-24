@@ -1,13 +1,22 @@
-.page-template-profile {
-
-
-}
 .my-account {
+
+	#item-header-content {
+		text-align: center;
+
+		h2 {
+			font-weight: 100;
+		}
+	}
+
 	#profile-personal-li {
 		display: none;
 	}
 }
 .sidebar {
+
+	i {
+		font-size: 1.5rem;
+	}
 
 	.profile-edit-link {
 		float: right;

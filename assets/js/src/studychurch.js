@@ -9,20 +9,14 @@
 (function ($, window, undefined) {
 	'use strict';
 
+	window.sr = new scrollReveal();
 	$(document).foundation();
 
 	$(document).ready(function () {
 		 $(document.getElementById('single-page-navigation')).singlePageNav();
 
-		//$(document.getElementById('single-page-navigation')).onePageNav({
-		//	currentClass: 'current',
-		//	changeHash  : true,
-		//	scrollSpeed : 750
-		//});
-
-		//if ($('.study-group .content-container').outerHeight() < window.innerHeight) {
-		//	$('.study-group').height(window.innerHeight - $('.top-bar-container').outerHeight() + 'px');
-		//}
+		$('.login a').attr('data-reveal-id', 'login');
+		$('.sign-up a').attr('data-reveal-id', 'start-now').addClass('button tiny round secondary');
 
 		$('.fdatepicker').fdatepicker({
 			format: 'mm/dd/yyyy',

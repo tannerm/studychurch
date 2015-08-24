@@ -52,6 +52,7 @@
 				<input type="hidden" name="rcp_level" value="<?php echo $free->id; ?>" />
 			<?php endif; ?>
 
+			<input id="rcp_mailchimp_pro_signup" name="rcp_mailchimp_pro_signup" type="hidden" value="true">
 			<input type="hidden" name="action" value="sc_register" />
 			<?php wp_nonce_field( 'rcp-register-nonce', 'rcp_register_nonce' ); ?>
 			<input type="submit" value="<?php _e( 'Register', 'sc' ); ?>" class="button secondary expand" />

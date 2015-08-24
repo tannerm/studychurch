@@ -27,10 +27,35 @@ class SC_Study {
 	protected function __construct() {
 		add_action( 'wp_ajax_sc_save_answer', array( $this, 'save_answer' ) );
 		add_action( 'template_redirect',      array( $this, 'setup_study_group' ) );
-		add_action( 'wp_head',              array( $this, 'print_styles'      ) );
+		add_action( 'template_redirect',      array( $this, 'redirect_on_empty' ) );
+		add_action( 'wp_head',                array( $this, 'print_styles'      ) );
 
 		add_filter( 'private_title_format',   array( $this, 'private_title_format' ), 10, 2 );
 		add_filter( 'user_has_cap',           array( $this, 'private_study_cap'    ), 10, 4 );
+	}
+
+	public function redirect_on_empty() {
+		if ( 'sc_study' != get_post_type() ) {
+			return;
+		}
+
+		// if we are not on the main study page continue
+		if ( get_the_ID() != sc_get_study_id( get_the_ID() ) ) {
+			return;
+		}
+
+		if ( get_the_content() ) {
+			return;
+		}
+
+		$nav = sc_study_get_navigation( get_the_ID() );
+
+		// if we have no content for this page, redirect to the first item
+		if ( ! empty( $nav[0] ) ) {
+			wp_safe_redirect( get_the_permalink( $nav[0]->ID ) );
+			die();
+		}
+
 	}
 
 	/**

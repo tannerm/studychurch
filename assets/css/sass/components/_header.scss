@@ -1,4 +1,6 @@
 @import "compass";
+$logged-out-height: 106px;
+
 body:not(.logged-in) {
 	.site-header {
 		.contain-to-grid,
@@ -7,12 +9,37 @@ body:not(.logged-in) {
 			background: white;
 			color: $body-font-color;
 		}
+		
+		.top-bar {
+			height: $logged-out-height;
+			line-height: $logged-out-height;
+
+			.name {
+				height: $logged-out-height;
+				
+				h1 {
+					line-height: $logged-out-height;
+				}
+			}
+
+			.top-bar-section li:not(.has-form) a:not(.button) {
+				line-height: $logged-out-height;
+			}
+		}
+	}
+}
+
+body.logged-in {
+	.main-navigation {
+		.name img {
+			max-height: $topbar-height;
+			padding: .5rem;
+		}
 	}
 }
 
 .site-header {
 	margin-bottom: 6rem;
-//	border-bottom: 2px solid $info-color;
 
 	/* The ribbons */
 
@@ -44,13 +71,6 @@ body:not(.logged-in) {
 
 		a {
 			padding: 0;
-		}
-
-		img {
-			height: $topbar-height;
-			padding: 9px;
-			padding: .5rem;
-			display: block;
 		}
 
 	}

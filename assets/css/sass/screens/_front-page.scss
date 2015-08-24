@@ -1,25 +1,54 @@
 .page-template-templateslanding-php {
 
-	&.admin-bar .site-header {
-//		margin-top: 32px;
+	#page p {
+		font-size: 1.142857143rem
 	}
 
 	.site-header {
-//		position: fixed;s
-//		top: 0;
-//		width: 100%;
-//		z-index: 100;
 		margin-bottom: 0;
 	}
 
 	.study-group {
+		position: relative;
+		overflow: hidden;
+		background-size: cover;
+		background-color: $body-font-color;
+		color: white;
+		display: table;
+		width: 100%;
+		min-height: 420px;
+
+		.content-container {
+			background: rgba( 57, 67, 80, .75 );
+			display: table-cell;
+			vertical-align: middle;
+			max-width: 45rem;
+			top: 0;
+			padding: 3rem 0 2rem;
+			text-align: center;
+		}
+
 		h1 {
-			font-size: 1.75rem;
+			font-size: 3.5em;
+			margin-bottom: 1rem;
 			text-transform: none;
 			font-weight: normal;
 		}
+
 		* {
 			color: white;
+		}
+
+		a:not(.button) {
+			* {
+				color: $secondary-color;
+			}
+
+			padding: 0 1rem;
+			color: $secondary-color;
+			&:hover, &:hover * {
+				text-decoration: underline;
+			}
 		}
 
 		li {
@@ -49,199 +78,159 @@
 				font-size: 3rem;
 			}
 		}
-//		margin-top: 55px;
 	}
 
-//	.main-navigation {
-//		position: absolute;
-//		top: $topbar-height;
-//		right: $topbar-height/2;
-//	}
-
-//	.main-navigation,
-//	.has-dropdown,
-//	.has-dropdown a,
-//	.top-bar-section .dropdown li {
-//		background-color: transparent !important;
-//	}
-//
-//	.has-dropdown li a:hover {
-//		background: #333 !important;
-//		background: rgba(0,0,0,.5) !important;
-//	}
-
-	hr {
-		margin: 4rem;
-	}
-
-//	section {
-//		overflow: hidden;
-//		padding-top: 54px;
-//		margin-top: -54px;
-//		width: 100%;
-//	}
-
-	section > div {
+	.write-lessons,
+	.share-answers {
+		position: relative;
 		overflow: hidden;
-	}
 
-	.reveal-modal .row {
-		margin: auto;
-	}
-
-	h1, h2, h3 {
-//		text-align: center;
-	}
-
-//	.top-bar-container {
-//		background: $primary-color;
-//
-//		&.fixed {
-//			border-bottom: 5px solid white;
-//		}
-//
-//		.top-bar {
-//			height: 54px;
-//			background: $primary-color;
-//		}
-//
-//		ul {
-//			margin: 0;
-//		}
-//
-//		li {
-//			float: left;
-//			width: 20%;
-//			text-align: center;
-//			line-height: 54px;
-//			position: relative;
-//
-//			a {
-//				color: #fff;
-//				display: block;
-//			}
-//
-//			img {
-//				display: block;
-//				width: 44px;
-//				margin: 5px auto;
-//			}
-//		}
-//
-//		li.icon {
-//			position: absolute;
-//			left: 40%;
-//			z-index: 5;
-//		}
-//
-//		li:not(.icon) a.current:before {
-//			content: '';
-//			border-left: 10px solid transparent;
-//			border-bottom: 10px solid white;
-//			border-right: 10px solid transparent;
-//			position: absolute;
-//			bottom: 0;
-//			left: 50%;
-//			margin-left: -10px;
-//		}
-//	}
-
-	.study-group {
-		overflow: hidden;
-		background-size: cover;
-		background-color: $body-font-color;
-		color: white;
-		display: table;
-		width: 100%;
-		min-height: 400px;
-//		margin-top: $topbar-height;
-
-		.content-container {
-			background: rgba(0,0,0,.25);
-			display: table-cell;
-			vertical-align: middle;
-			max-width: 45rem;
-			top: 0;
-			padding: 3rem 0 2rem;
-			text-align: center;
-
-		}
-	}
-
-	.how-it-works {
-		margin: 3rem auto;
 		i {
+			position: absolute;
+			top: 50%;
+			margin: -1em 3rem 0;
+			padding: .5em;
+			background-color: white;
+			width: 2em;
 			text-align: center;
-			display: block;
-			font-size: 5rem;
-			margin: 3rem 0;
+			font-size: 5.5rem;
+			@include border-radius( 100px );
 		}
-	}
 
-	.who-its-for {
 		.row {
-			margin: 3rem auto;
-		}
-		background: $secondary-color;
-	}
-
-	.get-involved {
-		background: $info-color;
-	}
-
-	.social {
-		background: $primary-color;
-
-		li {
-			list-style-type: none;
+			position: relative;
 		}
 
-		.menu {
-			display: block;
-			margin: 0;
-			text-align: center;
+		img {
+			position: absolute;
+			right: 50%;
+			height: 100%;
+			width: auto;
+			bottom: 0;
+		}
 
-			li {
-				display: inline-block;
-				margin: 1rem 2rem;
+		.content {
+			margin: 7rem;
+
+			*:last-child {
+				margin-bottom: 0;
 			}
-		}
 
-		a {
+		}
+	}
+
+	.write-lessons {
+		background: $info-color;
+		.content {
+			margin-right: 0;
+		}
+	}
+
+	.share-answers {
+		background: $secondary-color;
+
+		* {
 			color: white;
 		}
 
+		i {
+			color: $body-font-color;
+			right: 2rem;
+		}
+
+		img {
+			left: 50%;
+			right: auto;
+		}
+
+		.content {
+			margin-left: 0;
+		}
 	}
 
-	.site-footer {
-		margin-top: 0;
+	.point-text {
+		margin-left: 15rem;
+	}
+
+	.start-discussions,
+	.manage-assignments {
+		position: relative;
+		margin: 7rem 2rem;
+
+		i {
+			padding: .5em;
+			background-color: $primary-color;
+			color: white;
+			width: 2em;
+			text-align: center;
+			font-size: 5.5rem;
+			@include border-radius( 100px );
+			float: left;
+			margin: 0 2rem;
+		}
+
+	}
+
+	.manage-assignments {
+		margin-bottom: 0;
+
+		i {
+			background-color: $secondary-color;
+		}
+
+		.point-text {
+			margin-bottom: 7rem;
+		}
+
+	}
+
+	.cta {
+		text-align: center;
 	}
 
 }
 
 @media #{$medium-up} {
 	.page-template-templateslanding-php {
-		.how-it-works {
-			li {
-				margin: 3rem;
-				overflow: hidden;
-				i {
-					float: left;
-					margin: 1rem 3rem 0 2rem;
-				}
 
-				div {
-					margin-left: 10rem;
-				}
+		.start-discussions,
+		.manage-assignments {
+			p {
+				max-width: 35rem;
 			}
+		}
+
+		.manage-assignments {
+
+			.point-text {
+				margin-left: 11rem;
+			}
+
+			i {
+				margin-left: -2rem;
+			}
+
+			img {
+				float: left;
+				margin-left: -32%;
+				margin-bottom: 7rem;
+				max-width: 70%;
+			}
+
+			.content {
+				margin-left: 40%;
+			}
+
+		}
+
+		.cta {
+			margin-left: 4rem;
+			text-align: left;
 		}
 	}
 }
 
 @media #{$small-only} {
 	.page-template-templateslanding-php {
-		.top-bar ul {
-			font-size: .75rem;
-		}
 	}
 }

@@ -12,12 +12,23 @@
 		<!-- #page container -->
 
 		<footer id="colophon" class="site-footer" role="contentinfo">
-			<div class="row text-center">
+			<div class="row">
 				<div class="medium-6 columns">
-					<a href="#" class="manual-optin-trigger button small" data-optin-slug="yljvdgwjzdhlugyc">Join the waiting list.</a>
+					<?php
+					wp_nav_menu( array(
+						'theme_location' => 'footer',
+						'container'      => false,
+						'items_wrap'     => '<ul id="%1$s" class="%2$s footer-menu">%3$s</ul>',
+						'walker'         => new sc_walker()
+					) );
+					?>
+					<p>© Copyright StudyChurch 2015, All Rights Reserved.<br />StudyChurch is a product of <a href="http://tannermoushey.com">iWitness Design</a>.</p>
 				</div>
 				<div class="medium-6 columns">
-					<a href="<?php home_url(); ?>"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logo_full_light.png" width="150" height="35" /></a>
+					<a href="<?php home_url(); ?>" class="right"><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logo_icon.png" width="61" height="61" /></a>
+					<div class="social">
+						<?php dynamic_sidebar( 'landing-social' ); ?>
+					</div>
 				</div>
 			</div>
 			<div class="site-info">
@@ -26,6 +37,15 @@
 			<!-- .site-info -->
 		</footer>
 		<!-- #colophon -->
+
+		<?php if ( is_front_page() ) : ?>
+			<div id="watch-video" class="reveal-modal" data-reveal>
+				<div class="flex-video widescreen youtube">
+					<iframe width="853" height="480" src="https://www.youtube.com/embed/Bv59cTf3e3Q" frameborder="0" allowfullscreen></iframe>
+				</div>
+				<a class="close-reveal-modal">&#215;</a>
+			</div>
+		<?php endif; ?>
 
 		<?php if ( ! is_user_logged_in() ) : ?>
 			<?php get_template_part( 'partials/modal', 'register' ); ?>
