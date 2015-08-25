@@ -2,6 +2,14 @@
 	#content {
 		margin-bottom: 1.5rem;
 	}
+
+	.lesson-nav span {
+		max-width: 45%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
 }
 
 .sc_study {
@@ -120,9 +128,11 @@
 	}
 
 	> li {
-		text-transform: uppercase;
 		border-bottom: 1px solid;
 		margin-bottom: 1rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 }

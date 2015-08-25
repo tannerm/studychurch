@@ -12,7 +12,7 @@
 
 	<!-- Title -->
 	<header class="entry-header">
-		<h1 class="entry-title"><?php the_title(); ?></h1>
+		<h2 class="entry-title"><?php the_title(); ?></h2>
 	</header>
 	<!-- .entry-header -->
 

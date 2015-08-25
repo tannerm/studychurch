@@ -8412,6 +8412,11 @@ textarea {
 
 .single-sc_study #content {
   margin-bottom: 1.5rem; }
+.single-sc_study .lesson-nav span {
+  max-width: 45%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 
 .sc_study .comment-form textarea {
   margin-bottom: 0;
@@ -8471,9 +8476,11 @@ textarea {
     .table-of-contents a:hover {
       color: #3ebeb2; }
   .table-of-contents > li {
-    text-transform: uppercase;
     border-bottom: 1px solid;
-    margin-bottom: 1rem; }
+    margin-bottom: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
 
 .study-map {
   background: #000;
