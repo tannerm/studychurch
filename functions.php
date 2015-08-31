@@ -281,7 +281,9 @@ class SC_Setup {
 	/**
 	 * Add custom image sizes
 	 */
-	protected function add_image_sizes() {}
+	protected function add_image_sizes() {
+		add_image_size( 'post-header', 1500, 500, true );
+	}
 
 	/**
 	 * Register theme menues
