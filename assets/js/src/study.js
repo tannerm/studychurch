@@ -13,9 +13,30 @@ jQuery(document).ready(function($){
 			SELF.$save      = SELF.$form.find('.sudo-save');
 
 			SELF.$container.on('click', '.edit-answer', SELF.setupCommentForm);
+			SELF.$container.on('click', '.toggle-comments', SELF.toggleComments);
+			SELF.$container.on('click', '.toggle-answers', SELF.toggleAnswers);
 			SELF.$save.on( 'click', SELF.triggerSubmission );
 			SELF.$answer.on('keyup keydown', SELF.autoGrow );
 			SELF.$form.on('submit', SELF.handleSubmission);
+
+			$('.study-answers.activity').on('click', '.toggle-comments', function(e) {
+
+			});
+
+			$('.activity-list-others').on('click', '.toggle-answers', function(e) {
+			});
+		};
+
+		SELF.toggleComments = function(e) {
+			var $this = $(e.target);
+			$this.parents('.groups').toggleClass('comments-hide');
+			return false;
+		};
+
+		SELF.toggleAnswers = function(e) {
+			var $this = $(e.target);
+			$this.parents('.activity-list-others').toggleClass('answers-hide');
+			return false;
 		};
 
 		SELF.setupCommentForm = function(e) {
@@ -72,18 +93,6 @@ jQuery(document).ready(function($){
 	$(document).ready(function(){
 		$('.sc_study .study-answers-container').each(function(){
 			new answers( $(this) );
-		});
-
-		$('.study-answers.activity').on('click', '.toggle-comments', function(e) {
-			var $this = $(e.target);
-			$this.parents('.groups').toggleClass('comments-hide');
-			return false;
-		});
-
-		$('.activity-list-others').on('click', '.toggle-answers', function(e) {
-			var $this = $(e.target);
-			$this.parents('.activity-list-others').toggleClass('answers-hide');
-			return false;
 		});
 	});
 
