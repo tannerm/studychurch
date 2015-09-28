@@ -22,6 +22,8 @@ get_header(); ?>
 				<div class="text-center page-header">
 					<h1><?php the_title(); ?></h1>
 					<?php the_content(); ?>
+
+					<hr />
 				</div>
 			<?php endwhile; ?>
 		</header>

@@ -10,8 +10,6 @@ if ( ! $image = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID()
 ?>
 <article>
 
-	<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><h3><?php the_title(); ?></h3></a>
-
 	<?php if ( has_post_thumbnail() ) : ?>
 		<?php if ( sc_has_featured_size() ) : ?>
 			<p>
@@ -48,6 +46,8 @@ if ( ! $image = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID()
 			<p class="date"><?php the_date( 'M d, Y' ); ?> / <?php _e( 'Filed under:' ); ?> <?php the_category( ', ' ); ?></p>
 		</div>
 	</div>
+
+	<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><h3><?php the_title(); ?></h3></a>
 
 	<?php the_excerpt(); ?>
 	<p>
