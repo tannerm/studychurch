@@ -195,9 +195,9 @@ class SC_Setup {
 
 		$sidebars = array(
 			array(
-				'id'          => 'sidebar',
-				'name'        => 'Default Sidebar',
-				'description' => 'Default sidebar display',
+				'id'          => 'blog-sidebar',
+				'name'        => 'Blog Sidebar',
+				'description' => 'Blog sidebar display',
 			),
 			array(
 				'id'          => 'landing-social',
