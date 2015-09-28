@@ -291,9 +291,9 @@ $align-class-breakpoints:
       line-height: inherit;
     }
 
-    small {
+    small, .small {
       font-size: $small-font-size;
-      line-height: inherit;
+      line-height: 1.5;
     }
 
     code {

@@ -20,5 +20,6 @@
 
 	.avatar {
 		display: block;
+		@include border-radius( 100px );
 	}
 }

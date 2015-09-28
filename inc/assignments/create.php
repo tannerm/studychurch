@@ -31,30 +31,8 @@ class SC_Assignments_Create {
 	 * Add Hooks and Actions
 	 */
 	protected function __construct() {
-		add_action( 'cmb2_init', array( $this, 'register_form'   ) );
 		add_action( 'init',      array( $this, 'save_assignment' ) );
 		add_action( 'init',      array( $this, 'delete_assignment' ) );
-	}
-
-	public function register_form() {
-		$cmb = new_cmb2_box( array(
-			'id'          => 'sc_assignments',
-			'hookup'      => false,
-			'save_fields' => false,
-		) );
-
-		$cmb->add_field( array(
-			'name' => 'Assignment',
-			'id'   => 'content',
-			'type' => 'textarea',
-		) );
-
-		$cmb->add_field( array(
-			'name' => 'Due Date',
-			'id'   => 'date',
-			'type' => 'text_date',
-		) );
-
 	}
 
 	public function delete_assignment() {
@@ -155,6 +133,8 @@ function sc_add_group_assignment( $assignment, $group_id ) {
 	if ( ! empty( $assignment['content'] ) ) {
 		$assignments[ $key ]['content'] = wp_filter_post_kses( $assignment['content'] );
 	}
+
+	do_action( 'sc_assignment_create', $assignment, $group_id );
 
 	return groups_update_groupmeta( $group_id, SC_Assignments_Query::$_key, $assignments );
 }

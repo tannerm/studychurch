@@ -246,3 +246,60 @@ function sc_get( $var, $default = false ) {
 
 	return $default;
 }
+
+/**
+ * Prints HTML with meta information for the current post-date/time and author.
+ */
+function sc_posted_on() {
+	$time_string = sprintf( '<time class="entry-date published" datetime="%1$s">%2$s</time>',
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date() ),
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date() )
+	);
+
+	$posted_on = sprintf( '<span class="posted-on"><i class="icon-filled-clock-2"></i> %1$s</span>', $time_string );
+
+	if ( $link = get_the_author_meta( 'googleplus' ) ) {
+		$byline = sprintf( '<a class="byline" href="%1$s" title="%2$s" target="_blank"><i class="icon-filled-pencil-2"></i> %3$s</span></a>', esc_url( $link ), esc_attr( get_the_author() ), esc_html( get_the_author() ) );
+	} else {
+		$byline = sprintf( '<span class="byline"><i class="icon-filled-pencil-2"></i> %1$s</span>', esc_html( get_the_author() ) );
+	}
+
+	printf( '<p class="post-meta">%1$s %2$s</p>', $posted_on, $byline );
+
+}
+
+function sc_category() {
+	if ( ! $categories = get_the_category() ) {
+		return;
+	} ?>
+
+	<p class="post-meta post-cats">
+		<i class="icon-filled-tag-1"></i> <?php the_category( ', ' ); ?>
+	</p>
+
+<?php
+}
+
+function sc_has_featured_size() {
+	global $_wp_additional_image_sizes;
+
+	if ( ! $size = image_get_intermediate_size( get_post_thumbnail_id(), 'post-header' ) ) {
+		return false;
+	}
+
+	if ( ! isset ( $_wp_additional_image_sizes['post-header'] ) ) {
+		return false;
+	}
+
+	if ( $size['width'] != $_wp_additional_image_sizes['post-header']['width'] ) {
+		return false;
+	}
+
+	if ( $size['height'] != $_wp_additional_image_sizes['post-header']['height'] ) {
+		return false;
+	}
+
+	return true;
+}

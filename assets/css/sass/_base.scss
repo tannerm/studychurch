@@ -71,6 +71,17 @@ hr.noline {
 	}
 }
 
+.one-line {
+	display: block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.block {
+	display: block;
+}
+
 /* =WordPress Core
 -------------------------------------------------------------- */
 .alignnone {
@@ -176,8 +187,4 @@ a img.aligncenter {
 	top: 5px;
 	width: auto;
 	z-index: 100000; /* Above WP toolbar. */
-}
-
-.avatar {
-	@include border-radius( 100px );
 }

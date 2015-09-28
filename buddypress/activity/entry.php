@@ -35,12 +35,12 @@ global $activities_template;
 				</p>
 			<?php else : ?>
 				<p class="small">
-					<?php echo $activities_template->activity->action; ?>
 					<?php if ( bp_is_user_profile() && $group = groups_get_group( 'group_id=' . bp_get_activity_item_id() ) ) : ?>
-						&nbsp;|&nbsp;<a href="<?php bp_group_permalink( $group ); ?>"><?php bp_group_name( $group ); ?></a>
+						<span class="action"><?php echo $activities_template->activity->action; ?></span>&nbsp;|&nbsp;<a href="<?php bp_group_permalink( $group ); ?>"><?php bp_group_name( $group ); ?></a>
+					<?php else : ?>
+						<span class="action one-line"><?php echo $activities_template->activity->action; ?></span>
 					<?php endif; ?>
-					<br />
-					<span class="time-since"><?php echo bp_core_time_since( $activities_template->activity->date_recorded ); ?></span>
+					<span class="time-since block"><?php echo bp_core_time_since( $activities_template->activity->date_recorded ); ?></span>
 				</p>
 			<?php endif; ?>
 		</div>

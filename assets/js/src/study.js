@@ -19,12 +19,6 @@ jQuery(document).ready(function($){
 			SELF.$answer.on('keyup keydown', SELF.autoGrow );
 			SELF.$form.on('submit', SELF.handleSubmission);
 
-			$('.study-answers.activity').on('click', '.toggle-comments', function(e) {
-
-			});
-
-			$('.activity-list-others').on('click', '.toggle-answers', function(e) {
-			});
 		};
 
 		SELF.toggleComments = function(e) {

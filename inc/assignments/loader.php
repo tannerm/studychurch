@@ -2,6 +2,7 @@
 
 require get_template_directory() . '/inc/assignments/create.php';
 require get_template_directory() . '/inc/assignments/template.php';
+require get_template_directory() . '/inc/assignments/notifications.php';
 
 /**
  * The class_exists() check is recommended, to prevent problems during upgrade

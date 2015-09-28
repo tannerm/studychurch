@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-09-03
+/*! StudyChurch - v0.1.0 - 2015-09-27
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -236,12 +236,6 @@ jQuery(document).ready(function($){
 			SELF.$answer.on('keyup keydown', SELF.autoGrow );
 			SELF.$form.on('submit', SELF.handleSubmission);
 
-			$('.study-answers.activity').on('click', '.toggle-comments', function(e) {
-
-			});
-
-			$('.activity-list-others').on('click', '.toggle-answers', function(e) {
-			});
 		};
 
 		SELF.toggleComments = function(e) {

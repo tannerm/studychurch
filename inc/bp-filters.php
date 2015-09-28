@@ -36,6 +36,7 @@ class SC_BP_Filter {
 
 		add_action( 'template_redirect',                 array( $this, 'redirect_single_activity' ) );
 		add_action( 'bp_activity_before_save',           array( $this, 'activity_mentions'     ), 9 );
+
 	}
 
 	/**

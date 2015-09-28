@@ -5,7 +5,7 @@
  * @package sc
  */
 ?>
-<div id="secondary" class="widget-area large-3 small-12 columns" role="complementary">
+<div id="secondary" class="widget-area medium-4 large-3 small-12 columns" role="complementary">
 	<?php do_action( 'before_sidebar' ); ?>
 	<?php if ( ! dynamic_sidebar( 'sidebar-1' ) ) : ?>
 
