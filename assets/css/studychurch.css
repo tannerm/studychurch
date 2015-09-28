@@ -8229,6 +8229,9 @@ textarea {
     padding-right: .5rem;
     color: #777; }
 
+.widget-container {
+  list-style-type: none; }
+
 .page-template-templateslanding-php #page p {
   font-size: 1.14286rem; }
 .page-template-templateslanding-php .site-header {

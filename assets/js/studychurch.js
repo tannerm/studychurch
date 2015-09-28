@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-09-27
+/*! StudyChurch - v0.1.0 - 2015-09-28
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
