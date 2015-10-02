@@ -16,7 +16,7 @@
 		 $(document.getElementById('single-page-navigation')).singlePageNav();
 
 		$('.login a').attr('data-reveal-id', 'login');
-		$('.sign-up a').attr('data-reveal-id', 'start-now').addClass('button tiny round secondary');
+		$('.sign-up a').attr('data-reveal-id', 'start-now');
 
 		$('.fdatepicker').fdatepicker({
 			format: 'mm/dd/yyyy',
