@@ -41,12 +41,28 @@ class SC_Assignment_Notificatinos {
 			return;
 		}
 
+		$ass = new SC_Assignments_Query();
+		$ass->assignment = $assignment;
+
+		$group = groups_get_group( 'group_id=' . $group_id );
+		$subject = __( 'You have a new assignment in', 'sc' ) . ' ' . bp_get_group_name( $group );
+		ob_start(); ?>
+
+		<h4><?php _e( 'Assignment Due: ', 'sc' ); ?><?php $ass->the_date_formatted(); ?></h4>
+		<?php $ass->the_lessons(); ?>
+		<?php $ass->the_content(); ?>
+
+		<?php
+		$content = ob_get_clean();
+
 		foreach( $members as $member ) {
+			wp_mail( $member->user_email, $subject, $content );
 		}
+
 	}
 
 	public function schedule_reminder( $assignment, $group_id ) {
-
+		
 	}
 
 }
