@@ -63,4 +63,21 @@ class SC_Custom_Post_Types {
 		register_post_type( 'sc_study', $args );
 	}
 
+	protected function cpt_assignments() {
+		$labels = array(
+			'name'               => _x( 'Assignments', 'post type general name', 'sc' ),
+			'singular_name'      => _x( 'Assignment', 'post type singular name', 'sc' ),
+		);
+
+		$args = array(
+			'labels'             => $labels,
+			'public'             => false,
+			'supports'           => array( 'title', 'editor', 'author' )
+		);
+
+		register_post_type( 'sc_assignment', $args );
+
+		register_taxonomy( 'sc_group', 'sc_assignment', array( 'public' => false, ) );
+
+	}
 }

@@ -95,7 +95,18 @@ function sc_get_group_assignments( $group_id = null ) {
 		$group_id = bp_get_current_group_id();
 	}
 
-	return groups_get_groupmeta( $group_id, SC_Assignments_Query::$_key, true );
+	return new WP_Query( array(
+		'post_type' => 'sc_assignment',
+		'post_status' => array( 'publish', 'future' ),
+		'date_query'  => array(
+			'date_query' => array( 'after' => date( 'RSS', time() ) )
+		),
+		'tax_query'   => array(
+			'taxonomy' => 'sc_group',
+			'field'    => 'slug',
+			'terms'    => $group_id,
+		),
+	) );
 }
 
 /**
@@ -108,35 +119,31 @@ function sc_get_group_assignments( $group_id = null ) {
  */
 function sc_add_group_assignment( $assignment, $group_id ) {
 
-	if ( ! $assignments = sc_get_group_assignments( $group_id ) ) {
-		$assignments = array();
-	}
-
 	if ( ( empty( $assignment['content'] ) && empty( $assignment['lessons'] ) ) || empty( $assignment['date'] ) ) {
 		return false;
 	}
 
-	$key = absint( strtotime( $assignment['date'] ) . rand( 1000, 9999 ) );
+	$ass_id = wp_insert_post( array(
+		'post_type'    => 'sc_assignment',
+		'post_status'  => 'publish',
+		'post_title'   => '',
+		'post_content' => wp_filter_post_kses( $assignment['content'] ),
+		'post_date'    => date( 'Y-m-d H:i:s', strtotime( $assignment['date'] ) ),
+	) );
 
-	/** Make sure the key is unique. Support multiple assignments due the same day */
-	while ( isset( $assignments[ $key ] ) ) {
-		$key = absint( strtotime( $assignment['date'] ) . rand( 1000, 9999 ) );
+	if ( ! $ass_id ) {
+		return false;
 	}
 
-	$assignments[ $key ]['key'] = $key;
-	$assignments[ $key ]['date'] = $assignment['date'];
+	update_post_meta( $ass_id, 'assignment', $assignment['lessons'] );
+	update_post_meta( $ass_id, 'group_id', $group_id );
 
-	if ( ! empty( $assignment['lessons'] ) ) {
-		$assignments[ $key ]['lessons'] = array_map( 'absint', (array) $assignment['lessons'] );
-	}
-	
-	if ( ! empty( $assignment['content'] ) ) {
-		$assignments[ $key ]['content'] = wp_filter_post_kses( $assignment['content'] );
-	}
+	wp_set_post_terms( $ass_id, $group_id, 'sc_group' );
 
 	do_action( 'sc_assignment_create', $assignment, $group_id );
 
-	return groups_update_groupmeta( $group_id, SC_Assignments_Query::$_key, $assignments );
+	return true;
+//	return groups_update_groupmeta( $group_id, SC_Assignments_Query::$_key, $assignments );
 }
 
 /**
