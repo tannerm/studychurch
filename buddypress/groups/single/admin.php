@@ -333,7 +333,7 @@
 	<?php do_action( 'bp_after_group_delete_admin' ); ?>
 
 	<div class="submit">
-		<input type="submit" disabled="disabled" value="<?php esc_attr_e( 'Delete Group', 'buddypress' ); ?>" id="delete-group-button" name="delete-group-button" />
+		<input type="submit" disabled="disabled" class="button alert" value="<?php esc_attr_e( 'Delete Group', 'buddypress' ); ?>" id="delete-group-button" name="delete-group-button" />
 	</div>
 
 	<?php wp_nonce_field( 'groups_delete_group' ); ?>

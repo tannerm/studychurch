@@ -11,7 +11,7 @@
 
 <?php do_action( 'bp_before_member_header' ); ?>
 
-	<div id="item-header-content">
+	<div id="item-header-content" class="text-center">
 
 		<?php ; ?>
 		<a href="<?php echo esc_url( trailingslashit( bp_displayed_user_domain() ) . bp_get_settings_slug() ); ?>" class="profile-edit-link"><i class="fa fa-pencil"></i></a>
@@ -24,9 +24,17 @@
 	</div><!-- #item-header-content -->
 
 <?php if ( 'public' == bp_current_action() ) : ?>
+
+	<?php do_action( 'sc_before_member_sidebar' ); ?>
+
 	<hr />
 
-	<?php sc_add_button( '#', 'Create new group', 'group-create right', ' data-reveal-id="group-create-modal"' ); ?>
+	<?php
+	if ( user_can( bp_displayed_user_id(), 'manage_groups' ) ) {
+		sc_add_button( '#', 'Create new group', 'group-create right', ' data-reveal-id="group-create-modal"' );
+	}
+	?>
+
 	<h4><?php _e( 'Groups', 'sc' ); ?></h4>
 
 	<ul class="side-nav">
@@ -38,33 +46,40 @@
 		}
 
 		if ( empty( $groups['groups'] ) ) {
-			printf( '<li><a href="#" class="group-create" data-reveal-id="group-create-modal">%s</a></li>', __( 'Start a study group', 'sc' ) );
+			if ( user_can( bp_displayed_user_id(), 'manage_groups' ) ) {
+				printf( '<li><a href="#" class="group-create" data-reveal-id="group-create-modal">%s</a></li>', __( 'Start a study group', 'sc' ) );
+			} else {
+				printf( '<li>%s</li>', __( 'You are not a part of any groups yet.', 'sc' ) );
+			}
 		}
 		?>
 	</ul>
 
 	<hr />
 
-	<?php sc_add_button( '#', 'Create new study', 'study-create right', ' data-reveal-id="study-create-modal"' ); ?>
-	<h4><?php _e( 'Studies', 'sc' ); ?></h4>
-	<ul class="side-nav">
-		<?php
-		if ( $studies = get_pages( 'post_status=publish,pending,draft,private&post_type=sc_study&parent=0&authors=' . bp_displayed_user_id() ) ) {
-			foreach ( $studies as $study ) {
-				$title = get_the_title( $study->ID );
+	<?php if ( user_can( bp_displayed_user_id(), 'edit_posts' ) ) : ?>
+		<?php sc_add_button( '#', 'Create new study', 'study-create right', ' data-reveal-id="study-create-modal"' ); ?>
 
-				if ( ! in_array( get_post_status( $study->ID ), array( 'publish', 'private' ) ) ) {
-					$title .= sprintf( ' (pending review)' );
+		<h4><?php _e( 'Studies', 'sc' ); ?></h4>
+		<ul class="side-nav">
+			<?php
+			if ( $studies = get_pages( 'post_status=publish,pending,draft,private&post_type=sc_study&parent=0&authors=' . bp_displayed_user_id() ) ) {
+				foreach ( $studies as $study ) {
+					$title = get_the_title( $study->ID );
+
+					if ( ! in_array( get_post_status( $study->ID ), array( 'publish', 'private' ) ) ) {
+						$title .= sprintf( ' (pending review)' );
+					}
+
+					printf( '<li><a href="/study-edit/?action=edit&study=%d">%s</a></li>', $study->ID, esc_html( $title ) );
 				}
-
-				printf( '<li><a href="/study-edit/?action=edit&study=%d">%s</a></li>', $study->ID, esc_html( $title ) );
+			} else {
+				printf( '<li><a href="#" class="study-create" data-reveal-id="study-create-modal">%s</a></li>', __( 'Write a study', 'sc' ) );
 			}
-		} else {
-			printf( '<li><a href="#" class="study-create" data-reveal-id="study-create-modal">%s</a></li>', __( 'Write a study', 'sc' ) );
-		}
 
-		?>
-	</ul>
+			?>
+		</ul>
+	<?php endif; ?>
 
 <?php else : ?>
 	<a href="<?php echo bp_displayed_user_domain(); ?>">&larr; <?php _e( 'Back to Profile', 'sc' ); ?></a>

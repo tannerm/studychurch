@@ -8035,6 +8035,8 @@ body.logged-in .main-navigation .name img {
 .site-header {
   margin-bottom: 6rem;
   /* The ribbons */ }
+  .site-header .title-area {
+    max-width: 40%; }
   .site-header .corner-ribbon {
     width: 200px;
     background: #fcb017;
@@ -8216,6 +8218,31 @@ label {
 
 textarea {
   resize: vertical; }
+
+.button-group.type {
+  position: relative;
+  display: inline-block;
+  margin: 1rem 0; }
+  .button-group.type:before {
+    content: attr(data-grouptype);
+    z-index: 2;
+    color: #999;
+    display: block;
+    font-size: 1.25em;
+    line-height: 2em;
+    width: 2em;
+    text-align: center;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    left: 42.5%;
+    top: 0.5em; }
+  .button-group.type li {
+    width: 49%; }
+  .button-group.type li + li {
+    margin-left: 2%; }
+  .button-group.type a {
+    display: block; }
 
 .fr-fullscreen button[data-name=close] {
   display: none !important; }

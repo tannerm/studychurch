@@ -238,11 +238,6 @@ body.activity-permalink #buddypress .activity-list li .activity-header > p {
 #buddypress .activity-header {
 	margin-right: 20px;
 }
-#buddypress .activity-header a,
-#buddypress .comment-meta a,
-#buddypress .acomment-meta a {
-	text-decoration: none;
-}
 #buddypress .activity-list .activity-content .activity-header img.avatar {
 	float: none !important;
 	margin: 0 5px -8px 0 !important;
@@ -483,7 +478,6 @@ body.activity-permalink #buddypress div.activity-comments div.acomment-content {
 3.3 - Directories - Members, Groups, Blogs, Forums
 --------------------------------------------------------------*/
 #buddypress div.dir-search {
-	float: right;
 	margin: -39px 0 0 0;
 }
 #buddypress div.dir-search input[type=text],
@@ -1179,7 +1173,7 @@ body.activity-permalink #buddypress ul.item-list li.activity-item {
 	font-weight: normal;
 	font-size: 90%;
 	margin: 0;
-	width: 75%;
+	/*width: 75%;*/
 }
 #buddypress ul.item-list li div.item-title span {
 	color: #999;
@@ -1534,7 +1528,6 @@ body.register #buddypress div.page ul {
 --------------------------------------------------------------*/
 @media only screen and (max-width: 480px ){
 	#buddypress div.dir-search {
-		float: right;
 		margin-top: -50px;
 		text-align: right;
 	}
@@ -1559,8 +1552,6 @@ body.register #buddypress div.page ul {
 --------------------------------------------------------------*/
 @media only screen and (max-width: 320px) {
 	#buddypress div.dir-search {
-		clear: left;
-		float: left;
 		margin-top: 0;
 		text-align: left;
 	}
@@ -1604,7 +1595,6 @@ body.register #buddypress div.page ul {
 --------------------------------------------------------------*/
 @media only screen and (max-width: 240px) {
 	#buddypress div.dir-search {
-		float: left;
 		margin: 0;
 	}
 	#buddypress div.dir-search input[type="text"] {

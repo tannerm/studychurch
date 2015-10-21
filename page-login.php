@@ -14,9 +14,7 @@ get_header(); ?>
 		<div class="medium-6 columns" role="main">
 			<div id="login-body">
 				<?php get_template_part( 'partials/login' ); ?>
-				<?php if ( 0 ) : ?>
-					<p><a href="#" class="switch"><?php _e( "Need an account? You can register for free", 'sc' ); ?> &rarr;</a></p>
-				<?php endif; ?>
+				<p><a href="#" class="switch"><?php _e( "Need an account? You can register for free", 'sc' ); ?> &rarr;</a></p>
 			</div>
 
 			<div id="start-now-body" class="hide">

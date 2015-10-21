@@ -44,6 +44,6 @@ $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&pare
 			<?php endwhile; ?>
 		</ul>
 	<?php else : ?>
-		<p><?php _e( 'There is no activity to report. Please <a href="/groups">join a group</a> or <a href="#" data-reveal-id="group-create-modal">create one</a>.', 'sc' ); ?></p>
+		<p><?php _e( 'There is no activity to report.', 'sc' ); ?></p>
 	<?php endif; ?>
 </div>

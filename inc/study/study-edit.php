@@ -119,6 +119,11 @@ class SC_Study_Edit {
 
 	public function can_user_edit_study( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
 
+		// short circuit everyone can add study capabilities
+		if ( ! apply_filters( 'sc_everyone_can_add_studies', true ) ) {
+			return $caps;
+		}
+
 		// everyone can edit their own posts
 		switch( $cap ) {
 			case 'edit_posts' :

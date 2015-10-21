@@ -1,6 +1,6 @@
 <ul class="right">
 	<li class="has-dropdown click">
-		<a href="#"><?php bp_loggedin_user_avatar(); ?> <?php _e( 'Hello', 'sc' ); ?> <?php echo bp_core_get_user_displayname( get_current_user_id() ); ?>!</a>
+		<a href="#"><?php bp_loggedin_user_avatar(); ?>&nbsp;<span class="hide-for-small left"><?php _e( 'Hello', 'sc' ); ?> <?php echo bp_core_get_user_displayname( get_current_user_id() ); ?>!</span></a>
 		<ul class="dropdown">
 			<li>
 				<a href="<?php echo bp_loggedin_user_domain(); ?>"><?php _e( 'Profile', 'sc' ); ?></a>

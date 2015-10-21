@@ -1,10 +1,10 @@
 <div id="buddypress" class="row">
 
-	<div class="small-4 column sidebar">
+	<div class="medium-4 column sidebar">
 		<?php bp_get_template_part( 'members/single/member-header' ) ?>
 	</div>
 
-	<div id="item-body" class="small-8 column" role="main">
+	<div id="item-body" class="medium-8 column" role="main">
 
 		<?php bp_core_render_message(); ?>
 		<?php do_action( 'bp_before_member_body' );

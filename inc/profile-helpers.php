@@ -42,12 +42,12 @@ class SC_Profile {
 			wp_send_json_error();
 		}
 
-		$study = array(
+		$study = apply_filters( 'sc_study_insert_args', array(
 			'post_type'    => 'sc_study',
 			'post_title'   => sanitize_text_field( $data['study-name'] ),
 			'post_excerpt' => wp_filter_kses( $data['study-desc'] ),
 			'post_status'  => 'private',
-		);
+		) );
 
 		$study_id = wp_insert_post( $study );
 
@@ -108,9 +108,14 @@ class SC_Profile {
 			return;
 		}
 
-		get_template_part( 'partials/modal', 'group-create' );
-		get_template_part( 'partials/modal', 'study-create' );
-//		get_template_part( 'partials/modal', 'church-create' );
+		if ( current_user_can( 'manage_groups' ) ) {
+			get_template_part( 'partials/modal', 'group-create' );
+		}
+
+		if ( current_user_can( 'edit_posts' ) ) {
+			get_template_part( 'partials/modal', 'study-create' );
+		}
+
 	}
 
 	public function localize() {

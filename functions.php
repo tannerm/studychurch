@@ -42,6 +42,7 @@ class SC_Setup {
 	 */
 	protected function __construct() {
 		$this->add_includes();
+		$this->sc_includes();
 		$this->add_filters();
 		$this->add_actions();
 	}
@@ -106,6 +107,15 @@ class SC_Setup {
 		require get_template_directory() . '/inc/assignments/loader.php';
 	}
 
+	protected function sc_includes() {
+		if ( is_child_theme() ) {
+			return;
+		}
+
+		require get_template_directory() . '/inc/sc-only/groups.php';
+		require get_template_directory() . '/inc/sc-only/hooks.php';
+	}
+
 		/**
 		 * Wire up filters
 		 */
@@ -113,7 +123,7 @@ class SC_Setup {
 		add_filter( 'wp_title', array( $this, 'wp_title_for_home' ) );
 		add_filter( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
 		add_filter( 'bp_get_nav_menu_items', array( $this, 'bp_nav_menu_items' ) );
-		add_filter( 'bp_template_include',   array( $this, 'pb_default_template' ) );
+		add_filter( 'bp_template_include',   array( $this, 'bp_default_template' ) );
 	}
 
 	/**
@@ -139,6 +149,7 @@ class SC_Setup {
 		add_action( 'widgets_init',       array( $this, 'unregister_widgets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue'            ) );
 		add_action( 'wp_head',            array( $this, 'js_globals'         ) );
+		add_action( 'wp_head',            array( $this, 'branding_styles'    ) );
 		add_action( 'template_redirect',  array( $this, 'maybe_force_login'  ), 5 );
 	}
 
@@ -298,7 +309,8 @@ class SC_Setup {
 	}
 
 	public function show_admin_bar() {
-		if ( current_user_can( 'administrator' ) ) {
+
+		if ( is_super_admin() ) {
 			return true;
 		}
 
@@ -339,8 +351,8 @@ class SC_Setup {
 		return $menus;
 	}
 
-	public function pb_default_template( $template ) {
-		if ( get_stylesheet_directory() . '/page.php' != $template ) {
+	public function bp_default_template( $template ) {
+		if ( get_template_directory() . '/page.php' != $template ) {
 			return $template;
 		}
 
@@ -373,6 +385,109 @@ class SC_Setup {
 
 			jQuery.Editable.DEFAULTS.key = '<?php echo $key; ?>';
 		</script>
+		<?php
+	}
+
+	public function branding_styles() {
+		$primary_color = get_theme_mod( 'primary_color' );
+		$success_color = get_theme_mod( 'success_color' );
+		$warning_color = get_theme_mod( 'warning_color' );
+		$error_color   = get_theme_mod( 'error_color'   );
+
+		if ( ! $primary_color ) {
+			return;
+		}
+
+		add_filter( 'body_class', function( $classes ) {
+			$classes[] = 'branded';
+			return $classes;
+		} );
+
+		?>
+
+		<style>
+			body.branded .site-header,
+			body.branded .contain-to-grid,
+			body.branded .contain-to-grid .top-bar,
+			body.branded .top-bar-section > ul > li:not(.has-form) > a:not(.button),
+			body.branded .top-bar-section .dropdown li:not(.has-form):hover > a:not(.button),
+			body:not(.logged-in) .site-header .contain-to-grid,
+			body:not(.logged-in) .site-header .contain-to-grid .top-bar,
+			body:not(.logged-in) .site-header .top-bar-section li:not(.has-form) a:not(.button) {
+				background: <?php echo $primary_color; ?>;
+				color: white;
+			}
+
+			body.branded a,
+			body.branded .side-nav li a:not(.button) {
+				color: <?php echo $primary_color; ?>
+			}
+
+			body.branded a:hover {
+				text-decoration: underline;
+			}
+
+			body.branded button,
+			body.branded .button {
+				color: white;
+				background-color: <?php echo $primary_color; ?>;
+			}
+
+			body.branded #buddypress div.item-list-tabs#subnav {
+				background-color: <?php echo $primary_color; ?>;
+			}
+
+			body.branded .site-footer {
+				border-color: <?php echo $primary_color; ?>
+			}
+
+			<?php if ( $success_color ) : ?>
+				/* Success Colors */
+				body.branded .avatar-container.online:before {
+					background-color: <?php echo $success_color; ?>;
+				}
+
+				body.branded button.success,
+				body.branded .button.success {
+					background-color: <?php echo $success_color; ?>;
+				}
+
+				#buddypress div#message.success p,
+				#buddypress div#message.updated p {
+					border-color: <?php echo $success_color; ?>;
+				}
+			<?php endif; ?>
+
+			<?php if ( $warning_color ) : ?>
+				/* Warning Colors */
+
+				#buddypress div#message p,
+				#buddypress #sitewide-notice p {
+					border-color: <?php echo $warning_color; ?>;
+				}
+
+				body.branded .button.secondary {
+					background-color: <?php echo $warning_color; ?>;
+				}
+			<?php endif; ?>
+
+			<?php if ( $error_color ) : ?>
+				/* Alert Colors */
+				#buddypress div#message.error p {
+					border-color: <?php echo $error_color; ?>;
+				}
+
+				body.branded .alert-box.alert {
+					background-color: <?php echo $error_color; ?>;
+					border-color: <?php echo $error_color; ?>;
+				}
+
+				body.branded .button.alert {
+					background-color: <?php echo $error_color; ?>;
+				}
+			<?php endif; ?>
+
+		</style>
 		<?php
 	}
 }

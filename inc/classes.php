@@ -10,7 +10,7 @@ class SC_walker extends Walker_Nav_Menu {
 	// setting the childred to true or false.. if there are child elements then we are going to
 	// call the class below and make sure to add class of has-dropdown
 	function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ){
-		$GLOBALS['dd_children'] = ( isset($children_elements[$element->ID]) )? 1:0;
+		$GLOBALS['dd_children'] = ( isset( $children_elements[$element->ID] ) )? 1:0;
 		$GLOBALS['dd_depth'] = (int) $depth;
 		parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
 	}

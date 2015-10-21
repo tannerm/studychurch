@@ -7,8 +7,12 @@
  * @package sc
  */
 
-	$header_logo = ( is_user_logged_in() ) ? 'logo_icon.png' : 'logo-small.png';
-?><!DOCTYPE html>
+if ( ! $header_logo = get_theme_mod( 'sc_logo' ) ) {
+	$header_logo = get_stylesheet_directory_uri() . '/assets/images/';
+	$header_logo .= ( is_user_logged_in() ) ? 'logo_icon.png' : 'logo-small.png';
+}
+?>
+<!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
@@ -22,11 +26,8 @@
 
 <body <?php body_class(); ?>>
 <div id="page" class="hfeed site">
-	<?php do_action( 'before' ); ?>
 	<header id="masthead" class="site-header" role="banner">
-		<?php if ( is_user_logged_in() ) : ?>
-			<div class="corner-ribbon top-left sticky red shadow">Beta</div>
-		<?php endif; ?>
+		<?php do_action( 'before_header' ); ?>
 
 		<div class="contain-to-grid">
 			<nav id="site-navigation" class="main-navigation top-bar" role="navigation" data-topbar data-options="is_hover: false">
@@ -37,7 +38,7 @@
 							<?php $link = ( is_user_logged_in() ) ? bp_loggedin_user_domain() : home_url( '/' ); ?>
 							<a href="<?php echo esc_url( $link ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
 
-								<img src="<?php echo get_template_directory_uri(); ?>/assets/images/<?php echo $header_logo; ?>" />
+								<img src="<?php echo esc_url(  $header_logo ); ?>" />
 								<span class="screen-reader"><?php bloginfo( 'name' ); ?></span>
 							</a>
 						</h1>
@@ -50,12 +51,16 @@
 					<?php
 					$location = ( is_user_logged_in() ) ? 'members' : 'public';
 					$position = ( is_user_logged_in() ) ? 'left' : 'right';
-					wp_nav_menu( array(
-						'theme_location' => $location,
-						'container'      => false,
-						'items_wrap'     => '<ul id="%1$s" class="%2$s main-menu ' . $position . '">%3$s</ul>',
-						'walker'         => new sc_walker()
-					) );
+
+					if ( has_nav_menu( $location ) ) {
+						wp_nav_menu( array(
+							'theme_location' => $location,
+							'container'      => false,
+							'items_wrap'     => '<ul id="%1$s" class="%2$s main-menu ' . $position . '">%3$s</ul>',
+							'walker'         => new sc_walker()
+						) );
+					}
+
 					?>
 
 					<?php if ( is_user_logged_in() ) : ?>

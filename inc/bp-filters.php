@@ -25,16 +25,18 @@ class SC_BP_Filter {
 	 * Add Hooks and Actions
 	 */
 	protected function __construct() {
-		add_filter( 'groups_activity_new_update_action', array( $this, 'group_activity_action' ) );
-		add_filter( 'bp_get_activity_css_class',         array( $this, 'no_mini_class'         ) );
-//		add_filter( 'bp_get_loggedin_user_avatar',       array( $this, 'current_user_avatar_container' ) );
-		add_filter( 'bp_core_fetch_avatar',              array( $this, 'user_avatar_container' ), 10, 2 );
-		add_filter( 'bp_avatar_is_front_edit',           array( $this, 'avatar_is_front_edit'  ) );
-		add_filter( 'bp_displayed_user_id',              array( $this, 'displayed_user_id'     ) );
-		add_filter( 'bp_activity_get',                   array( $this, 'sort_activities'       ) );
-		add_filter( 'bp_before_has_groups_parse_args',   array( $this, 'has_group_args' ) );
+		add_filter( 'groups_activity_new_update_action',  array( $this, 'group_activity_action' ) );
+		add_filter( 'bp_get_activity_css_class',          array( $this, 'no_mini_class'         ) );
+//		add_filter( 'bp_get_loggedin_user_avatar',        array( $this, 'current_user_avatar_container' ) );
+		add_filter( 'bp_core_fetch_avatar',               array( $this, 'user_avatar_container' ), 10, 2 );
+		add_filter( 'bp_avatar_is_front_edit',            array( $this, 'avatar_is_front_edit'  ) );
+		add_filter( 'bp_displayed_user_id',               array( $this, 'displayed_user_id'     ) );
+		add_filter( 'bp_activity_get',                    array( $this, 'sort_activities'       ) );
+		add_filter( 'bp_before_has_groups_parse_args',    array( $this, 'has_group_args' ) );
+		add_filter( 'bp_before_has_members_parse_args',   array( $this, 'has_members_args' ) );
 
 		add_action( 'template_redirect',                 array( $this, 'redirect_single_activity' ) );
+		add_action( 'template_redirect',                 array( $this, 'redirect_members_page'    ) );
 		add_action( 'bp_activity_before_save',           array( $this, 'activity_mentions'     ), 9 );
 
 	}
@@ -48,6 +50,13 @@ class SC_BP_Filter {
 	 */
 	public function has_group_args( $args ) {
 		$args['show_hidden'] = true;
+		return $args;
+	}
+
+	public function has_members_args( $args ) {
+		$members = get_users( array( 'blog_id' => get_current_blog_id() ) );
+		$args['include']  = wp_list_pluck( $members, 'ID' );
+		$args['per_page'] = 100;
 		return $args;
 	}
 
@@ -163,11 +172,17 @@ class SC_BP_Filter {
 		foreach ( $activities['activities'] as $key => $activity ) {
 			$time = strtotime( $activity->date_recorded );
 			foreach( (array) $activity->children as $child ) {
+
+				if ( empty( $child->date_recorded ) ) {
+					continue;
+				}
+
 				$child_time = strtotime( $child->date_recorded );
 				if ( $child_time > $time ) {
 					$time = $child_time;
 				}
 			}
+
 			unset( $activities['activities'][ $key ] );
 			$activities['activities'][ $time ] = $activity;
 		}
@@ -201,4 +216,19 @@ class SC_BP_Filter {
 		die();
 	}
 
+	/**
+	 * Only site admins should see the members page
+	 */
+	public function redirect_members_page() {
+
+		if ( ! bp_is_members_directory() ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'promote_users' ) ) {
+			wp_safe_redirect( bp_loggedin_user_domain() );
+			die();
+		}
+
+	}
 }

@@ -3,6 +3,7 @@ $logged-out-height: 106px;
 
 body:not(.logged-in) {
 	.site-header {
+
 		.contain-to-grid,
 		.contain-to-grid .top-bar,
 		.top-bar-section li:not(.has-form) a:not(.button) {
@@ -40,6 +41,10 @@ body.logged-in {
 
 .site-header {
 	margin-bottom: 6rem;
+
+	.title-area {
+		max-width: 40%;
+	}
 
 	/* The ribbons */
 

@@ -33,11 +33,11 @@
 
 	<?php do_action( 'bp_before_directory_members_list' ); ?>
 
-	<ul id="members-list" class="item-list" role="main">
+	<ul id="members-list" class="item-list row" role="main">
 
 	<?php while ( bp_members() ) : bp_the_member(); ?>
 
-		<li>
+		<li class="small-4 medium-3 columns text-center">
 			<div class="item-avatar">
 				<a href="<?php bp_member_permalink(); ?>"><?php bp_member_avatar(); ?></a>
 			</div>
