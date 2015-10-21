@@ -27,6 +27,7 @@ class SC_Main_Hooks {
 	protected function __construct() {
 		add_action( 'wp_footer', array( $this, 'bug_report_form' ) );
 		add_action( 'wp_footer', array( $this, 'front_page_modal' ) );
+		add_action( 'before_header', array( $this, 'beta_flag' ) );
 	}
 
 	public function bug_report_form() {
@@ -50,6 +51,12 @@ class SC_Main_Hooks {
 				</div>
 				<a class="close-reveal-modal">&#215;</a>
 			</div>
+		<?php endif;
+	}
+
+	public function beta_flag() {
+		if ( is_user_logged_in() ) : ?>
+			<div class="corner-ribbon top-left sticky red shadow">Beta</div>
 		<?php endif;
 	}
 }
