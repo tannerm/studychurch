@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-10-21
+/*! StudyChurch - v0.1.0 - 2015-10-23
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -414,7 +414,7 @@ var StudyApp = StudyApp || {};
 			if ( this.collection ) {
 				return this.collection.url()
 			} else {
-				return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
+				return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/'
 			}
 		},
 
@@ -469,7 +469,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Chapter,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
+			return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/'
 		},
 
 		parse: function (response) {
@@ -701,7 +701,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Item,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
+			return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
 		},
 
 		nextOrder: function () {

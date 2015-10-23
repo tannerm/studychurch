@@ -183,6 +183,8 @@ class SC_Setup {
 		 */
 		add_theme_support( 'post-thumbnails' );
 
+		add_theme_support( 'title-tag' );
+
 		/**
 		 * Setup the WordPress core custom background feature.
 		 */
@@ -190,6 +192,7 @@ class SC_Setup {
 			'default-color' => 'ffffff',
 			'default-image' => '',
 		) ) );
+
 	}
 
 	/**
@@ -368,8 +371,22 @@ class SC_Setup {
 	 */
 	public function maybe_force_login() {
 		/** bale if the user is logged in or is on the login page */
-		if ( is_user_logged_in() || ! is_buddypress() ) {
+		if ( is_user_logged_in() ) {
 			return;
+		}
+
+		// must be logged in to view buddypress pages
+		if ( ! ( is_buddypress() || is_singular( 'sc_study' ) ) ) {
+			return;
+		}
+
+		// must be logged in to view studies
+		if ( is_singular( 'sc_study' ) ) {
+			$study_id = get_the_ID();
+
+			if ( apply_filters( 'sc_guest_can_view_study', false, $study_id ) ) {
+				return;
+			}
 		}
 
 		include( get_template_directory() . '/page-login.php' );

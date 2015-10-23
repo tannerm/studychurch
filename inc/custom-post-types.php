@@ -54,7 +54,7 @@ class SC_Custom_Post_Types {
 				'with_front' => false,
 			),
 			'hierarchical'       => true,
-			'has_archive'        => false,
+			'has_archive'        => true,
 			'menu_position'      => 5,
 			'menu_icon'          => 'dashicons-welcome-write-blog',
 			'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments', 'page-attributes' )

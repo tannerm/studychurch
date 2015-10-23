@@ -25,8 +25,11 @@ class SC_Study_Edit {
 	 * Add Hooks and Actions
 	 */
 	protected function __construct() {
-		add_action( 'init', array( $this, 'maybe_study_save' ) );
-		add_action( 'wp', array( $this, 'study_edit_actions' ) );
+		add_action( 'template_redirect', array( $this, 'maybe_study_save' ) );
+		add_action( 'wp',                array( $this, 'study_edit_actions' ) );
+
+		add_action( 'sc_study_edit_sidebar_before', array( $this, 'study_status' ) );
+
 		add_filter( 'map_meta_cap', array( $this, 'can_user_edit_study' ), 10, 4 );
 		add_filter( 'json_dispatch_args', array( $this, 'can_user_edit_study' ), 10, 4 );
 	}
@@ -42,7 +45,7 @@ class SC_Study_Edit {
 		}
 
 		// make sure this user is the post author
-		if ( get_current_user_id() != get_post( $_POST['study_id'] )->post_author ) {
+		if ( ! current_user_can( 'edit_post', $_POST['study_id'] ) ) {
 			return;
 		}
 
@@ -54,6 +57,26 @@ class SC_Study_Edit {
 
 		$this->$function();
 
+	}
+
+	protected function handle_save_study() {
+		$study_id = sc_get( 'study_id' );
+		$title    = sc_get( 'study-title' );
+		$excerpt  = sc_get( 'study-thesis' );
+
+		if ( empty( $study_id ) || empty( $title ) || empty( $excerpt ) ) {
+			return;
+		}
+
+		wp_update_post( array(
+			'ID'           => absint( $study_id ),
+			'post_title'   => sanitize_text_field( $title ),
+			'post_excerpt' => wp_filter_post_kses( $excerpt ),
+		) );
+
+
+		wp_safe_redirect( add_query_arg( 'study', $study_id, get_permalink() ) );
+		exit();
 	}
 
 	/**
@@ -140,6 +163,14 @@ class SC_Study_Edit {
 		}
 
 		return $caps;
+	}
+
+	public function study_status( $study_id ) {
+		if ( 'pending' == get_post_status( $study_id ) ) : ?>
+			<p class="description"><?php _e( 'This study is pending approval.', 'sc' ); ?></p>
+		<?php elseif ( 'draft' == get_post_status( $study_id ) ) : ?>
+			<p class="description"><?php _e( 'This study is in draft mode.', 'sc' ); ?></p>
+		<?php endif;
 	}
 
 }

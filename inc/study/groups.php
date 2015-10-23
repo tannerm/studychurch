@@ -105,7 +105,7 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 			<div class="studies radio">
 				<table style="width: 100%;">
 					<tbody>
-					<?php foreach ( get_posts( 'post_status=publish,private&post_type=sc_study&numberposts=-1&post_parent=0&author=' . get_current_user_id() ) as $study ) : ?>
+					<?php foreach ( get_posts( 'post_status=publish,private&post_type=sc_study&numberposts=-1&post_parent=0' ) as $study ) : ?>
 						<tr>
 							<td>
 								<input type="radio" id="study-<?php echo absint( $study->ID ); ?>" name="_sc_study" value="<?php echo absint( $study->ID ); ?>" <?php checked( self::group_get_option( $group_id, '_sc_study' ), $study->ID ); ?>/>

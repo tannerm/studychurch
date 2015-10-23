@@ -56,7 +56,7 @@ class SC_Profile {
 		}
 
 		wp_send_json_success( array(
-			'message' => __( 'Study created successfully. Redirecting you to your new study.', 'sc' ),
+			'message' => __( 'Success! Redirecting you to your new study.', 'sc' ),
 			'url'     => sprintf( '/study-edit/?action=edit&study=%d', $study_id )
 		) );
 

@@ -98,8 +98,8 @@ global $activities_template;
 						<div class="ac-textarea">
 							<textarea id="ac-input-<?php bp_activity_id(); ?>" class="ac-input bp-suggestions" name="ac_input_<?php bp_activity_id(); ?>"></textarea>
 						</div>
-						<input type="submit" name="ac_form_submit" class="button small secondary" value="<?php esc_attr_e( 'Post', 'buddypress' ); ?>" /> &nbsp;
-						<a href="#" class="ac-reply-cancel"><?php _e( 'Cancel', 'buddypress' ); ?></a>
+						<input type="submit" name="ac_form_submit" class="button tiny" value="<?php esc_attr_e( 'Post', 'buddypress' ); ?>" /> &nbsp;
+						<a href="#" class="ac-reply-cancel tiny button alert"><?php _e( 'Cancel', 'buddypress' ); ?></a>
 						<input type="hidden" name="comment_form_id" value="<?php bp_activity_id(); ?>" />
 					</div>
 

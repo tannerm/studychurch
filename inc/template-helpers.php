@@ -239,14 +239,11 @@ function sc_study_navigation( $id = null ) {
  * @return array|int
  */
 function sc_study_get_answer() {
-	if ( ! bp_get_group_id() ) {
-		return false;
-	}
 
 	$answer = get_comments( array(
 		'post_id'    => get_the_ID(),
 		'meta_key'   => 'group_id',
-		'meta_value' => bp_get_group_id(),
+		'meta_value' => absint( bp_get_group_id() ),
 		'number'     => 1,
 		'author__in' => get_current_user_id(),
 	) );
@@ -256,4 +253,5 @@ function sc_study_get_answer() {
 	} else {
 		return false;
 	}
+
 }

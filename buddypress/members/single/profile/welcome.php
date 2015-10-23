@@ -14,7 +14,7 @@
 </p>
 <p>
 <div class="video-container">
-	<?php echo apply_filters( 'the_content', 'https://youtu.be/eX4nSYV-4Bk' ); ?>
+	<?php echo wp_oembed_get( 'https://youtu.be/eX4nSYV-4Bk' ); ?>
 </div>
 </p>
 
@@ -24,7 +24,7 @@
 </p>
 <p>
 <div class="video-container">
-	<?php echo apply_filters( 'the_content', 'https://youtu.be/e5bEFkmMLZI' ); ?>
+	<?php echo wp_oembed_get( 'https://www.youtube.com/watch?v=e5bEFkmMLZI&feature=youtu.be' ); ?>
 </div>
 </p>
 
@@ -32,6 +32,6 @@
 <p>Alright, well done! Now let's put the pieces together and see what happens.</p>
 <p>
 <div class="video-container">
-	<?php echo apply_filters( 'the_content', 'https://youtu.be/Bv59cTf3e3Q' ); ?>
+	<?php echo wp_oembed_get( 'https://youtu.be/Bv59cTf3e3Q' ); ?>
 </div>
 </p>

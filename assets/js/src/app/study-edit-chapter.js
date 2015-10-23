@@ -12,7 +12,7 @@ var StudyApp = StudyApp || {};
 			if ( this.collection ) {
 				return this.collection.url()
 			} else {
-				return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
+				return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/'
 			}
 		},
 
@@ -67,7 +67,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Chapter,
 
 		url: function () {
-			return WP_API_Settings.root + '/study/' + StudyApp.study_id + '/chapters/'
+			return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/'
 		},
 
 		parse: function (response) {

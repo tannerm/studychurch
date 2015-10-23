@@ -7,10 +7,13 @@
  * @package sc
  */
 
+global $sc_item_count;
+$sc_item_count = 0;
+
 get_header(); ?>
 
-	<div class="large-9 small-12 columns">
-		<div class="panel">
+<div class="row">
+	<div class="small-12 columns">
 		<?php if ( have_posts() ) : ?>
 
 			<header class="page-header">
@@ -58,8 +61,11 @@ get_header(); ?>
 						elseif ( is_tax( 'post_format', 'post-format-link' ) ) :
 							_e( 'Links', 'sc' );
 
+						elseif ( is_post_type_archive( 'sc_study' ) ) :
+							_e( 'Studies', 'sc' );
+
 						else :
-							_e( 'Archives', 'sc' );
+							_e ( 'Archive', 'sc' );
 
 						endif;
 					?>
@@ -73,18 +79,20 @@ get_header(); ?>
 				?>
 			</header><!-- .page-header -->
 
-			<?php /* Start the Loop */ ?>
-			<?php while ( have_posts() ) : the_post(); ?>
+			<div class="row">
+				<?php /* Start the Loop */ ?>
+				<?php while ( have_posts() ) : the_post(); $sc_item_count ++; ?>
 
-				<?php
-					/* Include the Post-Format-specific template for the content.
-					 * If you want to overload this in a child theme then include a file
-					 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-					 */
-					get_template_part( 'content', get_post_format() );
-				?>
+					<?php
+						/* Include the Post-Format-specific template for the content.
+						 * If you want to overload this in a child theme then include a file
+						 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
+						 */
+						get_template_part( 'partials/archive', get_post_type() );
+					?>
 
-			<?php endwhile; ?>
+				<?php endwhile; ?>
+			</div>
 
 			<?php sc_content_nav( 'nav-below' ); ?>
 
@@ -94,8 +102,7 @@ get_header(); ?>
 
 		<?php endif; ?>
 
-		</div><!-- panel -->
 	</div><!-- columns -->
+</div>
 
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>

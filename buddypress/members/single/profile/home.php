@@ -1,4 +1,5 @@
 <?php
+$has_assignments = false;
 $groups = groups_get_user_groups();
 $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&parent=0&authors=' . bp_displayed_user_id() )
 ?>
@@ -6,11 +7,11 @@ $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&pare
 <?php if ( $groups['total'] ) : ?>
 	<div class="panel">
 
-		<h2><?php _e( 'Assignments', 'sc' ); ?></h2>
+		<h2><?php _e( 'Your Assignments', 'sc' ); ?></h2>
 
 		<?php foreach ( $groups['groups'] as $group_id ) : $group = groups_get_group( 'group_id=' . $group_id ); ?>
 			<?php $assignments = new SC_Assignments_Query( array( 'count' => 1, 'group_id' => $group_id ) ); ?>
-			<?php if ( $assignments->have_assignments() ) : $assignments->the_assignment(); ?>
+			<?php if ( $assignments->have_assignments() ) : $assignments->the_assignment(); $has_assignments = true; ?>
 				<h4><?php _e( 'Assignment Due:', 'sc' ); ?> <?php $assignments->the_date_formatted(); ?></h4>
 				<?php $assignments->the_lessons(); ?>
 				<?php $assignments->the_content(); ?>
@@ -20,6 +21,10 @@ $studies = get_pages( 'post_status=publish,pending,draft&post_type=sc_study&pare
 				</p>
 			<?php endif; ?>
 		<?php endforeach; ?>
+
+		<?php if ( ! $has_assignments ) : ?>
+			<p><?php _e( 'No assignments yet', 'sc' ); ?></p>
+		<?php endif; ?>
 
 	</div>
 <?php endif; ?>

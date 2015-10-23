@@ -29,13 +29,18 @@ class SC_Study {
 		add_action( 'template_redirect',      array( $this, 'setup_study_group' ) );
 		add_action( 'template_redirect',      array( $this, 'redirect_on_empty' ) );
 		add_action( 'wp_head',                array( $this, 'print_styles'      ) );
+		add_action( 'pre_get_posts',          array( $this, 'study_archive'     ) );
 
 		add_filter( 'private_title_format',   array( $this, 'private_title_format' ), 10, 2 );
 		add_filter( 'user_has_cap',           array( $this, 'private_study_cap'    ), 10, 4 );
+		add_filter( 'get_page_uri',           array( $this, 'allow_private_parent' ), 10, 2 );
 	}
 
+	/**
+	 * If the study does not have an introduction, redirect to the first chapter
+	 */
 	public function redirect_on_empty() {
-		if ( 'sc_study' != get_post_type() ) {
+		if ( ! is_singular( 'sc_study' ) ) {
 			return;
 		}
 
@@ -106,13 +111,12 @@ class SC_Study {
 
 		update_comment_meta( $data['comment_ID'], 'group_id', absint( $_POST['group_id'] ) );
 
+		$this->setup_study_group( $data['comment_post_ID'] );
+
 		if ( ! sc_answer_is_private( $data['comment_post_ID'] ) ) {
 			$activity_id = bp_activity_add( $activity_meta );
 			update_comment_meta( $data['comment_ID'], 'activity_id', $activity_id );
-
 		}
-
-		$this->setup_study_group( $data['comment_post_ID'] );
 
 		ob_start();
 		global $sc_answer;
@@ -124,29 +128,43 @@ class SC_Study {
 	}
 
 	/**
-	 * Setup global for current group
+	 * Setup global for current group and redirect if user does not have access to this
+	 * study
 	 */
 	public function setup_study_group( $study_id = false ) {
 		if ( empty( $study_id ) && ! is_singular( 'sc_study' ) ) {
 			return;
 		}
 
+		$doing_ajax = ( defined( 'DOING_AJAX' ) && DOING_AJAX );
+
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
 		if ( ! $group_id = sc_get_study_user_group_id( $study_id ) ) {
 
 			// allow editors and up to proceed
-			if ( current_user_can( 'edit_post', sc_get_study_id( $study_id ) ) ) {
+			if ( current_user_can( 'edit_post', $study_id ) ) {
 				return;
 			}
 
-			wp_safe_redirect( bp_loggedin_user_domain() );
-			die();
+			// only redirect if this is not an ajax call
+			if ( empty( $doing_ajax ) && ! apply_filters( 'sc_allow_personal_studies', false, $study_id ) ) {
+				wp_safe_redirect( bp_loggedin_user_domain() );
+				die();
+			} else {
+				return;
+			}
+
 		}
 
 		bp_has_groups( 'include=' . $group_id );
 		bp_groups();
 		bp_the_group();
 
-		if ( ! bp_get_group_id() ) {
+		// only redirect if this is not an ajax call
+		if ( empty( $doing_ajax ) && ! bp_get_group_id() ) {
 			wp_safe_redirect( bp_loggedin_user_domain() );
 			die();
 		}
@@ -211,6 +229,44 @@ class SC_Study {
 		</style>
 		<?php
 	}
+
+	public function study_archive( $query ) {
+		if ( is_admin() ) {
+			return;
+		}
+
+		if ( ! $query->is_main_query() ) {
+			return;
+		}
+
+		if ( 'sc_study' != $query->get( 'post_type' ) ) {
+			return;
+		}
+
+		if ( ! $query->is_archive ) {
+			return;
+		}
+
+		$query->set( 'post_parent', 0 );
+	}
+
+	public function allow_private_parent( $uri, $page ) {
+		if ( 'sc_study' != $page->post_type ) {
+			return $uri;
+		}
+
+		$uri = $page->post_name;
+
+		foreach ( $page->ancestors as $parent ) {
+			$parent = get_post( $parent );
+			if ( in_array( $parent->post_status, array( 'publish', 'private' ) ) ) {
+				$uri = $parent->post_name . '/' . $uri;
+			}
+		}
+
+		return $uri;
+	}
+
 }
 
 /**
@@ -221,7 +277,7 @@ class SC_Study {
  * @return bool
  */
 function sc_answer_is_private( $post_id ) {
-	return ( 'private' == get_post_meta( $post_id, '_sc_privacy', true ) );
+	return apply_filters( 'sc_answer_is_private', ( 'private' == get_post_meta( $post_id, '_sc_privacy', true ) ), $post_id );
 }
 
 function sc_get_privacy( $post_id ) {
