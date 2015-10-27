@@ -8547,28 +8547,79 @@ textarea {
   box-shadow: none;
   border-bottom: 1px dotted; }
 #studyapp .panel {
-  border: none;
-  background: #daeeec; }
-  #studyapp .panel .item-expand {
-    display: none; }
-  #studyapp .panel.compressed {
-    height: 5.1rem;
-    overflow: hidden;
-    border-bottom: 1rem solid #daeeec; }
-    #studyapp .panel.compressed .item-expand {
-      display: inline-block; }
-    #studyapp .panel.compressed .item-compress, #studyapp .panel.compressed .item-content-edit {
+  padding: 0;
+  border: 1px solid #bbbbbb; }
+  #studyapp .panel .panel-header {
+    border-bottom: 1px solid #bbbbbb;
+    background: #eeeeee;
+    font-size: 1.25rem;
+    line-height: 1;
+    overflow: hidden; }
+    #studyapp .panel .panel-header table {
+      background: none;
+      margin: 0;
+      width: 100%;
+      border: 0; }
+      #studyapp .panel .panel-header table td {
+        padding: 0; }
+      #studyapp .panel .panel-header table td.reorder {
+        width: 2.5rem; }
+      #studyapp .panel .panel-header table td.buttons {
+        width: 16rem; }
+    #studyapp .panel .panel-header .item-data-type {
+      width: 100%;
+      height: 2.5rem;
+      border-top: 0;
+      border-bottom: 0; }
+    #studyapp .panel .panel-header .sep {
+      float: right;
+      width: 1px;
+      height: 2.5rem;
+      background: #bbbbbb; }
+    #studyapp .panel .panel-header a {
+      float: right;
+      line-height: 2.5rem;
+      width: 2.5rem;
+      text-align: center;
+      display: inline-block;
+      position: relative; }
+      #studyapp .panel .panel-header a.current:before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        border-bottom: 3px solid;
+        left: 0; }
+      #studyapp .panel .panel-header a .fa-spin {
+        display: none; }
+      #studyapp .panel .panel-header a.saving .fa {
+        display: none; }
+      #studyapp .panel .panel-header a.saving .fa.fa-spin {
+        display: inline-block; }
+    #studyapp .panel .panel-header a:hover {
+      background: #bbbbbb; }
+    #studyapp .panel .panel-header .item-expand {
       display: none; }
-  #studyapp .panel .item-privacy-button {
+    #studyapp .panel .panel-header .item-privacy {
+      display: none; }
+  #studyapp .panel.compressed .panel-header .item-expand {
+    display: inline-block; }
+  #studyapp .panel.compressed .panel-header .item-compress {
     display: none; }
-  #studyapp .panel.question_long .item-privacy-button, #studyapp .panel.question_short .item-privacy-button {
-    display: block;
-    max-width: 50%;
-    float: right;
-    margin: 0; }
-  #studyapp .panel.question_long .item-data-type, #studyapp .panel.question_short .item-data-type {
-    margin: 0;
-    width: 50%; }
+  #studyapp .panel.compressed .item-content:not(.froala-box) {
+    max-height: 7rem;
+    overflow: hidden;
+    margin-bottom: 0; }
+  #studyapp .panel .item-content:not(.froala-box) {
+    padding: 10px; }
+  #studyapp .panel .froala-editor.f-basic,
+  #studyapp .panel .froala-wrapper.f-basic {
+    border: none; }
+  #studyapp .panel .froala-wrapper.f-basic {
+    border-top: 1px solid #bbbbbb; }
+  #studyapp .panel.question_long .panel-header .item-privacy, #studyapp .panel.question_short .panel-header .item-privacy {
+    display: inline-block; }
 #studyapp .panel-buttons {
   float: right;
   margin: -1rem -1rem 0 0;

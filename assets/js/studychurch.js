@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-10-23
+/*! StudyChurch - v0.1.0 - 2015-10-26
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -666,7 +666,7 @@ var StudyApp = StudyApp || {};
 				type          : 'sc_study',
 				author        : StudyApp.user_id,
 				parent        : StudyApp.CurrentChapter.model.get('id'),
-				menu_order    : StudyApp.Collections.Chapter.Sidebar.nextOrder(),
+				menu_order    : StudyApp.Collections.Item.nextOrder(),
 				comment_status: 'open',
 				ping_status   : 'closed',
 				data_type     : 'question_short',
@@ -735,12 +735,14 @@ var StudyApp = StudyApp || {};
 			"click .item-expand"         : "expand",
 			"click .item-content-edit"   : "editContent",
 			"click .item-content-delete" : "deleteItem",
-			"change .item-privacy"       : "setPrivacy",
+			"click .item-content-save"   : "saveItem",
+			"click .item-privacy"        : "setPrivacy",
 			"change .item-data-type"     : "setDataType"
 		},
 
 		initialize : function() {
 			this.listenTo(this.model, 'destroy', this.handleDestroy);
+			this.listenTo(this.model, 'save', this.handleDestroy);
 		},
 
 		render: function () {
@@ -760,15 +762,28 @@ var StudyApp = StudyApp || {};
 
 		setPrivacy : function(e) {
 
+			var $this = $(e.target);
+
+			if (!$this.hasClass('item-privacy')) {
+				$this = $this.parent();
+			}
+
 			if ('question_short' != this.model.get('data_type') && 'question_long' != this.model.get('data_type')) {
 				return false;
 			}
 
-			var value = ('checked' == $(e.target).attr('checked'));
+			if ( $this.hasClass('current')) {
+				return false;
+			}
+
+			this.$el.find('.item-privacy').removeClass('current');
+
+			$this.addClass('current');
+			var value = ($this.hasClass('item-private'));
 			this.model.set({is_private : value});
 
 			// only save if we have an id
-			if (this.model.get('id')) {
+			if (this.model.get('id')){
 				this.setsave();
 			}
 
@@ -803,7 +818,7 @@ var StudyApp = StudyApp || {};
 				maxHeight: 400,
 				buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'fontFamily', 'color', 'sep',
 					'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
-					'createLink', 'html', 'fullscreen', 'close'
+					'createLink', 'html', 'fullscreen', 'sep', 'close'
 				],
 				customButtons : {
 					// Clear HTML button with text icon.
@@ -811,7 +826,7 @@ var StudyApp = StudyApp || {};
 						title: 'Close Editor',
 						icon: {
 							type: 'font',
-							value: 'fa fa-save'
+							value: 'fa fa-close'
 						},
 						callback: function () {
 							this.save();
@@ -838,17 +853,52 @@ var StudyApp = StudyApp || {};
 		},
 
 		setsave : function(data, fetchChapter) {
+			var $content = this.$el.find('.item-content');
+
+			// update the content if the editor is enabled
+			if ($content.data('fa.editable')) {
+				var content = this.model.get('content');
+				content.raw = $content.editable('getHTML');
+				this.model.set({content : content});
+			}
 
 			if (! this.model.get('parent')){
 				this.model.set('parent', StudyApp.CurrentChapter.model.get('id'));
 			}
 
-			this.model.save(data);
+			this.saving();
+			this.model.save(data, {success: this.saveSuccess, error: this.saveFail});
 
 			// refetch the current chapter?
 			if (false !== fetchChapter) {
 				StudyApp.CurrentChapter.model.fetch();
 			}
+		},
+
+		saving : function() {
+			var $saveIcon = this.$el.find( '.item-content-save' );
+			$saveIcon.addClass('saving');
+		},
+
+		saveSuccess : function(model, response, options) {
+			var $saveIcon = model.$el.find( '.item-content-save' );
+			$saveIcon.removeClass('saving');
+		},
+
+		saveFail : function(model, response, options) {
+			var $saveIcon = model.$el.find( '.item-content-save' );
+			$saveIcon.removeClass('saving');
+			alert('Save Fail');
+			console.log(response);
+		},
+
+		saveItem : function(e) {
+			e.preventDefault();
+			if (this.$el.find( '.item-content-save').hasClass('saving')) {
+				return false;
+			}
+
+			this.setsave();
 		},
 
 		deleteItem : function() {
@@ -893,7 +943,7 @@ var StudyApp = StudyApp || {};
 			}
 
 			StudyApp.Collections.Item.add(chapter.get('elements'));
-			StudyApp.Collections.Item.url = function() { return chapter.urlRoot() + chapter.id + '/items/'; }
+			StudyApp.Collections.Item.url = function() { return chapter.urlRoot() + chapter.id + '/items/'; };
 
 			this.$el.find('#chapter-items').sortable({
 				handle : '.item-reorder',

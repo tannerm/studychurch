@@ -26,13 +26,18 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 		) );
 
 		$posts_args = array(
-			'context'          => array(
-				'default'      => 'edit',
+			'context'               => array(
+				'default'           => 'view',
 			),
-			'page'            => array(
-				'default'           => 0,
-				'sanitize_callback' => 'absint'
+			'page'                  => array(
+				'default'           => 1,
+				'sanitize_callback' => 'absint',
 			),
+			'per_page'              => array(
+				'default'           => 10,
+				'sanitize_callback' => 'absint',
+			),
+			'filter'                => array(),
 		);
 
 		register_rest_route( 'study', '(?P<study_id>\d+)/chapters', array(
@@ -266,13 +271,15 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 						'content'    => $child_data['content'],
 						'data_type'  => esc_html( sc_get_data_type( $child_data['id'] ) ),
 						'is_private' => sc_answer_is_private( $child_data['id'] ),
+						'menu_order' => $child_data['menu_order'],
 						'parent'     => $chapter_data['id'],
 					);
 				} else {
 					$chapter_data['sections'][] = array(
-						'id'    => $child_data['id'],
-						'title' => $child_data['title'],
-						'parent' => $chapter_data['id'],
+						'id'         => $child_data['id'],
+						'title'      => $child_data['title'],
+						'parent'     => $chapter_data['id'],
+						'menu_order' => $child_data['menu_order'],
 					);
 				}
 
