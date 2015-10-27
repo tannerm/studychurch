@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2015-10-26
+/*! StudyChurch - v0.1.0 - 2015-10-27
  * http://wordpress.org/themes
  * Copyright (c) 2015; * Licensed GPLv2+ */
 (function($) {
@@ -649,7 +649,7 @@ var StudyApp = StudyApp || {};
 		},
 
 		url : function() {
-			return (this.attributes.id) ? this.urlRoot() + this.get('id') : this.url = this.urlRoot();
+			return (this.attributes.id) ? this.urlRoot() + this.get('id') : this.urlRoot();
 		},
 
 		defaults: function () {
@@ -676,6 +676,8 @@ var StudyApp = StudyApp || {};
 
 		sync  : function (method, model, options) {
 			options = options || {};
+
+
 
 			if (typeof WP_API_Settings.nonce !== 'undefined') {
 				var beforeSend = options.beforeSend;
@@ -711,7 +713,7 @@ var StudyApp = StudyApp || {};
 				this.menu_order = this.last().get('menu_order') + 1;
 			}
 
-			return this.order;
+			return this.menu_order;
 		},
 
 		comparator: 'menu_order'
