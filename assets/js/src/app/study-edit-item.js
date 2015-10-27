@@ -252,7 +252,7 @@ var StudyApp = StudyApp || {};
 		saveFail : function(model, response, options) {
 			var $saveIcon = model.$el.find( '.item-content-save' );
 			$saveIcon.removeClass('saving');
-			alert('Save Fail');
+			alert('Saving failed... please refresh the page and try again.');
 			console.log(response);
 		},
 

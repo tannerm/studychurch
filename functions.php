@@ -13,7 +13,7 @@
  */
 
 // Useful global constants
-define( 'SC_VERSION', '0.1.3' );
+define( 'SC_VERSION', '0.1.4' );
 define( 'BP_DEFAULT_COMPONENT', 'profile' );
 
 SC_Setup::get_instance();
