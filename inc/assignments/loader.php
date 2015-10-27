@@ -28,7 +28,7 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 		}
 
 		function display( $group_id = NULL ) {
-			include( get_stylesheet_directory() . '/inc/assignments/edit-template.php' );
+			include( get_template_directory() . '/inc/assignments/edit-template.php' );
 		}
 
 	}

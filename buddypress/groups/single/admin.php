@@ -178,7 +178,7 @@
 	<?php do_action( 'bp_before_group_manage_members_admin' ); ?>
 
 	<div class="bp-widget">
-		<h4><?php _e( 'Administrators', 'buddypress' ); ?></h4>
+		<h4><?php _e( 'Leaders', 'buddypress' ); ?></h4>
 
 		<?php if ( bp_has_members( '&include='. bp_group_admin_ids() ) ) : ?>
 
@@ -272,9 +272,7 @@
 
 						<?php else : ?>
 
-							<a href="<?php bp_group_member_ban_link(); ?>" class="button confirm member-ban tiny" title="<?php esc_attr_e( 'Kick and ban this member', 'buddypress' ); ?>"><?php _e( 'Kick &amp; Ban', 'buddypress' ); ?></a>
-							<a href="<?php bp_group_member_promote_mod_link(); ?>" class="button confirm member-promote-to-mod tiny" title="<?php esc_attr_e( 'Promote to Mod', 'buddypress' ); ?>"><?php _e( 'Promote to Mod', 'buddypress' ); ?></a>
-							<a href="<?php bp_group_member_promote_admin_link(); ?>" class="button confirm member-promote-to-admin tiny" title="<?php esc_attr_e( 'Promote to Admin', 'buddypress' ); ?>"><?php _e( 'Promote to Admin', 'buddypress' ); ?></a>
+							<a href="<?php bp_group_member_promote_admin_link(); ?>" class="button confirm member-promote-to-admin tiny" title="<?php esc_attr_e( 'Make a Leader', 'buddypress' ); ?>"><?php _e( 'Make a Leader', 'buddypress' ); ?></a>
 
 						<?php endif; ?>
 

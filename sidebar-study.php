@@ -23,7 +23,9 @@ $study_id = sc_get_study_id();
 		<?php sc_study_index(); ?>
 	</ul>
 
-	<a href="#" onclick="window.print(); return false;" class="button expand small"><i class="fa fa-print"></i> <?php _e( 'Print this lesson', 'sc' ); ?></a>
+	<?php if ( apply_filters( 'sc_study_show_print', true, $study_id ) ) : ?>
+		<a href="#" onclick="window.print(); return false;" class="button expand small"><i class="fa fa-print"></i> <?php _e( 'Print this lesson', 'sc' ); ?></a>
+	<?php endif; ?>
 
 	<?php if ( current_user_can( 'edit_post', $study_id ) ) : ?>
 		<a href="/study-edit/?action=edit&study=<?php echo absint( $study_id ); ?>" class="button expand small secondary"><i class="fa fa-pencil"></i> <?php _e( 'Edit this study', 'sc' ); ?></a>

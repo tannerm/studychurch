@@ -33,7 +33,7 @@ class SC_BP_Filter {
 		add_filter( 'bp_displayed_user_id',               array( $this, 'displayed_user_id'     ) );
 		add_filter( 'bp_activity_get',                    array( $this, 'sort_activities'       ) );
 		add_filter( 'bp_before_has_groups_parse_args',    array( $this, 'has_group_args' ) );
-		add_filter( 'bp_before_has_members_parse_args',   array( $this, 'has_members_args' ) );
+//		add_filter( 'bp_before_has_members_parse_args',   array( $this, 'has_members_args' ) );
 
 		add_action( 'template_redirect',                 array( $this, 'redirect_single_activity' ) );
 		add_action( 'template_redirect',                 array( $this, 'redirect_members_page'    ) );
@@ -53,6 +53,13 @@ class SC_BP_Filter {
 		return $args;
 	}
 
+	/**
+	 * Show only members from this site on network
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
 	public function has_members_args( $args ) {
 		$members = get_users( array( 'blog_id' => get_current_blog_id() ) );
 		$args['include']  = wp_list_pluck( $members, 'ID' );

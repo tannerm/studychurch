@@ -41,6 +41,8 @@ get_comments();?>
 			</div>
 
 			<?php sc_study_navigation(); ?>
+
+			<?php do_action( 'sc_study_chapter_after', get_the_ID() ); ?>
 		</div>
 	</div>
 <?php get_footer(); ?>
