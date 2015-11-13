@@ -7733,13 +7733,14 @@ hr.noline {
 
 /* =Global Styles
 -------------------------------------------------------------- */
-.video-container {
+.video-container, .embed-youtube {
   position: relative;
   padding-bottom: 56.25%;
   padding-top: 35px;
   height: 0;
-  overflow: hidden; }
-  .video-container iframe {
+  overflow: hidden;
+  margin-bottom: 1.5rem; }
+  .video-container iframe, .embed-youtube iframe {
     position: absolute;
     top: 0;
     left: 0;
