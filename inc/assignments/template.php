@@ -16,18 +16,19 @@ class SC_Assignments_Query {
 
 	public function __construct( $args = array() ) {
 
-		$this->query_args = wp_parse_args( $args, array(
-			'group_id'    => bp_get_current_group_id(),
-			'date_start'  => time(),
-			'date_finish' => null,
-			'count'       => -1,
-		) );
-
-		if ( empty( $this->query_args['group_id'] ) ) {
+		if ( false === $args ) {
 			return $this;
 		}
 
+		$this->query_args = wp_parse_args( $args, array(
+			'group_id'    => bp_get_current_group_id(),
+			'date_start'  => date( DATE_RSS, current_time( 'timestamp' ) ),
+			'date_finish' => '+ 1 year',
+			'count'       => -1,
+		) );
+
 		return $this->parse_query();
+
 	}
 
 	/**
@@ -35,48 +36,60 @@ class SC_Assignments_Query {
 	 *
 	 * @return $this
 	 */
-	protected function parse_query() {
+	public function parse_query() {
 
-		/** Get the assignment meta */
-		if ( ! is_array( $this->query_args['group_id'] ) ) {
-			$this->assignments = groups_get_groupmeta( (int) $this->query_args['group_id'], self::$_key, true );
-		} else {
-			foreach( $this->query_args['group_id'] as $group_id ) {
-				$this->assignments = groups_get_groupmeta( (int) $this->query_args['group_id'], self::$_key, true );
+		// remove legacy assignments
+		if ( $assignments = groups_get_groupmeta( $this->query_args['group_id'], SC_Assignments_Query::$_key, true ) ) {
+			foreach( $assignments as $assignment ) {
+				sc_add_group_assignment( $assignment, $this->query_args['group_id'] );
 			}
+
+			groups_delete_groupmeta( $this->query_args['group_id'], SC_Assignments_Query::$_key );
+		}
+
+		$order = ( current_time( 'timestamp' ) > $this->query_args['date_start'] ) ? 'ASC' : 'DESC';
+
+		if ( ! empty( $this->query_args['id'] ) ) {
+			$this->assignments = get_posts( 'id=' . $this->query_args['id'] );
+		} else {
+			$args = array(
+				'order'          => $order,
+				'post_type'      => 'sc_assignment',
+				'post_status'    => array( 'future', 'publish' ),
+				'posts_per_page' => $this->query_args['count'],
+				'date_query'     => array(
+					array(
+						'column' => 'post_date',
+						'before' => $this->query_args['date_finish'],
+					),
+					array(
+						'column' => 'post_date',
+						'after'  => $this->query_args['date_start'],
+					)
+				)
+			);
+
+			if ( $this->query_args['group_id'] ) {
+				$args['tax_query'] = array(
+					array(
+						'taxonomy' => 'sc_group',
+						'field'    => 'slug',
+						'terms'    => $this->query_args['group_id'],
+					)
+				);
+			}
+
+			$this->assignments = get_posts( $args );
 		}
 
 		if ( empty( $this->assignments ) ) {
 			$this->assignments = array();
 		}
 
-		ksort( $this->assignments );
-
-		$count = 0;
-		foreach( $this->assignments as $key => $assignment ) {
-			$timestamp = strtotime( $assignment['date'] );
-
-			/** Test start date */
-			if ( ! empty( $this->query_args['date_start'] ) && absint( $this->query_args['date_start'] ) > $timestamp ) {
-				unset( $this->assignments[ $key ] );
-				continue;
-			}
-
-			/** Test finish date */
-			if ( ! empty( $this->query_args['date_finish'] ) && absint( $this->query_args['date_finish'] ) < $timestamp ) {
-				unset( $this->assignments[ $key ] );
-				continue;
-			}
-
-			if ( $this->query_args['count'] > 0 && ++$count > $this->query_args['count'] ) {
-				unset( $this->assignments[ $key ] );
-			}
-
-		}
-
 		$this->count = count( $this->assignments );
 
 		return $this;
+
 	}
 
 	/**
@@ -107,7 +120,7 @@ class SC_Assignments_Query {
 		 * @return mixed
 		 */
 		public function get_the_key() {
-			return $this->assignment['key'];
+			return $this->assignment->ID;
 		}
 
 	/**
@@ -122,7 +135,7 @@ class SC_Assignments_Query {
 		 * @return mixed
 		 */
 		public function get_the_content() {
-			return $this->assignment['content'];
+			return $this->assignment->post_content;
 		}
 
 	/**
@@ -140,7 +153,7 @@ class SC_Assignments_Query {
 		 * @return int
 		 */
 		public function get_the_date( $d = 'l, F j' ) {
-			return date( $d, strtotime( $this->assignment['date'] ) );
+			return get_the_date( $d, $this->assignment->ID );
 		}
 
 	/**
@@ -173,11 +186,11 @@ class SC_Assignments_Query {
 		 * @return array|bool
 		 */
 		public function get_the_lessons() {
-			if ( empty( $this->assignment['lessons'] ) ) {
+			if ( ! $lessons = get_post_meta( $this->assignment->ID, 'lessons', true ) ) {
 				return false;
 			}
 
-			return array_map( 'absint', $this->assignment['lessons'] );
+			return array_map( 'absint', $lessons );
 		}
 }
 

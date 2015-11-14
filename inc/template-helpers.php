@@ -185,8 +185,12 @@ function sc_study_get_navigation( $id = null ) {
 		'child_of'    => sc_get_study_id( $study_id ),
 	) );
 
+	if ( ! $elements ) {
+		return array();
+	}
+
 	// unset study elements
-	foreach( $elements as $key => $element ) {
+	foreach( (array) $elements as $key => $element ) {
 		if ( get_post_meta( $element->ID, '_sc_data_type', true ) ) {
 			unset( $elements[ $key ] );
 		}

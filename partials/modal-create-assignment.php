@@ -24,8 +24,8 @@
 
 		<h4><?php _e( 'Due Date', 'sc' ); ?></h4>
 
-		<div class="small-6 date fdatepicker" data-date="<?php echo date( 'm/d/Y', time() + WEEK_IN_SECONDS ); ?>" data-date-format="mm/dd/yyyy">
-			<input size="16" type="text" name="date" value="<?php echo date( 'm/d/Y', time() + WEEK_IN_SECONDS ); ?>">
+		<div class="small-6 date fdatepicker" data-date="<?php echo date( 'm/d/Y', current_time( 'timestamp') + WEEK_IN_SECONDS ); ?>" data-date-format="mm/dd/yyyy">
+			<input size="16" type="text" name="date" value="<?php echo date( 'm/d/Y', current_time( 'timestamp') + WEEK_IN_SECONDS ); ?>">
 			<span class="postfix end calendar-button"><i class="fa fa-calendar"></i></span>
 		</div>
 

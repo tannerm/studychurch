@@ -1,8 +1,8 @@
 <?php
 $assignments     = new SC_Assignments_Query();
 $old_assignments = new SC_Assignments_Query( array(
-	'date_start' => 0,
-	'date_finish' => time()
+	'date_start' => date( DATE_RSS, 0 ),
+	'date_finish' => date( DATE_RSS, time() )
 ) );
 ?>
 
@@ -19,7 +19,7 @@ if ( $assignments->have_assignments() ) : ?>
 				<form action="" method="post" class="right">
 					<input type="hidden" name="assignment" value="<?php $assignments->the_key(); ?>" />
 					<?php wp_nonce_field( 'delete_assignment', 'delete_assignment_nonce' ); ?>
-					<a href="#" onclick="if (window.confirm('Are you sure you want to delete this assignment?')) { jQuery(this).parent().submit(); }"><i class="fa fa-trash"></i></a>
+					<a href="#" onclick="if (window.confirm('Are you sure you want to delete this assignment?')) { jQuery(this).parent().submit(); } return false;"><i class="fa fa-trash"></i></a>
 				</form>
 			<?php endif; ?>
 			<h4><?php _e( 'Assignment Due: ', 'sc' ); ?><?php $assignments->the_date_formatted(); ?></h4>
@@ -30,10 +30,6 @@ if ( $assignments->have_assignments() ) : ?>
 <?php else : ?>
 	<p>
 		<?php esc_html_e( 'There are no assignment for this group.', 'sc' ); ?>
-		<?php if ( sc_user_can_manage_group() ) : ?>
-			<br />
-			<a href="<?php sc_the_assignment_permalink(); ?>"><?php esc_html_e( 'Add an assignment.', 'sc' ); ?></a>
-		<?php endif; ?>
 	</p>
 <?php endif; ?>
 
@@ -44,6 +40,13 @@ if ( $assignments->have_assignments() ) : ?>
 
 	<?php while ( $old_assignments->the_assignment() ) : ?>
 		<div class="panel">
+			<?php if ( sc_user_can_manage_group() ) : ?>
+				<form action="" method="post" class="right">
+					<input type="hidden" name="assignment" value="<?php $old_assignments->the_key(); ?>" />
+					<?php wp_nonce_field( 'delete_assignment', 'delete_assignment_nonce' ); ?>
+					<a href="#" onclick="if (window.confirm('Are you sure you want to delete this assignment?')) { jQuery(this).parent().submit(); } return false;"><i class="fa fa-trash"></i></a>
+				</form>
+			<?php endif; ?>
 			<h4><?php _e( 'Assignment Due: ', 'sc' ); ?><?php $old_assignments->the_date_formatted(); ?></h4>
 			<?php $old_assignments->the_lessons(); ?>
 			<?php $old_assignments->the_content(); ?>

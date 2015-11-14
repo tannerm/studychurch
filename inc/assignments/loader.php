@@ -10,7 +10,7 @@ require get_template_directory() . '/inc/assignments/notifications.php';
  */
 if ( class_exists( 'BP_Group_Extension' ) ) :
 
-	class SC_Assignments extends BP_Group_Extension {
+	class SC_Group_Assignments extends BP_Group_Extension {
 		/**
 		 * Here you can see more customization of the config options
 		 */
@@ -32,6 +32,6 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 		}
 
 	}
-	bp_register_group_extension( 'SC_Assignments' );
+	bp_register_group_extension( 'SC_Group_Assignments' );
 
 endif;

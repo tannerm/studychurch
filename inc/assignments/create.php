@@ -31,8 +31,16 @@ class SC_Assignments_Create {
 	 * Add Hooks and Actions
 	 */
 	protected function __construct() {
-		add_action( 'init',      array( $this, 'save_assignment' ) );
-		add_action( 'init',      array( $this, 'delete_assignment' ) );
+		add_action( 'init', array( $this, 'ass_cpt' ) );
+		add_action( 'template_redirect', array( $this, 'save_assignment'   ) );
+		add_action( 'template_redirect', array( $this, 'delete_assignment' ) );
+	}
+
+	public function ass_cpt() {
+		register_post_type( 'sc_assignment' );
+		register_taxonomy( 'sc_group', 'sc_assignment', array(
+			'public' => false,
+		) );
 	}
 
 	public function delete_assignment() {
@@ -85,17 +93,25 @@ class SC_Assignments_Create {
 /**
  * Get group assignments
  *
- * @param bool $group_id
+ * @param array $args
  *
  * @return mixed | array | false - array of assignments or false if none exist
  */
-function sc_get_group_assignments( $group_id = null ) {
+function sc_get_group_assignments( $args = array() ) {
+	return new SC_Assignments_Query( $args );
+}
 
-	if ( ! $group_id ) {
-		$group_id = bp_get_current_group_id();
+function sc_get_group_assignment( $id ) {
+	if ( ! $assignment = get_post( $id ) ) {
+		return false;
 	}
 
-	return groups_get_groupmeta( $group_id, SC_Assignments_Query::$_key, true );
+	return array(
+		'id'      => $id,
+		'content' => $assignment->post_content,
+		'lessons' => get_post_meta( $id, 'lessons', true ),
+		'date'    => get_the_date( '', $id ),
+	);
 }
 
 /**
@@ -108,60 +124,43 @@ function sc_get_group_assignments( $group_id = null ) {
  */
 function sc_add_group_assignment( $assignment, $group_id ) {
 
-	if ( ! $assignments = sc_get_group_assignments( $group_id ) ) {
-		$assignments = array();
-	}
-
 	if ( ( empty( $assignment['content'] ) && empty( $assignment['lessons'] ) ) || empty( $assignment['date'] ) ) {
 		return false;
 	}
 
-	$key = absint( strtotime( $assignment['date'] ) . rand( 1000, 9999 ) );
+	$date = new DateTime( $assignment['date'] . '23:59:59', new DateTimeZone( get_option( 'timezone_string', 'America/Los_Angeles' ) ) );
 
-	/** Make sure the key is unique. Support multiple assignments due the same day */
-	while ( isset( $assignments[ $key ] ) ) {
-		$key = absint( strtotime( $assignment['date'] ) . rand( 1000, 9999 ) );
+	$assignment['id'] = wp_insert_post( array(
+		'post_author'  => get_current_user_id(),
+		'post_type'    => 'sc_assignment',
+		'post_status'  => 'publish',
+		'post_title'   => 'Assignment',
+		'post_content' => $assignment['content'],
+		'post_date'    => $date->format( 'Y-m-d H:i:s' ),
+	) );
+
+	if ( ! $assignment['id'] ) {
+		return false;
 	}
 
-	$assignments[ $key ]['key'] = $key;
-	$assignments[ $key ]['date'] = $assignment['date'];
+	wp_set_post_terms( $assignment['id'], $group_id, 'sc_group' );
 
 	if ( ! empty( $assignment['lessons'] ) ) {
-		$assignments[ $key ]['lessons'] = array_map( 'absint', (array) $assignment['lessons'] );
+		update_post_meta( $assignment['id'], 'lessons', array_map( 'absint', (array) $assignment['lessons'] ) );
 	}
 	
-	if ( ! empty( $assignment['content'] ) ) {
-		$assignments[ $key ]['content'] = wp_filter_post_kses( $assignment['content'] );
-	}
-
 	do_action( 'sc_assignment_create', $assignment, $group_id );
 
-	return groups_update_groupmeta( $group_id, SC_Assignments_Query::$_key, $assignments );
+	return $assignment['id'];
 }
 
 /**
  * Delete a group assignment
  *
  * @param $assignment
- * @param $group_id
  *
  * @return bool|int
  */
-function sc_delete_group_assignment( $assignment, $group_id = null ) {
-
-	if ( ! $group_id ) {
-		$group_id = bp_get_current_group_id();
-	}
-
-	if ( ! $assignments = sc_get_group_assignments( $group_id ) ) {
-		return false;
-	}
-
-	if ( ! isset( $assignments[ $assignment ] ) ) {
-		return false;
-	}
-
-	unset( $assignments[ $assignment ] );
-
-	return groups_update_groupmeta( $group_id, SC_Assignments_Query::$_key, $assignments );
+function sc_delete_group_assignment( $assignment ) {
+	return wp_delete_post( $assignment, true );
 }

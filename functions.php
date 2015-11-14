@@ -151,6 +151,7 @@ class SC_Setup {
 		add_action( 'wp_head',            array( $this, 'js_globals'         ) );
 		add_action( 'wp_head',            array( $this, 'branding_styles'    ) );
 		add_action( 'template_redirect',  array( $this, 'maybe_force_login'  ), 5 );
+		add_action( 'template_redirect',  array( $this, 'redirect_logged_in_user' ) );
 	}
 
 	/**
@@ -392,6 +393,22 @@ class SC_Setup {
 
 		include( get_template_directory() . '/page-login.php' );
 		exit();
+	}
+
+	/**
+	 * Redirect logged in users to their profile
+	 */
+	public function redirect_logged_in_user() {
+		if ( ! is_front_page() ) {
+			return;
+		}
+
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		wp_safe_redirect( bp_loggedin_user_domain() );
+		die();
 	}
 
 	public function js_globals() {
