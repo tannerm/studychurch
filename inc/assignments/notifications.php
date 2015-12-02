@@ -87,8 +87,6 @@ class SC_Assignment_Notificatinos {
 
 	public function schedule_reminder() {
 
-		wp_unschedule_event( wp_next_scheduled( 'sc_assignment_new' ), 'sc_assignment_new' );
-
 		if ( wp_next_scheduled( 'sc_assignment_reminder' ) ) {
 			return;
 		}

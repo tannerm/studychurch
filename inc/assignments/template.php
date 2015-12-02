@@ -40,9 +40,13 @@ class SC_Assignments_Query {
 
 		// remove legacy assignments
 		if ( $assignments = groups_get_groupmeta( $this->query_args['group_id'], SC_Assignments_Query::$_key, true ) ) {
+			remove_action( 'sc_assignment_create', array( SC_Assignment_Notificatinos::get_instance(), 'new_assignment' ), 10, 2 );
+
 			foreach( $assignments as $assignment ) {
 				sc_add_group_assignment( $assignment, $this->query_args['group_id'] );
 			}
+
+			add_action( 'sc_assignment_create', array( SC_Assignment_Notificatinos::get_instance(), 'new_assignment' ), 10, 2 );
 
 			groups_delete_groupmeta( $this->query_args['group_id'], SC_Assignments_Query::$_key );
 		}

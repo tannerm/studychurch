@@ -17,7 +17,13 @@
 	<!-- .entry-header -->
 
 	<div class="entry-content">
-		<?php the_content(); ?>
+		<?php
+		$content = get_the_content();
+		$content = stripslashes( $content );
+		$content = apply_filters( 'the_content', $content );
+		$content = str_replace( ']]>', ']]&gt;', $content );
+		echo $content;
+		?>
 
 		<?php if ( in_array( sc_get_data_type(), array( 'question_long', 'question_short' ) ) ) : ?>
 			<div class="study-answers-container">

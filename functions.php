@@ -412,7 +412,8 @@ class SC_Setup {
 	}
 
 	public function js_globals() {
-		$key = ( $this->is_dev() ) ? 'ntB-13C-11nroeB-22B-16syB1wqc==' : 'gsuwgH-7fnrzE5ic=='; ?>
+		$key = ( $this->is_dev() ) ? 'ntB-13C-11nroeB-22B-16syB1wqc==' : 'gsuwgH-7fnrzE5ic==';
+		$key = apply_filters( 'sc_froala_key', $key ); ?>
 
 		<script>
 			jQuery.Editable = jQuery.Editable || {};

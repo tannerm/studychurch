@@ -16,6 +16,11 @@ and will be used across all viewports.
 
 @import "compass";
 
+body {
+	-ms-word-wrap: break-word;
+	word-wrap: break-word;
+}
+
 a {
 	outline: none;
 	&:hover, &:focus {

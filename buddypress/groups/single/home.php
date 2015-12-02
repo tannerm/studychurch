@@ -1,3 +1,4 @@
+<?php global $groups_template; ?>
 <div id="buddypress" class="row">
 
 	<?php if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); ?>
@@ -10,7 +11,7 @@
 
 			<h3><a href="<?php bp_group_permalink(); ?>"><?php bp_group_name(); ?></a></h3>
 
-			<p><?php bp_group_description(); ?></p>
+			<p><?php echo apply_filters( 'the_content', wp_kses_post( $groups_template->group->description ) ); ?></p>
 
 			<?php if ( $study_id = sc_get_group_study_id() ) : ?>
 				<hr />

@@ -39,6 +39,9 @@ class SC_BP_Filter {
 		add_action( 'template_redirect',                 array( $this, 'redirect_members_page'    ) );
 		add_action( 'bp_activity_before_save',           array( $this, 'activity_mentions'     ), 9 );
 
+		remove_filter( 'groups_group_description_before_save', 'wp_filter_kses', 1 );
+		add_filter( 'groups_group_description_before_save', 'wp_filter_post_kses', 1 );
+
 	}
 
 	/**
