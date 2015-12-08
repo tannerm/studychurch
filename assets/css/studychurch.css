@@ -7703,6 +7703,10 @@ possible. This is called at the top of the main stylsheet
 and will be used across all viewports.
 
 ******************************************************************/
+body {
+  -ms-word-wrap: break-word;
+  word-wrap: break-word; }
+
 a {
   outline: none; }
   a:hover, a:focus {
