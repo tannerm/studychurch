@@ -403,7 +403,7 @@ class SC_Setup {
 			return;
 		}
 
-		if ( ! is_user_logged_in() ) {
+		if ( current_user_can( 'edit_pages' ) || ! is_user_logged_in() ) {
 			return;
 		}
 
