@@ -690,7 +690,10 @@ class SC_Setup {
 	}
 
 	public function video_embed_html_wrap( $html ) {
-		return sprintf( '<div class="video-container">%s</div>', $html );
+		$html = str_replace( '<div', '<span', $html );
+		$html = str_replace( '</div>', '</span>', $html );
+
+		return $html;
 	}
 
 
