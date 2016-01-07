@@ -8226,22 +8226,8 @@ textarea {
 
 .button-group.type {
   position: relative;
-  display: inline-block;
+  display: block;
   margin: 1rem 0; }
-  .button-group.type:before {
-    content: attr(data-grouptype);
-    z-index: 2;
-    color: #999;
-    display: block;
-    font-size: 1.25em;
-    line-height: 2em;
-    width: 2em;
-    text-align: center;
-    border-radius: 50%;
-    background: #fff;
-    position: absolute;
-    left: 42.5%;
-    top: 0.5em; }
   .button-group.type li {
     width: 49%; }
   .button-group.type li + li {

@@ -22,23 +22,23 @@ textarea {
 
 .button-group.type {
 	position: relative;
-	display: inline-block;
+	display: block;
 	margin: 1rem 0;
-	&:before {
-		content: attr(data-grouptype);
-		z-index: 2;
-		color: #999;
-		display: block;
-		font-size: 1.25em;
-		line-height: 2em;
-		width: 2em;
-		text-align: center;
-		border-radius: 50%;
-		background: #fff;
-		position: absolute;
-		left: 42.5%;
-		top: 0.5em;
-	}
+//	&:before {
+//		content: attr(data-grouptype);
+//		z-index: 2;
+//		color: #999;
+//		display: block;
+//		font-size: 1.25em;
+//		line-height: 2em;
+//		width: 2em;
+//		text-align: center;
+//		border-radius: 50%;
+//		background: #fff;
+//		position: absolute;
+//		left: 42.5%;
+//		top: 0.5em;
+//	}
 
 	li {
 		width: 49%;
