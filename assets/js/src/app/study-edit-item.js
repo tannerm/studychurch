@@ -183,8 +183,8 @@ var StudyApp = StudyApp || {};
 				minHeight: 100,
 				maxHeight: 400,
 				buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'fontFamily', 'color', 'sep',
-					'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
-					'createLink', 'html', 'fullscreen', 'sep', 'close'
+					'formatBlock', 'blockStyle', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'sep',
+					'createLink', 'insertLink', 'insertImage', 'insertVideo', 'html', 'fullscreen', 'sep', 'close'
 				],
 				customButtons : {
 					// Clear HTML button with text icon.
@@ -200,7 +200,9 @@ var StudyApp = StudyApp || {};
 							$buttons.show();
 						}
 					}
-				}
+				},
+				imageUploadToS3: scFroalaS3,
+				imageMaxSize: 1024 * 1024 * 1
 			});
 
 			$content.on('editable.beforeSave', this, this.autosave);

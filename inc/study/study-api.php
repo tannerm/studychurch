@@ -15,12 +15,12 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 
 		$base = $this->get_post_type_base( $this->post_type );
 
-		register_api_field( 'sc_study', 'data_type', array(
+		register_rest_field( 'sc_study', 'data_type', array(
 			'update_callback' => array( $this, 'save_data_type' ),
 			'get_callback' => array( $this, 'get_data_type' )
 		) );
 
-		register_api_field( 'sc_study', 'is_private', array(
+		register_rest_field( 'sc_study', 'is_private', array(
 			'update_callback' => array( $this, 'save_is_private' ),
 			'get_callback' => array( $this, 'get_is_private' )
 		) );

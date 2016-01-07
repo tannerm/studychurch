@@ -124,6 +124,9 @@ class SC_Setup {
 		add_filter( 'show_admin_bar', array( $this, 'show_admin_bar' ) );
 		add_filter( 'bp_get_nav_menu_items', array( $this, 'bp_nav_menu_items' ) );
 		add_filter( 'bp_template_include',   array( $this, 'bp_default_template' ) );
+
+		add_filter( 'pre_kses', array( $this, 'vimeo_embed_to_shortcode' ), 20 );
+		add_filter( 'video_embed_html', array( $this, 'video_embed_html_wrap' ) );
 	}
 
 	/**
@@ -273,6 +276,7 @@ class SC_Setup {
 		wp_enqueue_style( 'froala-style', get_template_directory_uri() . '/assets/css/froala/froala_style.css' );
 
 		wp_enqueue_script( 'froala-editor', get_template_directory_uri() . '/assets/js/lib/froala/froala_editor.min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'froala-video', get_template_directory_uri() . '/assets/js/lib/froala/plugins/video.js', array( 'jquery' ) );
 		wp_enqueue_script( 'froala-fullscreen', get_template_directory_uri() . '/assets/js/lib/froala/plugins/fullscreen.min.js', array( 'jquery', 'froala-editor' ) );
 
 		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -412,6 +416,36 @@ class SC_Setup {
 	}
 
 	public function js_globals() {
+
+		if ( $id = sc_get( 'study' ) ) {
+
+			// important variables that will be used throughout this example
+			$bucket   = 'studychurch';
+			$region   = 's3';
+			$keyStart = 'studies/' . sanitize_title( get_the_title( $id ) ) . '/';
+			$acl      = 'public-read';
+
+			// these can be found on your Account page, under Security Credentials > Access Keys
+			$accessKeyId = 'AKIAJNR25AFKFR5VHPJA';
+			$secret      = 'jgJT1Qd+LfSa2UKQA/JO16o5dQs3HqE8p2IuBTdY';
+
+			$policy = base64_encode( json_encode( array(
+				// ISO 8601 - date('c'); generates uncompatible date, so better do it manually
+				'expiration' => date( 'Y-m-d\TH:i:s.000\Z', strtotime( '+1 day' ) ),
+				'conditions' => array(
+					array( 'bucket' => $bucket ),
+					array( 'acl' => $acl ),
+					array( 'success_action_status' => '201' ),
+					array( 'x-requested-with' => 'xhr' ),
+					array( 'starts-with', '$key', $keyStart ),
+					array( 'starts-with', '$Content-Type', '' ) // accept all files
+				)
+			) ) );
+
+			$signature = base64_encode( hash_hmac( 'sha1', $policy, $secret, true ) );
+
+		}
+
 		$key = ( $this->is_dev() ) ? 'ntB-13C-11nroeB-22B-16syB1wqc==' : 'gsuwgH-7fnrzE5ic==';
 		$key = apply_filters( 'sc_froala_key', $key ); ?>
 
@@ -420,6 +454,28 @@ class SC_Setup {
 			jQuery.Editable.DEFAULTS = jQuery.Editable.DEFAULTS || {};
 
 			jQuery.Editable.DEFAULTS.key = '<?php echo $key; ?>';
+
+			<?php if ( $id ) : ?>
+
+				scFroalaS3 = {
+					bucket: '<?php echo $bucket; ?>',
+					region: '<?php echo $region; ?>',
+					keyStart: '<?php echo $keyStart; ?>',
+					callback: function (url, key) {
+						// The URL and Key returned from Amazon.
+						console.log (url);
+						console.log (key);
+					},
+					params: {
+						acl: '<?php echo $acl; ?>',
+						AWSAccessKeyId: '<?php echo $accessKeyId; ?>',
+						policy: '<?php echo $policy; ?>',
+						signature: '<?php echo $signature; ?>'
+					}
+				};
+
+			<?php endif; ?>
+
 		</script>
 		<?php
 	}
@@ -526,4 +582,117 @@ class SC_Setup {
 		</style>
 		<?php
 	}
+
+	function youtube_embed_to_short_code( $content ) {
+		if ( false === strpos( $content, 'youtube.com' ) )
+			return $content;
+
+		//older codes
+		$regexp = '!<object width="\d+" height="\d+"><param name="movie" value="https?://www\.youtube\.com/v/([^"]+)"></param>(?:<param name="\w+" value="[^"]*"></param>)*<embed src="https?://www\.youtube\.com/v/(.+)" type="application/x-shockwave-flash"(?: \w+="[^"]*")* width="\d+" height="\d+"></embed></object>!i';
+		$regexp_ent = htmlspecialchars( $regexp, ENT_NOQUOTES );
+		$old_regexp = '!<embed(?:\s+\w+="[^"]*")*\s+src="https?(?:\:|&#0*58;)//www\.youtube\.com/v/([^"]+)"(?:\s+\w+="[^"]*")*\s*(?:/>|>\s*</embed>)!';
+		$old_regexp_ent = str_replace( '&amp;#0*58;', '&amp;#0*58;|&#0*58;', htmlspecialchars( $old_regexp, ENT_NOQUOTES ) );
+
+		//new code
+		$ifr_regexp = '!<iframe((?:\s+\w+="[^"]*")*?)\s+src="(https?:)?//(?:www\.)*youtube.com/embed/([^"]+)".*?</iframe>!i';
+		$ifr_regexp_ent = str_replace( '&amp;#0*58;', '&amp;#0*58;|&#0*58;', htmlspecialchars( $ifr_regexp, ENT_NOQUOTES ) );
+
+		foreach ( array( 'regexp', 'regexp_ent', 'old_regexp', 'old_regexp_ent', 'ifr_regexp', 'ifr_regexp_ent' ) as $reg ) {
+			if ( ! preg_match_all( $$reg, $content, $matches, PREG_SET_ORDER ) )
+				continue;
+
+			foreach ( $matches as $match ) {
+				// Hack, but '?' should only ever appear once, and
+				// it should be for the 1st field-value pair in query string,
+				// if it is present
+				// YouTube changed their embed code.
+				// Example of how it is now:
+				//     <object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/aP9AaD4tgBY?fs=1&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/aP9AaD4tgBY?fs=1&amp;hl=en_US" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>
+				// As shown at the start of function, previous YouTube didn't '?'
+				// the 1st field-value pair.
+				if ( in_array ( $reg, array( 'ifr_regexp', 'ifr_regexp_ent' ) ) ) {
+					$params = $match[1];
+
+					if ( 'ifr_regexp_ent' == $reg )
+						$params = html_entity_decode( $params );
+
+					$params = wp_kses_hair( $params, array( 'http' ) );
+
+					$width = isset( $params['width'] ) ? (int) $params['width']['value'] : 0;
+					$height = isset( $params['height'] ) ? (int) $params['height']['value'] : 0;
+					$wh = '';
+
+					if ( $width && $height )
+						$wh = "&w=$width&h=$height";
+
+					$url = esc_url_raw( "https://www.youtube.com/watch?v={$match[3]}{$wh}" );
+				} else {
+					$match[1] = str_replace( '?', '&', $match[1] );
+
+					$url = esc_url_raw( "https://www.youtube.com/watch?v=" . html_entity_decode( $match[1] ) );
+				}
+
+				$content = str_replace( $match[0], "[youtube $url]", $content );
+
+				/**
+				 * Fires before the YouTube embed is transformed into a shortcode.
+				 *
+				 * @module shortcodes
+				 *
+				 * @since 1.2.0
+				 *
+				 * @param string youtube Shortcode name.
+				 * @param string $url YouTube video URL.
+				 */
+				do_action( 'jetpack_embed_to_shortcode', 'youtube', $url );
+			}
+		}
+
+		return $content;
+	}
+
+	function vimeo_embed_to_shortcode( $content ) {
+		if ( false === stripos( $content, 'player.vimeo.com/video/' ) )
+			return $content;
+
+		$regexp = '!<iframe\s+src=[\'"](https?:)?//player\.vimeo\.com/video/(\d+)[\w=&;?]*[\'"]((?:\s+\w+=[\'"][^\'"]*[\'"])*)((?:[\s\w]*))></iframe>!i';
+		$regexp = '!<iframe((?:\s+\w+="[^"]*")*?)\s+src="(https?:)?//player\.vimeo\.com/video/(\d+)".*?</iframe>!i';
+
+		$regexp_ent = str_replace( '&amp;#0*58;', '&amp;#0*58;|&#0*58;', htmlspecialchars( $regexp, ENT_NOQUOTES ) );
+
+		foreach ( array( 'regexp', 'regexp_ent' ) as $reg ) {
+			if ( !preg_match_all( $$reg, $content, $matches, PREG_SET_ORDER ) )
+				continue;
+
+			foreach ( $matches as $match ) {
+				$id = (int) $match[3];
+
+				$params = $match[1];
+
+				if ( 'regexp_ent' == $reg )
+					$params = html_entity_decode( $params );
+
+				$params = wp_kses_hair( $params, array( 'http' ) );
+
+				$width = isset( $params['width'] ) ? (int) $params['width']['value'] : 0;
+				$height = isset( $params['height'] ) ? (int) $params['height']['value'] : 0;
+
+				$wh = '';
+				if ( $width && $height )
+					$wh = ' w=' . $width . '&h=' . $height;
+
+				$shortcode = '[vimeo ' . $id . $wh . ']';
+				$content = str_replace( $match[0], $shortcode, $content );
+			}
+		}
+
+		return $content;
+	}
+
+	public function video_embed_html_wrap( $html ) {
+		return sprintf( '<div class="video-container">%s</div>', $html );
+	}
+
+
 }
+

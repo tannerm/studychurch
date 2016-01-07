@@ -1,6 +1,6 @@
-/*! StudyChurch - v0.1.0 - 2015-12-12
+/*! StudyChurch - v0.1.0 - 2016-01-06
  * http://wordpress.org/themes
- * Copyright (c) 2015; * Licensed GPLv2+ */
+ * Copyright (c) 2016; * Licensed GPLv2+ */
 (function($) {
 	'use strict';
 
@@ -819,8 +819,8 @@ var StudyApp = StudyApp || {};
 				minHeight: 100,
 				maxHeight: 400,
 				buttons: ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'fontFamily', 'color', 'sep',
-					'formatBlock', 'blockStyle', 'align', 'insertOrderedList', 'insertUnorderedList', 'outdent', 'indent', 'sep',
-					'createLink', 'html', 'fullscreen', 'sep', 'close'
+					'formatBlock', 'blockStyle', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'sep',
+					'createLink', 'insertLink', 'insertImage', 'insertVideo', 'html', 'fullscreen', 'sep', 'close'
 				],
 				customButtons : {
 					// Clear HTML button with text icon.
@@ -836,7 +836,9 @@ var StudyApp = StudyApp || {};
 							$buttons.show();
 						}
 					}
-				}
+				},
+				imageUploadToS3: scFroalaS3,
+				imageMaxSize: 1024 * 1024 * 1
 			});
 
 			$content.on('editable.beforeSave', this, this.autosave);
