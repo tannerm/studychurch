@@ -10,6 +10,9 @@ class SC_Ajax_Login {
 		add_action( 'sc_ajax_form_nopriv_sc_login', array( $this, 'login'    ) );
 		add_action( 'wp_enqueue_scripts',           array( $this, 'localize' ), 20 );
 		add_action( 'sc_login_form_end',            'sc_group_join_redirect' );
+
+		remove_filter( 'sanitize_user', 'strtolower' );
+
 	}
 
 	public function login( $data ) {
