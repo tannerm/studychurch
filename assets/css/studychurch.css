@@ -7737,14 +7737,14 @@ hr.noline {
 
 /* =Global Styles
 -------------------------------------------------------------- */
-.video-container, .f-video-editor {
+.video-container, .single-sc_study .f-video-editor {
   position: relative;
   padding-bottom: 56.25%;
   padding-top: 35px;
   height: 0;
   overflow: hidden;
   margin-bottom: 1.5rem; }
-  .video-container iframe, .f-video-editor iframe {
+  .video-container iframe, .single-sc_study .f-video-editor iframe {
     position: absolute;
     top: 0;
     left: 0;
