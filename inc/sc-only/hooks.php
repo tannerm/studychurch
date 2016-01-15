@@ -27,7 +27,7 @@ class SC_Main_Hooks {
 	protected function __construct() {
 		add_action( 'wp_footer', array( $this, 'bug_report_form' ) );
 		add_action( 'wp_footer', array( $this, 'front_page_modal' ) );
-		add_action( 'before_header', array( $this, 'beta_flag' ) );
+//		add_action( 'before_header', array( $this, 'beta_flag' ) );
 	}
 
 	public function bug_report_form() {

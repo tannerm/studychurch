@@ -88,6 +88,9 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 
 			$is_admin = is_admin();
 
+			$studies = new WP_Query();
+			$studies = $studies->query( 'post_type=sc_study&numberposts=-1&post_parent=0' );
+
 			if ( ! $is_admin ) : ?>
 
 				<h4><?php printf( esc_html__( 'Group %s', 'sc' ), $this->name ); ?></h4>
@@ -105,7 +108,7 @@ if ( class_exists( 'BP_Group_Extension' ) ) :
 			<div class="studies radio">
 				<table style="width: 100%;">
 					<tbody>
-					<?php foreach ( get_posts( 'post_status=publish,private&post_type=sc_study&numberposts=-1&post_parent=0' ) as $study ) : ?>
+					<?php foreach ( $studies as $study ) : ?>
 						<tr>
 							<td>
 								<input type="radio" id="study-<?php echo absint( $study->ID ); ?>" name="_sc_study" value="<?php echo absint( $study->ID ); ?>" <?php checked( self::group_get_option( $group_id, '_sc_study' ), $study->ID ); ?>/>

@@ -28,7 +28,9 @@ class SC_Ajax_Login {
 		}
 
 		if ( is_email( $data['user_login'] ) ) {
-			$user = get_user_by( 'email', $data['user_login'] );
+			if ( ! $user = get_user_by( 'email', $data['user_login'] ) ) {
+				wp_send_json_error( array( 'message' => 'That email does not exist. Please try another.' ) );
+			}
 			$data['user_login'] = $user->user_login;
 		}
 
@@ -40,7 +42,7 @@ class SC_Ajax_Login {
 			} else {
 				$message = str_replace( '<strong>ERROR</strong>: ', '', $status->get_error_message() );
 			}
-			wp_send_json_error( $message );
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
 		$return = array(
