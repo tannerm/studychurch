@@ -22,9 +22,9 @@
 			placeholder="<?php _e( 'Use @ to mention a member of this group or use @group to notifiy everyone.', 'sc' ); ?>"><?php if ( isset( $_GET['r'] ) ) : ?>@<?php echo esc_textarea( $_GET['r'] ); ?> <?php endif; ?></textarea>
 		</div>
 
-		<div id="whats-new-options">
+		<div id="whats-new-options" style="display:none;">
 			<div id="whats-new-submit">
-				<input type="submit" name="aw-whats-new-submit" id="aw-whats-new-submit" class="button tiny secondary" value="<?php esc_attr_e( 'Post', 'buddypress' ); ?>" />
+				<input type="submit" name="aw-whats-new-submit" id="aw-whats-new-submit" class="button small expand secondary" value="<?php esc_attr_e( 'Post', 'buddypress' ); ?>" />
 			</div>
 
 			<?php if ( bp_is_active( 'groups' ) && !bp_is_my_profile() && !bp_is_group() ) : ?>

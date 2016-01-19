@@ -454,6 +454,8 @@ class SC_Setup {
 			jQuery.Editable.DEFAULTS = jQuery.Editable.DEFAULTS || {};
 
 			jQuery.Editable.DEFAULTS.key = '<?php echo $key; ?>';
+			jQuery.Editable.DEFAULTS.pastedImagesUploadURL = '';
+			jQuery.Editable.DEFAULTS.imageUploadURL = '';
 
 			<?php if ( $id ) : ?>
 

@@ -12,13 +12,22 @@
 
 .bp_group {
 	.sidebar {
+		
+		.members-list-cont {
+			max-height: 38rem;
+			overflow: scroll;
+			border: 1px solid #eee;
+			padding: 0 5px;
+			margin-bottom: 2rem;
+		}
+
 		.members-list {
 			border: none;
 			.avatar-container {
 				margin-bottom: 0;
 			}
 			.avatar {
-				width: 40px;
+				width: 2.25rem;
 				margin-right: 10px;
 			}
 		}

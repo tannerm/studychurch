@@ -133,13 +133,8 @@ body.no-js #buddypress form#whats-new-form textarea {
 	max-width: 200px;
 	margin-top: 12px;
 }
-#buddypress form#whats-new-form #whats-new-submit {
-	float: right;
-	margin-top: 12px;
-}
 #buddypress #whats-new-options {
 	overflow: auto;
-	height: 0;
 }
 body.no-js #buddypress #whats-new-options {
 	height: auto;

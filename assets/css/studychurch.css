@@ -8430,12 +8430,18 @@ textarea {
 .group-admin #subnav #membership-requests-groups-li {
   display: none; }
 
+.bp_group .sidebar .members-list-cont {
+  max-height: 38rem;
+  overflow: scroll;
+  border: 1px solid #eee;
+  padding: 0 5px;
+  margin-bottom: 2rem; }
 .bp_group .sidebar .members-list {
   border: none; }
   .bp_group .sidebar .members-list .avatar-container {
     margin-bottom: 0; }
   .bp_group .sidebar .members-list .avatar {
-    width: 40px;
+    width: 2.25rem;
     margin-right: 10px; }
 
 .single-sc_study #content {
