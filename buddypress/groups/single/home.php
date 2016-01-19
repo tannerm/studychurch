@@ -45,21 +45,20 @@
 
 			<h4><?php _e( 'Members', 'sc' ); ?></h4>
 
+			<?php if ( bp_group_has_members( array( 'per_page' => 1000, 'exclude_admins_mods' => 0 ) ) ) : sc_sort_member_query(); ?>
 			<div class="members-list-cont">
 				<table class="item-list members-list" style="width: 100%;">
 					<tbody>
-					<?php if ( bp_group_has_members( array(
-						'per_page'            => 1000,
-						'exclude_admins_mods' => 0
-					) ) ) : while ( bp_group_members() ) : bp_group_the_member(); ?>
+					<?php while ( bp_group_members() ) : bp_group_the_member(); ?>
 						<tr>
 							<td width="70"><?php bp_group_member_avatar_thumb(); ?></td>
 							<td><?php bp_group_member_name(); ?></td>
 						</tr>
-					<?php endwhile; endif; ?>
+					<?php endwhile; ?>
 					</tbody>
 				</table>
 			</div>
+			<?php  endif; ?>
 
 		</div>
 

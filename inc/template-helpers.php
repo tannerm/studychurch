@@ -259,3 +259,14 @@ function sc_study_get_answer() {
 	}
 
 }
+
+/**
+ * Sort the member query by last_activity
+ */
+function sc_sort_member_query() {
+	global $members_template;
+
+	usort( $members_template->members, function( $a, $b ) {
+		return strtotime( $b->last_activity ) - strtotime( $a->last_activity );
+	} );
+}
