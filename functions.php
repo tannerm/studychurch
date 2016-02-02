@@ -127,6 +127,8 @@ class SC_Setup {
 
 		add_filter( 'pre_kses', array( $this, 'vimeo_embed_to_shortcode' ), 20 );
 		add_filter( 'video_embed_html', array( $this, 'video_embed_html_wrap' ) );
+
+		add_filter( 'slt_fsp_caps_check', array( $this, 'strong_password_check' ) );
 	}
 
 	/**
@@ -155,6 +157,7 @@ class SC_Setup {
 		add_action( 'wp_head',            array( $this, 'branding_styles'    ) );
 		add_action( 'template_redirect',  array( $this, 'maybe_force_login'  ), 5 );
 		add_action( 'template_redirect',  array( $this, 'redirect_logged_in_user' ) );
+		add_action( 'admin_init',         array( $this, 'redirect_backend' ) );
 	}
 
 	/**
@@ -408,6 +411,20 @@ class SC_Setup {
 		}
 
 		if ( current_user_can( 'edit_pages' ) || ! is_user_logged_in() ) {
+			return;
+		}
+
+		wp_safe_redirect( bp_loggedin_user_domain() );
+		die();
+	}
+
+	public function redirect_backend() {
+		// allow ajax requests
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			return;
+		}
+
+		if ( current_user_can( 'edit_pages' ) ) {
 			return;
 		}
 
@@ -696,6 +713,17 @@ class SC_Setup {
 		$html = str_replace( '</div>', '</span>', $html );
 
 		return $html;
+	}
+
+	/**
+	 * Define which caps require strong passwords
+	 * 
+	 * @param $caps
+	 *
+	 * @return string
+	 */
+	public function strong_password_check( $caps ) {
+		return 'upload_files,edit_published_posts';
 	}
 
 
