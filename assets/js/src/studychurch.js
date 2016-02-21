@@ -17,6 +17,7 @@
 
 		$('.login a').attr('data-reveal-id', 'login');
 		$('.sign-up a').attr('data-reveal-id', 'start-now');
+		$('.fl-pricing-table-column-0 a.fl-button').attr('data-reveal-id', 'start-now');
 
 		$('.fdatepicker').fdatepicker({
 			format: 'mm/dd/yyyy',

@@ -717,7 +717,7 @@ class SC_Setup {
 
 	/**
 	 * Define which caps require strong passwords
-	 * 
+	 *
 	 * @param $caps
 	 *
 	 * @return string

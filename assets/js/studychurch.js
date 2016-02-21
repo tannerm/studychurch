@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2016-01-07
+/*! StudyChurch - v0.1.0 - 2016-02-20
  * http://wordpress.org/themes
  * Copyright (c) 2016; * Licensed GPLv2+ */
 (function($) {
@@ -319,6 +319,7 @@ jQuery(document).ready(function($){
 
 		$('.login a').attr('data-reveal-id', 'login');
 		$('.sign-up a').attr('data-reveal-id', 'start-now');
+		$('.fl-pricing-table-column-0 a.fl-button').attr('data-reveal-id', 'start-now');
 
 		$('.fdatepicker').fdatepicker({
 			format: 'mm/dd/yyyy',
