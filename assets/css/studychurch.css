@@ -2072,7 +2072,7 @@ button, .button {
   button.round, .button.round {
     border-radius: 1000px; }
   button.wide, .button.wide {
-    min-width: 30rem; }
+    min-width: 22rem; }
   button.disabled, button[disabled], .button.disabled, .button[disabled] {
     background-color: #3ebeb2;
     border-color: #32988e;
@@ -8361,25 +8361,21 @@ textarea {
     margin-left: 0; }
 .page-template-templateslanding-php .point-text {
   margin-left: 15rem; }
-.page-template-templateslanding-php .start-discussions,
-.page-template-templateslanding-php .manage-assignments {
-  position: relative;
-  margin: 7rem 2rem; }
-  .page-template-templateslanding-php .start-discussions i,
-  .page-template-templateslanding-php .manage-assignments i {
-    padding: .5em;
-    background-color: #3ebeb2;
-    color: white;
-    width: 2em;
-    text-align: center;
-    font-size: 5.5rem;
-    -webkit-border-radius: 100px;
-    -moz-border-radius: 100px;
-    -ms-border-radius: 100px;
-    -o-border-radius: 100px;
-    border-radius: 100px;
-    float: left;
-    margin: 0 2rem; }
+.page-template-templateslanding-php .start-discussions i,
+.page-template-templateslanding-php .manage-assignments i {
+  padding: .5em;
+  background-color: #3ebeb2;
+  color: white;
+  width: 2em;
+  text-align: center;
+  font-size: 5.5rem;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  -ms-border-radius: 100px;
+  -o-border-radius: 100px;
+  border-radius: 100px;
+  float: left;
+  margin: 0 2rem; }
 .page-template-templateslanding-php .manage-assignments {
   margin-bottom: 0; }
   .page-template-templateslanding-php .manage-assignments i {
@@ -8390,9 +8386,13 @@ textarea {
   text-align: center; }
 
 @media only screen and (min-width: 781px) {
-  .page-template-templateslanding-php .start-discussions p,
-  .page-template-templateslanding-php .manage-assignments p {
-    max-width: 35rem; }
+  .page-template-templateslanding-php .start-discussions,
+  .page-template-templateslanding-php .manage-assignments {
+    position: relative;
+    margin: 7rem 2rem; }
+    .page-template-templateslanding-php .start-discussions p,
+    .page-template-templateslanding-php .manage-assignments p {
+      max-width: 35rem; }
   .page-template-templateslanding-php .manage-assignments .point-text {
     margin-left: 11rem; }
   .page-template-templateslanding-php .manage-assignments i {
@@ -8407,6 +8407,9 @@ textarea {
   .page-template-templateslanding-php .cta {
     margin-left: 4rem;
     text-align: left; } }
+@media only screen and (max-width: 780px) {
+  .page-template-templateslanding-php i {
+    display: none; } }
 .my-account #item-header-content {
   text-align: center; }
   .my-account #item-header-content h2 {

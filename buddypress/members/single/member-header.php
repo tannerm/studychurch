@@ -73,7 +73,7 @@
 
 					printf( '<li><a href="/study-edit/?action=edit&study=%d">%s</a></li>', $study->ID, esc_html( $title ) );
 				}
-			} else {
+			} elseif( rcp_is_active() ) {
 				printf( '<li><a href="#" class="study-create" data-reveal-id="study-create-modal">%s</a></li>', __( 'Write a study', 'sc' ) );
 			}
 

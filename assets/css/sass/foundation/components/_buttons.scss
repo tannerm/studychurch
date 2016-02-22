@@ -204,7 +204,7 @@ $button-disabled-opacity: 0.7 !default;
 
       &.radius { @include button-style($bg:false, $radius:true); }
       &.round  { @include button-style($bg:false, $radius:$button-round); }
-			&.wide { min-width: 30rem; }
+			&.wide { min-width: 22rem; }
 
       &.disabled, &[disabled] { @include button-style($bg:$button-bg, $disabled:true);
         &.secondary { @include button-style($bg:$secondary-color, $disabled:true); }

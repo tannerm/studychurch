@@ -66,7 +66,7 @@
 				padding: 2rem 0;
 				@include border-radius( 10px );
 				background: rgba(0,0,0, 0.3);
-				
+
 				&:hover {
 					border-color: $primary-color;
 					background: $primary-color;
@@ -154,8 +154,6 @@
 
 	.start-discussions,
 	.manage-assignments {
-		position: relative;
-		margin: 7rem 2rem;
 
 		i {
 			padding: .5em;
@@ -195,6 +193,9 @@
 
 		.start-discussions,
 		.manage-assignments {
+			position: relative;
+			margin: 7rem 2rem;
+
 			p {
 				max-width: 35rem;
 			}
@@ -232,5 +233,8 @@
 
 @media #{$small-only} {
 	.page-template-templateslanding-php {
+		i {
+			display: none;
+		}
 	}
 }
