@@ -8247,7 +8247,8 @@ textarea {
     color: #777; }
 
 .widget-container {
-  list-style-type: none; }
+  list-style-type: none;
+  margin-bottom: 2rem; }
 
 .page-template-templateslanding-php #page p {
   font-size: 1.14286rem; }
