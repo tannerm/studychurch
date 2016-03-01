@@ -8740,7 +8740,7 @@ textarea {
   -o-border-radius: 100px;
   border-radius: 100px; }
 
-.page-template-builder .site-header {
+.page-template-builder .site-header, .page-template-blog .site-header {
   margin-bottom: 0; }
 
 @media only screen {
