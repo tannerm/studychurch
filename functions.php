@@ -224,7 +224,11 @@ class SC_Setup {
 				'id'          => 'landing-social',
 				'name'        => 'Landing Page Social',
 				'description' => 'Social widget for landing page',
-			)
+			),
+			array(
+				'id'          => 'post-content-after',
+				'name'        => 'After Post Content',
+			),
 		);
 
 		foreach( $sidebars as $sidebar ) {

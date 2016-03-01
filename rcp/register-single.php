@@ -120,7 +120,7 @@
 
 		<hr />
 		<p id="rcp_submit_wrap">
-			<input type="hidden" name="rcp_level" value="<?php echo absint( $rcp_level ); ?>" />
+			<input type="hidden" name="rcp_level" class="rcp_level" rel="<?php echo rcp_get_subscription_price( $rcp_level ); ?>" value="<?php echo absint( $rcp_level ); ?>" />
 			<input type="hidden" name="rcp_register_nonce" value="<?php echo wp_create_nonce( 'rcp-register-nonce' ); ?>" />
 			<input type="submit" name="rcp_submit_registration" id="rcp_submit" class="button expand" value="<?php echo apply_filters( 'rcp_registration_register_button', __( 'Register', 'rcp' ) ); ?>" />
 		</p>

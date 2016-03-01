@@ -16,19 +16,15 @@ $blog = new WP_Query( array(
 
 get_header(); ?>
 
+	<header>
+		<?php while ( have_posts() ) : the_post(); ?>
+			<?php the_content(); ?>
+		<?php endwhile; ?>
+	</header>
+
 	<section id="blog-main" class="row">
-		<header class="small-12 column">
-			<?php while ( have_posts() ) : the_post(); ?>
-				<div class="text-center page-header">
-					<h1><?php the_title(); ?></h1>
-					<?php the_content(); ?>
 
-					<hr />
-				</div>
-			<?php endwhile; ?>
-		</header>
-
-		<main id="site-main" class="site-main small-12 medium-8 large-9 columns blogroll" role="main">
+		<main id="site-main" class="site-main small-12 medium-8 columns blogroll" role="main">
 
 			<?php if ( $blog->have_posts() ) : ?>
 				<?php while ( $blog->have_posts() ) : $blog->the_post(); ?>
