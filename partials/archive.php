@@ -21,7 +21,7 @@ remove_filter( 'bp_core_fetch_avatar', array( SC_BP_Filter::get_instance(), 'use
 		</div>
 
 		<div class="small-6 columns">
-			<p class="date"><?php the_date( 'M d, Y' ); ?> / <?php _e( 'Filed under:' ); ?> <?php the_category( ', ' ); ?></p>
+			<p class="date"><?php the_date( 'M d, Y' ); ?> / <?php the_category( ', ' ); ?></p>
 		</div>
 	</div>
 

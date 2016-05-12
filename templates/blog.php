@@ -28,7 +28,7 @@ get_header(); ?>
 
 			<?php if ( $blog->have_posts() ) : ?>
 				<?php while ( $blog->have_posts() ) : $blog->the_post(); ?>
-					<?php get_template_part( 'partials/single', 'blog-archive' ); ?>
+					<?php get_template_part( 'partials/archive' ); ?>
 				<?php endwhile; ?>
 
 				<div class="paging">

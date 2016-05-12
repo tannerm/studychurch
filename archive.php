@@ -79,20 +79,27 @@ get_header(); ?>
 				?>
 			</header><!-- .page-header -->
 
-			<div class="row">
-				<?php /* Start the Loop */ ?>
-				<?php while ( have_posts() ) : the_post(); $sc_item_count ++; ?>
+			<section id="blog-main" class="row">
 
-					<?php
+				<main id="site-main" class="site-main small-12 medium-8 columns blogroll" role="main">
+
+					<?php while ( have_posts() ) : the_post(); $sc_item_count ++; ?>
+
+						<?php
 						/* Include the Post-Format-specific template for the content.
 						 * If you want to overload this in a child theme then include a file
 						 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
 						 */
 						get_template_part( 'partials/archive', get_post_type() );
-					?>
+						?>
 
-				<?php endwhile; ?>
-			</div>
+					<?php endwhile; ?>
+
+				</main>
+
+				<?php get_sidebar(); ?>
+
+			</section>
 
 			<?php sc_content_nav( 'nav-below' ); ?>
 

@@ -453,7 +453,8 @@ small, .small {
   font-size: 75%; }
 
 ul, ol {
-  padding: 0; }
+  padding: 0;
+  list-style-type: none; }
 
 dd {
   margin: 0; }
@@ -4416,12 +4417,12 @@ a {
 p {
   font-family: inherit;
   font-weight: normal;
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
   text-rendering: optimizeLegibility; }
   p.lead {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     line-height: 1.6; }
   p aside {
     font-size: 1rem;
@@ -4436,7 +4437,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   color: #4d4d4d;
   text-rendering: optimizeLegibility;
   margin-top: 0;
-  margin-bottom: 1em;
+  margin-bottom: 1.5rem;
   line-height: 1.4; }
   h1 small, .h1 small, h2 small, .h2 small, h3 small, .h3 small, h4 small, .h4 small, h5 small, .h5 small, h6 small, .h6 small {
     font-size: 0.8rem;
@@ -4502,7 +4503,7 @@ code {
 ul,
 ol,
 dl {
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
   list-style-position: outside;
@@ -7852,6 +7853,11 @@ a img.aligncenter {
   z-index: 100000;
   /* Above WP toolbar. */ }
 
+/* =Typography
+-------------------------------------------------------------- */
+article h2, article h3, article h4, article h5 {
+  margin-bottom: .5rem; }
+
 .datepicker td, .datepicker th {
   text-align: center;
   width: 20px;
@@ -8635,19 +8641,27 @@ textarea {
   margin-top: -1rem;
   color: #e94141; }
 
+.single-post .entry-content ul li {
+  list-style-type: disc; }
+.single-post .entry-content ul ol {
+  list-style-type: decimal; }
 .single-post .site-header {
   margin-bottom: 0; }
 .single-post .post-header {
-  padding-bottom: 31.75%;
-  z-index: 1;
   position: relative;
-  width: 100%;
-  height: 0;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   color: white;
   text-align: center; }
+  .single-post .post-header:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); }
   .single-post .post-header:after {
     content: "";
     position: absolute;
@@ -8657,30 +8671,10 @@ textarea {
     height: 3.25rem;
     background: rgba(0, 0, 0, 0.5); }
   .single-post .post-header h1 {
-    color: white; }
-  .single-post .post-header .post-header-content {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-    margin-bottom: 0;
-    overflow: hidden;
-    line-height: 1.35;
-    text-shadow: 1px 0 8px rgba(0, 0, 0, 0.15); }
-    .single-post .post-header .post-header-content .column {
-      position: relative;
-      top: 50%;
-      -webkit-transform: translateY(-50%);
-      -moz-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      -o-transform: translateY(-50%);
-      transform: translateY(-50%);
-      display: inline-block;
-      vertical-align: middle;
-      max-width: 98%;
-      width: 100%; }
+    z-index: 10;
+    color: white;
+    padding: 2em 1em;
+    position: relative; }
 .single-post article .author-avatar img {
   width: 100%;
   -webkit-border-radius: 100px;
@@ -8688,13 +8682,16 @@ textarea {
   -ms-border-radius: 100px;
   -o-border-radius: 100px;
   border-radius: 100px;
-  float: left;
   margin: 0 .5rem .5rem 0;
   max-width: 7.5rem; }
 .single-post .post-meta {
   margin-top: -3.2rem;
   position: relative;
-  z-index: 10; }
+  z-index: 10;
+  margin-bottom: 1rem; }
+  .single-post .post-meta a {
+    color: white;
+    text-decoration: underline; }
   .single-post .post-meta .sd-social-icon .sd-content ul {
     margin-bottom: 0 !important; }
     .single-post .post-meta .sd-social-icon .sd-content ul li[class*='share-'] a.sd-button {
@@ -8720,12 +8717,16 @@ textarea {
       border-radius: 0 10px 0 0; }
 .single-post .date, .single-post .author-name {
   color: white;
-  margin-top: .75rem; }
+  margin-top: .75rem;
+  font-size: 1rem; }
 .single-post .post-navigation {
   margin: 2rem 0;
   font-size: 1.28571rem; }
 .single-post .entry-content {
   font-size: 1.25rem; }
+.single-post #secondary .widget-container {
+  padding: 1rem;
+  background: #efefef; }
 
 @media only screen and (max-width: 780px) {
   .single .author-avatar img {

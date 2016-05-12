@@ -103,7 +103,7 @@ $header-font-weight: 600;
 $header-font-color: $body-font-color;
 // $header-line-height: 1.4;
 $header-top-margin: 0;
-$header-bottom-margin: 1em;
+$header-bottom-margin: 1.5rem;
 // $header-text-rendering: optimizeLegibility;
 
 $h1-font-size: rem-calc(48);
@@ -127,7 +127,7 @@ $small-font-size: .8rem;
 // We use these to style paragraphs
 // $paragraph-font-family: inherit;
 // $paragraph-font-weight: $font-weight-normal;
-// $paragraph-font-size: 1rem;
+$paragraph-font-size: 1.25rem;
 // $paragraph-line-height: 1.6;
 $paragraph-margin-bottom: 1.5rem;
 // $paragraph-aside-font-size: rem-calc(14);
