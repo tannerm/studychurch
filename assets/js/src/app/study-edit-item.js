@@ -43,11 +43,11 @@ var StudyApp = StudyApp || {};
 
 
 
-			if (typeof WP_API_Settings.nonce !== 'undefined') {
+			if (typeof wpApiSettings.nonce !== 'undefined') {
 				var beforeSend = options.beforeSend;
 
 				options.beforeSend = function (xhr) {
-					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+					xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
 
 					if (beforeSend) {
 						return beforeSend.apply(this, arguments);
@@ -67,7 +67,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Item,
 
 		url: function () {
-			return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
+			return wpApiSettings.root + 'study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
 		},
 
 		nextOrder: function () {

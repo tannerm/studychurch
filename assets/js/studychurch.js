@@ -1,4 +1,4 @@
-/*! StudyChurch - v0.1.0 - 2016-03-01
+/*! StudyChurch - v0.1.0 - 2016-08-09
  * http://wordpress.org/themes
  * Copyright (c) 2016; * Licensed GPLv2+ */
 (function($) {
@@ -415,7 +415,7 @@ var StudyApp = StudyApp || {};
 			if ( this.collection ) {
 				return this.collection.url()
 			} else {
-				return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/'
+				return wpApiSettings.root + 'study/' + StudyApp.study_id + '/chapters/'
 			}
 		},
 
@@ -446,11 +446,11 @@ var StudyApp = StudyApp || {};
 		sync  : function (method, model, options) {
 			options = options || {};
 
-			if (typeof WP_API_Settings.nonce !== 'undefined') {
+			if (typeof wpApiSettings.nonce !== 'undefined') {
 				var beforeSend = options.beforeSend;
 
 				options.beforeSend = function (xhr) {
-					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+					xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
 
 					if (beforeSend) {
 						return beforeSend.apply(this, arguments);
@@ -470,7 +470,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Chapter,
 
 		url: function () {
-			return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/'
+			return wpApiSettings.root + 'study/' + StudyApp.study_id + '/chapters/'
 		},
 
 		parse: function (response) {
@@ -680,11 +680,11 @@ var StudyApp = StudyApp || {};
 
 
 
-			if (typeof WP_API_Settings.nonce !== 'undefined') {
+			if (typeof wpApiSettings.nonce !== 'undefined') {
 				var beforeSend = options.beforeSend;
 
 				options.beforeSend = function (xhr) {
-					xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
+					xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
 
 					if (beforeSend) {
 						return beforeSend.apply(this, arguments);
@@ -704,7 +704,7 @@ var StudyApp = StudyApp || {};
 		model: StudyApp.Models.Item,
 
 		url: function () {
-			return WP_API_Settings.root + 'study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
+			return wpApiSettings.root + 'study/' + StudyApp.study_id + '/chapters/' + StudyApp.CurrentChapter.model.get('id') + '/items/';
 		},
 
 		nextOrder: function () {
