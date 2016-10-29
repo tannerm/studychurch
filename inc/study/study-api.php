@@ -13,7 +13,7 @@ class Study_API_SC_Study extends WP_REST_Posts_Controller {
 
 	public function register_routes() {
 
-		$base = $this->get_post_type_base( $this->post_type );
+		$base = $this->rest_base; // $this->get_post_type_base( $this->post_type );
 
 		register_rest_field( 'sc_study', 'data_type', array(
 			'update_callback' => array( $this, 'save_data_type' ),
