@@ -23,5 +23,5 @@
 		</p>
 	</div>
 
-	<div class="activity-inner"><?php bp_activity_comment_content(); ?></div>
+	<div class="activity-inner acomment-content"><?php bp_activity_comment_content(); ?></div>
 </li>

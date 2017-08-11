@@ -9,6 +9,8 @@
 (function ($, window, undefined) {
 	'use strict';
 
+  $('body.group-home .toggle-comments').hide();
+
 	window.sr = new scrollReveal();
 	$(document).foundation();
 

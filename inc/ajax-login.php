@@ -89,6 +89,7 @@ class SC_Ajax_Register {
 		$_POST = $this->data = $data;
 
 		add_filter( 'wp_redirect', array( $this, 'register_success' ) );
+		rcp_setup_registration_init();
 		rcp_process_registration();
 		remove_filter( 'wp_redirect', array( $this, 'register_success' ) );
 

@@ -1,6 +1,6 @@
-/*! StudyChurch - v0.1.0 - 2016-08-09
+/*! StudyChurch - v0.1.0 - 2017-08-10
  * http://wordpress.org/themes
- * Copyright (c) 2016; * Licensed GPLv2+ */
+ * Copyright (c) 2017; * Licensed GPLv2+ */
 (function ($, window, document, undefined) {
   'use strict';
 

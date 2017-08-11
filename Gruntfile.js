@@ -125,6 +125,7 @@ module.exports = function( grunt ) {
 
 	// Default task.
 	grunt.registerTask( 'default', ['jshint', 'concat', 'uglify', 'sass', 'cssmin'] );
+	grunt.registerTask( 'scripts', ['jshint', 'concat', 'uglify'] );
 
 	grunt.util.linefeed = '\n';
 };
