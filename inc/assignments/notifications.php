@@ -91,7 +91,11 @@ class SC_Assignment_Notificatinos {
 			return;
 		}
 
-		$time = new DateTime( 'tomorrow 9:00:00', new DateTimeZone( get_option( 'timezone_string', 'America/Los_Angeles' ) ) );
+		if ( ! $timezone = get_option( 'timezone_string', 'America/Los_Angeles' ) ) {
+			$timezone = 'America/Los_Angeles';
+		}
+
+		$time = new DateTime( 'tomorrow 9:00:00', new DateTimeZone( $timezone ) );
 
 		wp_schedule_event( $time->getTimestamp(), 'daily', 'sc_assignment_reminder' );
 	}
